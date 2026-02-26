@@ -1,30 +1,29 @@
 const personajes = [
-  { nombre: "Juan Cuesta", rol: "Presidente" },
-  { nombre: "Emilio", rol: "Portero" },
-  { nombre: "Belén", rol: "Vecina" }
+  {
+    nombre: "Juan Cuesta",
+    tipo: "Principal",
+    genero: "Masculino",
+    origen: "España",
+    piso: "3ºB",
+    ocupacion: "Profesor",
+    temporada: 5
+  },
+  {
+    nombre: "Emilio",
+    tipo: "Principal",
+    genero: "Masculino",
+    origen: "España",
+    piso: "Portería",
+    ocupacion: "Portero",
+    temporada: 5
+  },
+  {
+    nombre: "Belén",
+    tipo: "Principal",
+    genero: "Femenino",
+    origen: "España",
+    piso: "3ºA",
+    ocupacion: "Dependienta",
+    temporada: 4
+  }
 ];
-
-const searchInput = document.getElementById("searchInput");
-const suggestions = document.getElementById("suggestions");
-
-searchInput.addEventListener("input", () => {
-  const value = searchInput.value.toLowerCase();
-  suggestions.innerHTML = "";
-
-  if (!value) return;
-
-  const filtrados = personajes.filter(p =>
-    p.nombre.toLowerCase().includes(value)
-  );
-
-  filtrados.forEach(p => {
-    const div = document.createElement("div");
-    div.textContent = p.nombre;
-    div.onclick = () => seleccionarPersonaje(p);
-    suggestions.appendChild(div);
-  });
-});
-
-function seleccionarPersonaje(personaje) {
-  alert("Has seleccionado: " + personaje.nombre);
-}
