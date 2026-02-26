@@ -27,3 +27,37 @@ input {
 #suggestions div:hover {
   background: #333;
 }
+#board {
+  margin-top: 20px;
+  border: 1px solid #333;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 1.2fr 1fr;
+  gap: 6px;
+  padding: 6px;
+}
+
+.header .cell {
+  background: #111;
+  font-weight: bold;
+  padding: 10px 6px;
+  border: 1px solid #333;
+}
+
+.cell {
+  padding: 12px 6px;
+  border: 1px solid #222;
+  background: #1b1b1b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Estados */
+.ok { background: #167d2f; }
+.no { background: #a31111; }
+.up::after { content: " ▲"; }
+.down::after { content: " ▼"; }
