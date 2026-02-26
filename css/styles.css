@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+input {
+  padding: 10px;
+  width: 80%;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+#suggestions div {
+  background: #222;
+  padding: 8px;
+  cursor: pointer;
+}
+
+#suggestions div:hover {
+  background: #333;
+}
