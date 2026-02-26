@@ -1,0 +1,29 @@
+[
+  {
+    "nombre": "Juan Cuesta",
+    "tipo": "Principal",
+    "genero": "Masculino",
+    "origen": "España",
+    "piso": "3ºB",
+    "ocupacion": "Profesor",
+    "temporada": 5
+  },
+  {
+    "nombre": "Emilio",
+    "tipo": "Principal",
+    "genero": "Masculino",
+    "origen": "España",
+    "piso": "Portería",
+    "ocupacion": "Portero",
+    "temporada": 5
+  },
+  {
+    "nombre": "Belén",
+    "tipo": "Principal",
+    "genero": "Femenino",
+    "origen": "España",
+    "piso": "3ºA",
+    "ocupacion": "Dependienta",
+    "temporada": 4
+  }
+]
