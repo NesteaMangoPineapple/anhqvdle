@@ -7,7 +7,7 @@
     "piso": "3ºB",
     "ocupacion": "Profesor",
     "temporada": 5,
-    "img": "assets/characters/juan_cuesta.webp"
+    "img": "assets/characters/juan_cuesta.png"
   },
   {
     "nombre": "Emilio",
@@ -27,6 +27,6 @@
     "piso": "3ºA",
     "ocupacion": "Dependienta",
     "temporada": 4,
-    "img": "assets/characters/belen.webp"
+    "img": "assets/characters/belen.png"
   }
 ]

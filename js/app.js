@@ -95,7 +95,10 @@ function addGuessRow(guess) {
   img.src = guess.img || "assets/characters/default.png";
   img.alt = guess.nombre;
   img.loading = "lazy";
-  img.onerror = () => { img.src = "assets/characters/default.png"; };
+  img.onerror = function() {
+  this.onerror = null; // Esto evita el bucle de los 421 errores
+  this.style.opacity = "0"; // Oculta el icono de imagen rota
+};
 
   const name = document.createElement("div");
   name.className = "char-name";
