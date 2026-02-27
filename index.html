@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>ANHQVdle - Adivina el personaje</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Juego diario inspirado en Aquí no hay quien viva. Adivina el personaje del día.">
+  <meta name="description" content="Juego diario inspirado en Aquí no hay quien viva.">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -12,23 +12,39 @@
   <div class="container">
     <h1>ANHQVdle</h1>
     <p>Adivina el personaje del día</p>
+    <div class="modes">
+  <button class="mode active" type="button">Clásico</button>
+  <button class="mode" type="button" disabled>Frase</button>
+  <button class="mode" type="button" disabled>Emoji</button>
+</div>
 
-    <input type="text" id="searchInput" placeholder="Escribe un personaje..." autocomplete="off">
+    <!-- Estado -->
+    <div id="status" class="status"></div>
+    <div id="counter" class="counter"></div>
+
+    <!-- Controles -->
+    <div class="controls">
+      <button id="shareBtn" class="share" type="button">Compartir</button>
+      <input type="text" id="searchInput" placeholder="Escribe un personaje..." autocomplete="off">
+    </div>
+
     <div id="suggestions"></div>
 
-   <div id="board">
-  <div class="row header">
-    <div class="cell">Personaje</div>
-    <div class="cell">Tipo</div>
-    <div class="cell">Género</div>
-    <div class="cell">Origen</div>
-    <div class="cell">Piso</div>
-    <div class="cell">Ocupación</div>
-    <div class="cell">Temporada</div>
-  </div>
+    <!-- Tablero -->
+    <div id="board">
+      <div class="row header">
+        <div class="cell">Personaje</div>
+        <div class="cell">Tipo</div>
+        <div class="cell">Género</div>
+        <div class="cell">Origen</div>
+        <div class="cell">Piso</div>
+        <div class="cell">Ocupación</div>
+        <div class="cell">Temporada</div>
+      </div>
 
-  <div id="rows"></div>
-</div>
+      <div id="rows"></div>
+    </div>
+  </div>
 
   <script src="js/app.js"></script>
 </body>

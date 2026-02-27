@@ -1,63 +1,235 @@
+/* =========================
+   ANHQVdle - styles.css
+   ========================= */
+
+:root{
+  --accent: #f6c21a;
+}
+
+/* ===== Fondo ===== */
 body {
   font-family: Arial, sans-serif;
-  background-color: #111;
+  margin: 0;
   color: white;
   text-align: center;
-  margin: 0;
+
+  background:
+    radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, #0b0b0b 55%, #070707 100%);
 }
 
 .container {
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
-input {
+h1{
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+/* ===== Barra de modos ===== */
+.modes{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin: 18px auto 12px;
   padding: 10px;
-  width: 80%;
+  max-width: 640px;
+  border: 2px solid rgba(246,194,26,.55);
+  border-radius: 18px;
+  background: rgba(0,0,0,.35);
+}
+
+.mode{
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(246,194,26,.25);
+  background: rgba(10,10,10,.55);
+  color: #fff;
+  cursor: pointer;
+  min-width: 110px;
+  font-size: 14px;
+}
+
+.mode.active{
+  background: rgba(246,194,26,.95);
+  color: #111;
+  border-color: rgba(246,194,26,.95);
+  font-weight: 700;
+}
+
+.mode:disabled{
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+/* ===== Estado ===== */
+.status {
+  margin: 12px auto 0;
+  padding: 10px 12px;
+  max-width: 760px;
+  border: 1px solid rgba(246,194,26,.25);
+  background: rgba(0,0,0,.6);
   font-size: 16px;
-  margin-top: 20px;
+}
+
+.counter {
+  margin-top: 10px;
+  opacity: 0.85;
+}
+
+/* ===== Controles ===== */
+.controls{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.controls input{
+  width: 520px;
+  max-width: 70vw;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(246,194,26,.55);
+  background: rgba(10,10,10,.7);
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.controls input:focus{
+  border-color: var(--accent);
+}
+
+.share{
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(246,194,26,.55);
+  background: rgba(10,10,10,.7);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.share:hover{
+  border-color: var(--accent);
+}
+
+/* ===== Sugerencias ===== */
+#suggestions{
+  max-width: 760px;
+  margin: 8px auto 0;
+  text-align: left;
 }
 
 #suggestions div {
-  background: #222;
-  padding: 8px;
+  background: rgba(20,20,20,.9);
+  border: 1px solid #2a2a2a;
+  padding: 10px 12px;
   cursor: pointer;
 }
 
 #suggestions div:hover {
-  background: #333;
-}
-#board {
-  margin-top: 20px;
-  border: 1px solid #333;
+  background: rgba(35,35,35,.95);
 }
 
-.row {
+/* ===== Tablero ===== */
+#board{
+  margin-top: 40px;
+}
+
+.row{
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 1.2fr 1fr;
-  gap: 6px;
-  padding: 6px;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr 1.3fr 0.9fr; /* 1ª más grande por imagen */
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.header .cell {
-  background: #111;
-  font-weight: bold;
-  padding: 10px 6px;
-  border: 1px solid #333;
-}
-
-.cell {
-  padding: 12px 6px;
-  border: 1px solid #222;
-  background: #1b1b1b;
+.cell{
+  padding: 14px 8px;
+  border: 1px solid rgba(246,194,26,.22);
+  background: rgba(27,27,27,.95);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-size: 15px;
+}
+
+/* Header */
+.header .cell{
+  background: rgba(0,0,0,.9);
+  font-weight: bold;
+  border-color: rgba(246,194,26,.35);
 }
 
 /* Estados */
-.ok { background: #167d2f; }
-.no { background: #a31111; }
+.ok { background: #1e8e3e; }
+.no { background: #a31515; }
+
 .up::after { content: " ▲"; }
 .down::after { content: " ▼"; }
+
+/* Celda personaje con avatar */
+.cell.char{
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.avatar{
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.35);
+  flex: 0 0 auto;
+}
+
+.char-name{
+  text-align: left;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+/* Animación al añadir intento */
+@keyframes popIn {
+  from { transform: translateY(6px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.row.guess .cell{
+  animation: popIn .18s ease-out both;
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 950px){
+  #board{
+    overflow-x: visible;
+  }
+  .row{
+    min-width: 0;
+  }
+}
+
+@media (max-width: 949px){
+  #board{
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .row{
+    min-width: 980px; /* sube por avatar */
+  }
+
+  .controls{
+    flex-direction: column;
+  }
+
+  .controls input{
+    width: 92vw;
+    max-width: 92vw;
+  }
+}

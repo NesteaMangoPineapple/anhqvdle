@@ -6,7 +6,8 @@
     "origen": "España",
     "piso": "3ºB",
     "ocupacion": "Profesor",
-    "temporada": 5
+    "temporada": 5,
+    "img": "assets/characters/juan_cuesta.webp"
   },
   {
     "nombre": "Emilio",
@@ -15,7 +16,8 @@
     "origen": "España",
     "piso": "Portería",
     "ocupacion": "Portero",
-    "temporada": 5
+    "temporada": 5,
+    "img": "assets/characters/emilio.jpg"
   },
   {
     "nombre": "Belén",
@@ -24,6 +26,7 @@
     "origen": "España",
     "piso": "3ºA",
     "ocupacion": "Dependienta",
-    "temporada": 4
+    "temporada": 4,
+    "img": "assets/characters/belen.jpg"
   }
 ]

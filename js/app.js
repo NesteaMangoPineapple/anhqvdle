@@ -1,3 +1,7 @@
+// =====================
+// ANHQVdle - app.js
+// =====================
+
 const SEED_DATE = "2026-01-01";
 const MAX_INTENTOS = 6;
 
@@ -12,7 +16,11 @@ const searchInput = document.getElementById("searchInput");
 const suggestions = document.getElementById("suggestions");
 const rows = document.getElementById("rows");
 
-// --- Utilidades ---
+const statusEl = document.getElementById("status");
+const counterEl = document.getElementById("counter");
+const shareBtn = document.getElementById("shareBtn");
+
+// ---------- Utilidades ----------
 function daysBetween(a, b) {
   const ms = 1000 * 60 * 60 * 24;
   const start = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
@@ -43,7 +51,18 @@ function normalize(s) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-// --- Comparación / UI ---
+// ---------- Estado UI ----------
+function updateCounter() {
+  if (!counterEl) return;
+  counterEl.textContent = `Intentos: ${intentos.length}/${MAX_INTENTOS}`;
+}
+
+function setStatus(msg) {
+  if (!statusEl) return;
+  statusEl.textContent = msg;
+}
+
+// ---------- Comparación / UI tablero ----------
 function cellText(text, cls) {
   const div = document.createElement("div");
   div.className = "cell " + cls;
@@ -63,9 +82,31 @@ function compareNumberClass(a, b) {
 
 function addGuessRow(guess) {
   const row = document.createElement("div");
-  row.className = "row";
+  row.className = "row guess";
 
-  row.appendChild(cellText(guess.nombre, compareText(guess.nombre, personajeCorrecto.nombre)));
+  // --- CELDA PERSONAJE (imagen + nombre) ---
+  const clsNombre = compareText(guess.nombre, personajeCorrecto.nombre);
+
+  const charCell = document.createElement("div");
+  charCell.className = "cell char " + clsNombre;
+
+  const img = document.createElement("img");
+  img.className = "avatar";
+  img.src = guess.img || "assets/characters/default.png";
+  img.alt = guess.nombre;
+  img.loading = "lazy";
+  img.onerror = () => { img.src = "assets/characters/default.png"; };
+
+  const name = document.createElement("div");
+  name.className = "char-name";
+  name.textContent = guess.nombre;
+
+  charCell.appendChild(img);
+  charCell.appendChild(name);
+
+  row.appendChild(charCell);
+
+  // --- RESTO DE COLUMNAS ---
   row.appendChild(cellText(guess.tipo, compareText(guess.tipo, personajeCorrecto.tipo)));
   row.appendChild(cellText(guess.genero, compareText(guess.genero, personajeCorrecto.genero)));
   row.appendChild(cellText(guess.origen, compareText(guess.origen, personajeCorrecto.origen)));
@@ -79,21 +120,17 @@ function addGuessRow(guess) {
 function renderAll() {
   rows.innerHTML = "";
   intentos.forEach(addGuessRow);
+  updateCounter();
 }
 
-function endGame(msg) {
-  juegoTerminado = true;
-  searchInput.disabled = true;
-  suggestions.innerHTML = "";
-  setTimeout(() => alert(msg), 50);
-}
-
-// --- Persistencia ---
+// ---------- Persistencia ----------
 function saveState() {
   const key = "anhqvdle_state_" + getDayKey();
   const data = {
     intentos,
-    juegoTerminado
+    juegoTerminado,
+    // opcional: para poder mostrar un mensaje coherente tras recargar
+    lastMessage: statusEl ? statusEl.textContent : ""
   };
   localStorage.setItem(key, JSON.stringify(data));
 }
@@ -108,12 +145,21 @@ function loadState() {
     intentos = Array.isArray(data.intentos) ? data.intentos : [];
     juegoTerminado = !!data.juegoTerminado;
     usados = new Set(intentos.map(i => i.nombre));
+    if (data.lastMessage) setStatus(data.lastMessage);
   } catch {
     // si hay algo corrupto, ignoramos
   }
 }
 
-// --- Autocomplete ---
+// ---------- Fin de partida ----------
+function endGame(msg) {
+  juegoTerminado = true;
+  searchInput.disabled = true;
+  suggestions.innerHTML = "";
+  setStatus(msg);
+}
+
+// ---------- Autocomplete ----------
 function updateSuggestions() {
   const value = normalize(searchInput.value.trim());
   suggestions.innerHTML = "";
@@ -134,7 +180,14 @@ function updateSuggestions() {
 
 searchInput.addEventListener("input", updateSuggestions);
 
-// --- Juego ---
+// Enter = si hay 1 sugerencia, selecciona esa
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const first = suggestions.querySelector("div");
+  if (first) first.click();
+});
+
+// ---------- Juego ----------
 function seleccionarPersonaje(personaje) {
   if (juegoTerminado) return;
   if (usados.has(personaje.nombre)) return;
@@ -143,10 +196,13 @@ function seleccionarPersonaje(personaje) {
   usados.add(personaje.nombre);
 
   addGuessRow(personaje);
-  saveState();
+  updateCounter();
 
   suggestions.innerHTML = "";
   searchInput.value = "";
+
+  // Guardamos tras el intento
+  saveState();
 
   if (personaje.nombre === personajeCorrecto.nombre) {
     endGame("🎉 ¡Correcto! Has adivinado el personaje del día.");
@@ -157,10 +213,55 @@ function seleccionarPersonaje(personaje) {
   if (intentos.length >= MAX_INTENTOS) {
     endGame(`😬 Se acabaron los intentos. Era: ${personajeCorrecto.nombre}`);
     saveState();
+    return;
   }
+
+  setStatus("🔎 Sigue probando...");
+  saveState();
 }
 
-// --- Inicio ---
+// ---------- Compartir ----------
+function buildShareText() {
+  const lines = intentos.map(g => {
+    const cells = [];
+
+    cells.push(g.nombre === personajeCorrecto.nombre ? "🟩" : "🟥");
+    cells.push(g.tipo === personajeCorrecto.tipo ? "🟩" : "🟥");
+    cells.push(g.genero === personajeCorrecto.genero ? "🟩" : "🟥");
+    cells.push(g.origen === personajeCorrecto.origen ? "🟩" : "🟥");
+    cells.push(g.piso === personajeCorrecto.piso ? "🟩" : "🟥");
+    cells.push(g.ocupacion === personajeCorrecto.ocupacion ? "🟩" : "🟥");
+
+    if (g.temporada === personajeCorrecto.temporada) cells.push("🟩");
+    else if (g.temporada < personajeCorrecto.temporada) cells.push("⬆️");
+    else cells.push("⬇️");
+
+    return cells.join("");
+  });
+
+  const dayKey = getDayKey();
+  const score = juegoTerminado ? intentos.length : "?";
+  const header = `ANHQVdle ${dayKey} — ${score}/${MAX_INTENTOS}`;
+  return [header, ...lines].join("\n");
+}
+
+if (shareBtn) {
+  shareBtn.addEventListener("click", async () => {
+    const text = buildShareText();
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("📋 Resultado copiado al portapapeles. ¡Pégalo donde quieras!");
+    } catch {
+      // fallback
+      prompt("Copia el resultado:", text);
+    }
+
+    saveState();
+  });
+}
+
+// ---------- Inicio ----------
 async function init() {
   const res = await fetch("data/personajes.json");
   personajes = await res.json();
@@ -170,9 +271,18 @@ async function init() {
   loadState();
   renderAll();
 
+  if (!juegoTerminado && (!statusEl || !statusEl.textContent)) {
+    setStatus("🕵️ Escribe un personaje para empezar.");
+  }
+
   if (juegoTerminado) {
     searchInput.disabled = true;
+    if (!statusEl || !statusEl.textContent) {
+      setStatus("✅ Ya terminaste el juego de hoy. Vuelve mañana.");
+    }
   }
+
+  updateCounter();
 }
 
 init();
