@@ -17,7 +17,7 @@
     "piso": "Portería",
     "ocupacion": "Portero",
     "temporada": 5,
-    "img": "assets/characters/emilio.jpg"
+    "img": "assets/characters/emilio.webp"
   },
   {
     "nombre": "Belén",
@@ -27,6 +27,6 @@
     "piso": "3ºA",
     "ocupacion": "Dependienta",
     "temporada": 4,
-    "img": "assets/characters/belen.jpg"
+    "img": "assets/characters/belen.webp"
   }
 ]
