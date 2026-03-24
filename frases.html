@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frases – ANHQVdle</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" style="text-decoration:none">
+        <div class="logo"><span>ANHQV</span>dle</div>
+      </a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="index.html"   class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"  class="nav-btn active">💬 Frases</a>
+      <span class="nav-btn nav-soon">🔊 Audio</span>
+    </nav>
+  </header>
+
+  <main>
+    <div class="game-title">💬 Modo Frases</div>
+    <p class="game-desc">¿Sabes quién dijo esta frase mítica? Intentos ilimitados. Vuelve mañana para una nueva frase.</p>
+
+    <div class="quote-box">
+      <p id="quote-text">Cargando frase...</p>
+      <p class="quote-hint" id="quote-hint"></p>
+    </div>
+
+    <div id="quote-attempts" class="quote-attempts"></div>
+
+    <div class="search-wrap" id="search-wrap">
+      <input type="text" id="quote-input" placeholder="¿Quién lo dijo?"
+        autocomplete="off" oninput="updateAutocompleteQuote()" onkeydown="if(event.key==='Enter') makeGuessQuote()">
+      <div class="autocomplete" id="autocomplete-quote"></div>
+      <button class="guess-btn" onclick="makeGuessQuote()">Adivinar</button>
+    </div>
+
+    <div id="quote-result"></div>
+    <div id="quote-yesterday"></div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+  </footer>
+
+  <script src="data/characters.js"></script>
+  <script src="data/quotes.js"></script>
+  <script src="js/daily.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/quote.js"></script>
+
+  <script>
+  if (new URLSearchParams(window.location.search).has('reset')) {
+    const btn = document.createElement('button');
+    btn.className   = 'reset-btn';
+    btn.textContent = '🔄 Reset día';
+    btn.onclick = () => {
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('anhqvdle_'))
+        .forEach(k => localStorage.removeItem(k));
+      window.location.href = window.location.pathname;
+    };
+    document.body.appendChild(btn);
+  }
+  </script>
+</body>
+</html>

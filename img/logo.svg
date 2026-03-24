@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="20" fill="#000000"/>
+  
+  <!-- Letras ANHQV estilo gordo redondeado con borde negro -->
+  <!-- A -->
+  <text x="100" y="115" 
+    font-family="Arial Black, Arial, sans-serif"
+    font-size="72"
+    font-weight="900"
+    text-anchor="middle"
+    fill="black"
+    stroke="black"
+    stroke-width="12"
+    stroke-linejoin="round"
+    paint-order="stroke fill"
+    letter-spacing="-2"
+  >ANHQV</text>
+  
+  <text x="100" y="115" 
+    font-family="Arial Black, Arial, sans-serif"
+    font-size="72"
+    font-weight="900"
+    text-anchor="middle"
+    fill="#f0c020"
+    letter-spacing="-2"
+  >ANHQV</text>
+
+  <!-- dle pequeño abajo -->
+  <text x="100" y="155" 
+    font-family="Arial Black, Arial, sans-serif"
+    font-size="36"
+    font-weight="900"
+    text-anchor="middle"
+    fill="black"
+    stroke="black"
+    stroke-width="8"
+    stroke-linejoin="round"
+    paint-order="stroke fill"
+  >dle</text>
+  
+  <text x="100" y="155" 
+    font-family="Arial Black, Arial, sans-serif"
+    font-size="36"
+    font-weight="900"
+    text-anchor="middle"
+    fill="#ffffff"
+  >dle</text>
+</svg>

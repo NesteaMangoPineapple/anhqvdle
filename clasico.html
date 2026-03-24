@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clásico – ANHQVdle</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" style="text-decoration:none">
+        <div class="logo"><span>ANHQV</span>dle</div>
+      </a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="index.html"   class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html" class="nav-btn active">🎬 Clásico</a>
+      <a href="frases.html"  class="nav-btn">💬 Frases</a>
+      <span class="nav-btn nav-soon">🔊 Audio</span>
+    </nav>
+  </header>
+
+  <main>
+    <div class="game-title">🎬 Modo Clásico</div>
+    <p class="game-desc">Adivina el personaje del día. Intentos ilimitados. Vuelve mañana para un personaje nuevo.</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot correct"></div> Correcto</div>
+      <div class="legend-item"><div class="legend-dot partial"></div> Cerca (piso compartido / debut ±1 temporada)</div>
+      <div class="legend-item"><div class="legend-dot wrong"></div> Incorrecto · ⬆️⬇️ indica dirección</div>
+    </div>
+
+    <div class="search-wrap" id="search-wrap">
+      <input type="text" id="classic-input" placeholder="Escribe el nombre de un personaje..."
+        autocomplete="off" oninput="updateAutocomplete()" onkeydown="if(event.key==='Enter') makeGuess()">
+      <div class="autocomplete" id="autocomplete"></div>
+      <button class="guess-btn" onclick="makeGuess()">Adivinar</button>
+    </div>
+
+    <div class="guess-table-wrap">
+      <table class="guess-table">
+        <thead>
+          <tr>
+            <th><div class="th-wrap">Personaje<div class="tooltip"><div class="tooltip-title">Personaje</div><ul><li>Escribe el nombre en el buscador para adivinar</li></ul></div></div></th>
+            <th><div class="th-wrap">Tipo<div class="tooltip"><div class="tooltip-title">Tipo</div><ul><li>Principal</li><li>Secundario</li><li>Esporádico</li></ul></div></div></th>
+            <th><div class="th-wrap">Género<div class="tooltip"><div class="tooltip-title">Género</div><ul><li>Masculino</li><li>Femenino</li></ul></div></div></th>
+            <th><div class="th-wrap">Nacionalidad<div class="tooltip"><div class="tooltip-title">Nacionalidad</div><ul><li>País de origen del personaje</li></ul></div></div></th>
+            <th><div class="th-wrap">Piso(s)<div class="tooltip"><div class="tooltip-title">Piso(s)</div><ul><li>Piso(s) donde vivió a lo largo de la serie</li></ul></div></div></th>
+            <th><div class="th-wrap">Ocupación<div class="tooltip"><div class="tooltip-title">Ocupación</div><ul><li>Trabajo(s) que tuvo en la serie</li></ul></div></div></th>
+            <th><div class="th-wrap">1ª Temporada<div class="tooltip"><div class="tooltip-title">Temporada</div><ul><li>Temporada en la que apareció por primera vez</li></ul></div></div></th>
+          </tr>
+        </thead>
+        <tbody id="guess-tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="classic-result"></div>
+    <div id="classic-yesterday"></div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+  </footer>
+
+  <script src="data/characters.js"></script>
+  <script src="js/daily.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/classic.js"></script>
+  <script>
+    document.querySelectorAll('.th-wrap').forEach(th => {
+      const tip = th.querySelector('.tooltip');
+      if (!tip) return;
+      th.addEventListener('mouseenter', () => {
+        const rect = th.getBoundingClientRect();
+        let left = rect.left + rect.width / 2 - 105;
+        if (left + 215 > window.innerWidth - 10) left = window.innerWidth - 225;
+        if (left < 10) left = 10;
+        tip.style.left = left + 'px';
+        tip.style.top  = (rect.bottom + 10) + 'px';
+      });
+    });
+  </script>
+
+  <script>
+  if (new URLSearchParams(window.location.search).has('reset')) {
+    const btn = document.createElement('button');
+    btn.className   = 'reset-btn';
+    btn.textContent = '🔄 Reset día';
+    btn.onclick = () => {
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('anhqvdle_'))
+        .forEach(k => localStorage.removeItem(k));
+      window.location.href = window.location.pathname;
+    };
+    document.body.appendChild(btn);
+  }
+  </script>
+</body>
+</html>
