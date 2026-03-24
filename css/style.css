@@ -46,7 +46,7 @@ header {
 
 .logo {
   font-family: 'Bebas Neue', cursive;
-  font-size: clamp(3.5rem, 10vw, 6rem);
+  font-size: clamp(2.5rem, 10vw, 6rem);
   letter-spacing: 6px;
   color: var(--accent);
   text-shadow:
@@ -351,7 +351,7 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
 /* ══════════════════════════════════════
    TABLA CLÁSICO
 ══════════════════════════════════════ */
-.guess-table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 12px; overflow: hidden; }
+.guess-table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 12px; -webkit-overflow-scrolling: touch; }
 .guess-table { width: 100%; border-collapse: collapse; min-width: 780px; }
 
 .guess-table th {
@@ -552,13 +552,112 @@ footer {
 footer span { color: var(--accent); }
 
 /* ══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — TABLET (≤768px)
 ══════════════════════════════════════ */
-@media (max-width: 600px) {
-  nav { flex-wrap: wrap; border-radius: 16px; }
-  .nav-btn { padding: 8px 14px; font-size: 0.85rem; }
-  .guess-btn { padding: 13px 18px; font-size: 0.9rem; }
+@media (max-width: 768px) {
+  header { padding: 20px 16px 0; }
+
+  .logo { font-size: clamp(2.8rem, 10vw, 5rem); }
+
+  nav {
+    flex-wrap: wrap;
+    border-radius: 16px;
+    gap: 4px;
+    padding: 5px;
+    margin-bottom: 24px;
+  }
+  .nav-btn { padding: 7px 16px; font-size: 0.85rem; }
+
+  main { padding: 0 12px 36px; }
+
+  .game-title { font-size: 1.8rem; }
+
+  .search-wrap { max-width: 100%; }
+
+  .autocomplete { right: 0; }
+
+  .guess-table-wrap {
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .guess-table { min-width: 640px; }
+  .guess-table th { font-size: 0.7rem; padding: 8px 6px; }
+  .guess-row td { min-width: 0; }
+  .guess-row td:first-child { min-width: 120px; }
+  .cell-inner { height: 80px; font-size: 0.82rem; padding: 4px; }
+  .cell-avatar { width: 64px; height: 64px; }
+
+  .result-banner { padding: 20px; }
+  .result-banner-quote h2 { font-size: 2.2rem; }
+
+  .countdown { font-size: 2.2rem; }
+
+  .yesterday-pill { margin-top: 48px; }
+
   .quote-box { padding: 22px 18px; font-size: 1rem; }
+
+  .mode-cards { gap: 12px; }
+  .mode-card { padding: 20px 16px; }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — MÓVIL (≤480px)
+══════════════════════════════════════ */
+@media (max-width: 480px) {
+  header { padding: 14px 12px 0; }
+
+  .logo { font-size: clamp(2.2rem, 12vw, 3.5rem); }
+  .subtitle { font-size: 0.72rem; letter-spacing: 1.5px; margin-bottom: 16px; }
+
+  nav { margin-bottom: 18px; }
+  .nav-btn { padding: 6px 12px; font-size: 0.78rem; letter-spacing: 0; }
+
+  main { padding: 0 10px 28px; }
+
+  .game-title { font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 4px; }
+  .game-desc { font-size: 0.8rem; margin-bottom: 12px; }
+
+  .legend { font-size: 0.72rem; gap: 8px; margin-bottom: 14px; }
+
+  .search-wrap { gap: 8px; margin-bottom: 14px; }
+  .search-wrap input { padding: 11px 14px; font-size: 0.9rem; }
+  .guess-btn { padding: 11px 16px; font-size: 0.85rem; }
+
+  .autocomplete { right: 0; border-radius: 10px; }
+  .ac-avatar { width: 34px; height: 34px; }
+  .ac-name { font-size: 0.88rem; }
+  .ac-sub { font-size: 0.7rem; }
+
+  .guess-table { min-width: 560px; }
+  .guess-table th { font-size: 0.65rem; padding: 7px 4px; letter-spacing: 0.5px; }
+  .guess-row td:first-child { min-width: 100px; }
+  .cell-inner { height: 70px; font-size: 0.75rem; gap: 2px; }
+  .cell-avatar { width: 54px; height: 54px; }
+  .job-tag { font-size: 0.68rem; }
+
+  .result-banner { padding: 16px; border-radius: 12px; }
+  .result-banner h2 { font-size: 2rem; }
+  .result-banner-quote h2 { font-size: 1.8rem; }
+  .result-banner .character-reveal { font-size: 1.5rem; }
+  .result-avatar { width: 64px; height: 64px; }
+
+  .countdown { font-size: 1.8rem; letter-spacing: 2px; }
+
+  .yesterday-pill { margin-top: 36px; font-size: 0.78rem; }
+  .yesterday-pill img { width: 22px; height: 22px; }
+
+  .quote-box { padding: 18px 14px; font-size: 0.92rem; margin-bottom: 16px; }
+  .quote-box::before { font-size: 4rem; }
+
+  .quote-guess-card { padding: 6px 12px; font-size: 0.95rem; }
+  .quote-guess-avatar { width: 36px; height: 36px; }
+
+  .mode-cards { grid-template-columns: 1fr; max-width: 320px; }
+  .mode-card { padding: 18px 16px; }
+  .mode-icon { font-size: 2rem; margin-bottom: 8px; }
+  .mode-card-title { font-size: 1.3rem; }
+
+  .result-character { gap: 8px; }
 }
 
 /* ══════════════════════════════════════
