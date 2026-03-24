@@ -18,6 +18,8 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body { overflow-x: hidden; }
+
 body {
   font-family: 'Barlow', sans-serif;
   background-color: #0a0a0a;
@@ -29,6 +31,10 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-position: center top;
+}
+
+@media (max-width: 768px) {
+  body { background-attachment: scroll; }
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -351,7 +357,25 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
 /* ══════════════════════════════════════
    TABLA CLÁSICO
 ══════════════════════════════════════ */
-.guess-table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+.guess-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 4px;
+  border-radius: 12px;
+}
+
+.scroll-hint {
+  display: none;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text2);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .scroll-hint { display: block; }
+}
 .guess-table { width: 100%; border-collapse: collapse; min-width: 780px; }
 
 .guess-table th {
