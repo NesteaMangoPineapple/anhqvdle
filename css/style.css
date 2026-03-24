@@ -579,21 +579,21 @@ footer span { color: var(--accent); }
   display: flex;
   gap: 14px;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 16px;
 }
 .social-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(240,192,32,0.4);
+  color: var(--accent);
   text-decoration: none;
   transition: all 0.2s;
 }
-.social-btn:hover { border-color: var(--accent); color: var(--accent); }
+.social-btn:hover { border-color: var(--accent); background: rgba(240,192,32,0.12); }
 
 /* ══════════════════════════════════════
    RESPONSIVE — TABLET (≤768px)
