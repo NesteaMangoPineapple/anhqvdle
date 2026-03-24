@@ -577,23 +577,20 @@ footer span { color: var(--accent); }
 
 .footer-social {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-top: 10px;
 }
 .social-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 50px;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.4);
   text-decoration: none;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
   transition: all 0.2s;
 }
 .social-btn:hover { border-color: var(--accent); color: var(--accent); }
