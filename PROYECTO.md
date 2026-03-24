@@ -5,8 +5,9 @@ Juego tipo Wordle de personajes de la serie española **"Aquí No Hay Quien Viva
 Fan-made, no oficial. Inspirado en LQSAdle (lqsadle.es).
 
 **URL:** https://anhqvdle.es
-**Repo:** https://github.com/NesteaMangoPineapple/anhqvdle
-**Hosting:** GitHub Pages + dominio propio `anhqvdle.es` (registrado en Arsys)
+**Repo:** https://github.com/NesteaMangoPineapple/anhqvdle (público)
+**Hosting:** GitHub Pages + dominio propio `anhqvdle.es` (registrado en Arsys, 1€ primer año)
+**Redes:** https://www.instagram.com/anhqvdle/ | https://www.tiktok.com/@anhqvdle
 
 ---
 
@@ -16,6 +17,7 @@ anhqvdle/
 ├── index.html          ← Página de inicio con tarjetas de modos
 ├── clasico.html        ← Modo Clásico
 ├── frases.html         ← Modo Frases
+├── LICENSE             ← All Rights Reserved
 ├── css/style.css       ← Todos los estilos (incluye responsive)
 ├── data/
 │   ├── characters.js   ← 41 personajes con atributos
@@ -30,10 +32,10 @@ anhqvdle/
 └── img/
     ├── edificio.png         ← Fondo (fachada del edificio)
     ├── logo.svg             ← Favicon/logo
-    ├── favicon.ico          ← Favicon para IE/Edge
-    ├── favicon-32.png       ← Favicon 32x32
-    ├── apple-touch-icon.png ← Favicon iOS
-    └── personajes/          ← Fotos de personajes (.webp/.jpg)
+    ├── favicon.ico
+    ├── favicon-32.png
+    ├── apple-touch-icon.png
+    └── personajes/          ← Fotos de personajes (.webp con fallback .jpg/.jpeg)
 ```
 
 ---
@@ -41,7 +43,7 @@ anhqvdle/
 ## Modos de juego
 - **🎬 Clásico** (`clasico.html`) — Adivina el personaje comparando atributos en tabla. Intentos ilimitados.
 - **💬 Frases** (`frases.html`) — Adivina quién dijo la frase. Intentos ilimitados.
-- **🔊 Audio** — Próximamente (aparece desactivado en la nav)
+- **🔊 Audio** — Próximamente (desactivado en la nav)
 
 ---
 
@@ -53,64 +55,75 @@ anhqvdle/
 - Se resetea automáticamente a las 00:00
 - Para pruebas: añadir `?reset` a la URL → botón rojo "Reset día"
 
-**⚠️ NO cambiar `getDailyIndex()` sin avisar** — si se cambia, todos los jugadores verán personajes distintos ese día.
+**⚠️ NO cambiar `getDailyIndex()` sin avisar** — si se cambia, todos los jugadores verán personajes distintos.
 
 ---
 
-## Tabla modo clásico — columnas
-| Columna | Campo | Verde | Amarillo | Rojo |
-|---|---|---|---|---|
-| Personaje | Foto + nombre en hover | Correcto | — | Incorrecto |
-| Tipo | Principal/Secundario/Esporádico | = | — | ≠ |
-| Género | Masculino/Femenino | = | — | ≠ |
-| Nacionalidad | País de origen | = | — | ≠ |
-| Piso(s) | Array de pisos | Comparte alguno | — | Ninguno |
-| Ocupación | Array de trabajos | Comparte alguno | — | Ninguno |
-| 1ª Temporada | `seasons[0]` | = | ±1 | ≠ + flecha ⬆️⬇️ |
-
-### Animación de celdas
-Las celdas aparecen una a una con stagger de `0.34s` por celda (total ~2.5s).
-Keyframe: `cellReveal` — flip en Y con rebote.
-
----
-
-## Autocomplete
+## Autocomplete (`utils.js` — función `buildAutocomplete`)
 - Muestra foto del personaje (40×40px), nombre y primera ocupación
-- Al seleccionar un personaje se adivina automáticamente (sin botón)
+- Al seleccionar un personaje **se adivina automáticamente** (sin botón) en ambos modos
 - Fallback de imagen: `.webp` → `.jpg` → `.jpeg` → oculto
 - Máximo 6 resultados
+- Slug de imagen: `name.toLowerCase().normalize('NFD').replace acentos.replace no-alfanum por guión`
+
+---
+
+## Tabla modo clásico
+| Columna | Verde | Amarillo | Rojo |
+|---|---|---|---|
+| Personaje | Correcto | — | Incorrecto |
+| Tipo | = | — | ≠ |
+| Género | = | — | ≠ |
+| Nacionalidad | = | — | ≠ |
+| Piso(s) | Comparte alguno | — | Ninguno |
+| Ocupación | Comparte alguno | — | Ninguno |
+| 1ª Temporada | = | ±1 | ≠ + flecha ⬆️⬇️ |
+
+### Animación de celdas
+- Keyframe `cellReveal`: flip en scaleY con rebote (`cubic-bezier(0.34,1.4,0.64,1)`)
+- Stagger: `calc(var(--i,0) * 0.34s)` → total ~2.5s para las 7 celdas
+- `--i` se asigna en `classic.js` con `td.style.setProperty('--i', i)`
 
 ---
 
 ## "El personaje/frase de ayer"
-- Se calcula con `getYesterdayIndex()` en cada `init()`
-- Se renderiza como pill (foto circular + texto) al final del contenido
-- Clásico: "El personaje de ayer fue **X**"
-- Frases: "La frase de ayer era de **X**"
+- Clásico: función `renderYesterdayClassic()` en `classic.js`, div `#classic-yesterday`
+- Frases: función `renderYesterdayQuote()` en `quote.js`, div `#quote-yesterday`
+- Se renderiza al final del `<main>`, antes del footer
+- Estilo: pill con foto circular + texto — CSS clase `.yesterday-pill`
 
 ---
 
-## Banner de resultado (Frases)
-El banner de "¡Correcto!" / "¡Uy!" incluye:
-- Foto del personaje en círculo con borde dorado
-- Título, intentos usados, nombre del personaje
-- Countdown hasta la próxima frase
+## Banner de resultado — Frases (`showDoneMessageQuote`)
+- Foto del personaje en círculo con borde dorado y glow
+- Título "¡Correcto!" / "¡Uy!" con emoji
+- Intentos usados
+- Nombre del personaje
+- Separador + countdown hasta próxima frase
+- Clases CSS: `.result-banner-quote`, `.result-header`, `.result-avatar`, `.result-character`, `.result-divider`
+
+---
+
+## Footer
+- Texto de copyright
+- Iconos circulares de Instagram y TikTok debajo (color `var(--accent)` amarillo)
+- Clases CSS: `.footer-social`, `.social-btn`
 
 ---
 
 ## Personajes en `characters.js`
-Cada personaje tiene:
 ```js
 {
   name: "Emilio Delgado",
   type: "Principal",            // Principal / Secundario / Esporádico
   gender: "Masculino",
   nationality: "Española",
-  floors: ["Portería", "3º B"], // Array — vivió en varios pisos
+  floors: ["Portería", "3º B"],
   seasons: [1, 2, 3, 4, 5],    // seasons[0] = temporada de debut
   occupations: ["Portero", "Estudiante universitario"],
 }
 ```
+**Falta foto de: Gregorio** (`gregorio.webp`)
 
 ---
 
@@ -119,53 +132,57 @@ Cada personaje tiene:
 - Formato: `.webp` preferido, fallback `.jpg` → `.jpeg`
 - Nombre: slug del personaje (minúsculas, sin tildes, guiones)
   - Ej: "Concha de la Fuente" → `concha-de-la-fuente.webp`
-- Falta foto de: **Gregorio** (`gregorio.webp`)
 
 ---
 
 ## Diseño / Estética
-- Fondo: foto del edificio (`img/edificio.png`) con degradado oscuro encima
-- En móvil: `background-attachment: scroll` (el `fixed` rompe el scroll en iOS)
-- Colores: amarillo `#f0c020` (accent), verde `#16a34a` (correcto), rojo `#dc2626` (incorrecto)
+- Fondo: `img/edificio.png` con degradado oscuro encima
+- En móvil: `background-attachment: scroll` (el `fixed` rompe scroll en iOS)
+- Variables CSS: `--accent: #f0c020`, `--correct: #16a34a`, `--wrong: #dc2626`, `--partial: #f0c020`
 - Tipografía: Bebas Neue (títulos), Barlow Condensed (tabla/nav), Barlow (cuerpo)
-- Nav: pills redondeadas, activo en amarillo
+- Logo: `clamp(2.5rem, 10vw, 6rem)`
 
 ---
 
-## Responsive
-Breakpoints definidos en `style.css`:
-- **≤768px** (tablet): tabla más compacta, fuentes reducidas, nav ajustada
-- **≤480px** (móvil): tabla mínima con scroll horizontal, fuentes pequeñas, cards en columna
-
-La tabla siempre tiene scroll horizontal en móvil (`overflow-x: auto`, `-webkit-overflow-scrolling: touch`).
-Se muestra el hint "← Desliza para ver todas las columnas →" en pantallas pequeñas.
+## Responsive (`style.css`)
+- **≤768px** (tablet): tabla compacta, fuentes reducidas, nav ajustada
+- **≤480px** (móvil): tabla mínima con scroll horizontal, cards en columna
+- La tabla usa scroll horizontal con `-webkit-overflow-scrolling: touch`
+- Hint "← Desliza para ver todas las columnas →" visible solo en móvil (clase `.scroll-hint`)
+- `html, body { overflow-x: hidden }` para evitar scroll lateral de página
 
 ---
 
 ## Deploy
-- **Hosting:** GitHub Pages (gratis, rama `main`)
-- **Dominio:** `anhqvdle.es` registrado en Arsys (1€ primer año)
-- **Subir cambios:**
 ```bash
 git add .
-git commit -m "descripción del cambio"
+git commit -m "descripción"
 git push origin main
+# GitHub Pages actualiza en ~1-2 minutos
 ```
-GitHub Pages se actualiza automáticamente en ~1-2 minutos.
+
+### DNS Arsys (configurado)
+```
+A     @    185.199.108.153
+A     @    185.199.109.153
+A     @    185.199.110.153
+A     @    185.199.111.153
+CNAME www  nesteamangopineapple.github.io
+```
 
 ---
 
 ## Pendiente / Ideas futuras
-- Modo Audio: reproducir audios de frases y adivinar el personaje
+- Modo Audio
 - Compartir resultado (copiar al portapapeles estilo Wordle)
 - Estadísticas del jugador
 - Modo difícil
 - Meta tags Open Graph para previews en redes sociales
-- Google AdSense (requiere tráfico mínimo ~100 visitas/día)
+- Google AdSense (requiere ~100 visitas/día mínimo)
 
 ---
 
 ## Cosas a NO cambiar sin avisar
 - `getDailyIndex()` — si se cambia, todos los jugadores verán personajes distintos
-- Los nombres de archivo de las fotos — vinculados al slug del nombre del personaje
-- La estructura de `CHARACTERS` en `characters.js` — el juego depende de todos los campos
+- Nombres de archivo de las fotos — vinculados al slug del nombre
+- Estructura de `CHARACTERS` — el juego depende de todos los campos
