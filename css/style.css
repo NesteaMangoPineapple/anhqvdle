@@ -1136,16 +1136,20 @@ nav a.nav-btn {
    NOSOTROS
 ══════════════════════════════════════ */
 .about-panel {
-  max-width: 640px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 40px 20px 60px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .about-title {
   font-family: 'Bebas Neue', cursive;
-  font-size: clamp(3rem, 10vw, 5rem);
+  font-size: clamp(3.5rem, 10vw, 6rem);
   color: var(--accent);
   letter-spacing: 4px;
+  line-height: 1;
   margin-bottom: 8px;
 }
 .about-sub {
@@ -1154,13 +1158,14 @@ nav a.nav-btn {
   margin-bottom: 0;
 }
 .about-divider {
+  width: 100%;
   border: none;
   border-top: 1px solid var(--border);
   margin: 28px 0;
 }
 .about-section-title {
   font-family: 'Bebas Neue', cursive;
-  font-size: 1.8rem;
+  font-size: 2rem;
   letter-spacing: 2px;
   color: var(--accent);
   margin-bottom: 14px;
@@ -1168,8 +1173,9 @@ nav a.nav-btn {
 .about-text {
   color: var(--text2);
   font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 12px;
+  line-height: 1.75;
+  margin-bottom: 10px;
+  max-width: 520px;
 }
 .about-text a { color: var(--accent); text-decoration: none; }
 .about-text a:hover { text-decoration: underline; }
@@ -1177,15 +1183,15 @@ nav a.nav-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
-  padding: 12px 28px;
+  margin-top: 14px;
+  padding: 13px 32px;
   background: transparent;
   color: var(--accent);
   border: 2px solid var(--accent);
   border-radius: 50px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   letter-spacing: 1px;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
