@@ -6,6 +6,7 @@ const MODE_KEY    = 'classic';
 
 let classicTarget  = null;
 let classicGuesses = [];
+let classicResults = [];
 let classicDone    = false;
 
 function renderYesterdayClassic() {
@@ -33,6 +34,7 @@ function initClassic() {
   const saved = loadDailyState(MODE_KEY);
   if (saved) {
     classicGuesses = saved.guesses || [];
+    classicResults = saved.results || [];
     classicDone    = saved.done || false;
       classicGuesses.forEach(g => {
       const char = CHARACTERS.find(c => c.name === g);
@@ -48,6 +50,7 @@ function initClassic() {
 
   // Estado limpio
   classicGuesses = [];
+  classicResults = [];
   classicDone    = false;
   document.getElementById('guess-tbody').innerHTML      = '';
   document.getElementById('classic-result').innerHTML   = '';
@@ -74,18 +77,33 @@ function makeGuess() {
 
   classicGuesses.push(guess.name);
   input.value = '';
-  renderGuessRow(guess);
 
   const won = guess.name === classicTarget.name;
+  const t   = classicTarget;
+  const floorMatch = guess.floors.some(f => t.floors.includes(f));
+  const jobMatch   = guess.occupations.some(o => t.occupations.includes(o));
+  const debutDiff  = Math.abs(guess.seasons[0] - t.seasons[0]);
+  const rowEmojis  = [
+    guess.name === t.name ? '🟩' : '🟥',
+    guess.type === t.type ? '🟩' : '🟥',
+    guess.gender === t.gender ? '🟩' : '🟥',
+    guess.nationality === t.nationality ? '🟩' : '🟥',
+    floorMatch ? '🟩' : '🟥',
+    jobMatch   ? '🟩' : '🟥',
+    guess.seasons[0] === t.seasons[0] ? '🟩' : debutDiff === 1 ? '🟨' : '🟥',
+  ];
+  classicResults.push(rowEmojis);
+
+  renderGuessRow(guess);
 
   if (won) {
     classicDone = true;
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
-    saveDailyState(MODE_KEY, { guesses: classicGuesses, done: true, won });
+    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: true, won });
     showDoneMessage('classic-result', won, classicTarget.name, classicGuesses.length);
   } else {
-    saveDailyState(MODE_KEY, { guesses: classicGuesses, done: false, won: false });
+    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: false, won: false });
   }
 }
 
@@ -158,11 +176,27 @@ function showDoneMessage(containerId, won, charName, attempts) {
       </p>
       <div class="character-reveal">${won ? charName : '→ ' + charName}</div>
       <p style="font-size:0.85rem;color:var(--text2);margin-top:8px">${won ? getWinMessage(attempts) : ''}</p>
+      <button class="share-btn" id="share-btn-classic" onclick="shareResultClassic(${won}, ${attempts})">📋 Compartir resultado</button>
       <div class="countdown-wrap">
         <p style="font-size:0.8rem;color:var(--text2);margin-top:16px;letter-spacing:1px;text-transform:uppercase">Próximo personaje en</p>
         <div class="countdown" id="countdown-timer">00:00:00</div>
       </div>
     </div>`;
+}
+
+function shareResultClassic(won, attempts) {
+  const today   = new Date();
+  const dateStr = today.toLocaleDateString('es-ES');
+  const grid    = classicResults.map(row => row.join('')).join('\n');
+  const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
+  const text    = `ANHQVdle 🎬 · ${dateStr}\n${status}\n${grid}\nahqvdle.es`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('share-btn-classic');
+    if (!btn) return;
+    btn.textContent = '¡Copiado! ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Compartir resultado'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function startCountdown() {

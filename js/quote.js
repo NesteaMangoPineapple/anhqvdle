@@ -149,11 +149,27 @@ function showDoneMessageQuote(won, charName, attempts) {
         <div class="character-reveal">${won ? charName : '→ ' + charName}</div>
       </div>
       <div class="result-divider"></div>
+      <button class="share-btn" id="share-btn-quote" onclick="shareResultQuote(${won}, ${attempts})">📋 Compartir resultado</button>
       <div class="countdown-wrap">
         <p class="countdown-label">Próxima frase en</p>
         <div class="countdown" id="countdown-timer-q">00:00:00</div>
       </div>
     </div>`;
+}
+
+function shareResultQuote(won, attempts) {
+  const today   = new Date();
+  const dateStr = today.toLocaleDateString('es-ES');
+  const emojis  = quoteGuesses.map(name => name === quoteTarget.character ? '✅' : '❌').join('');
+  const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
+  const text    = `ANHQVdle 💬 · ${dateStr}\n${status}\n${emojis}\nahqvdle.es`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('share-btn-quote');
+    if (!btn) return;
+    btn.textContent = '¡Copiado! ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Compartir resultado'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function startCountdownQuote() {
