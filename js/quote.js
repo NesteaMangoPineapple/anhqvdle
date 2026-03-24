@@ -115,6 +115,7 @@ function makeGuessQuote() {
     quoteDone = true;
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
+    updateStats('quote', quoteGuesses.length);
     saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: correct });
     showDoneMessageQuote(correct, quoteTarget.character, quoteGuesses.length);
   } else {

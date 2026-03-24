@@ -116,6 +116,70 @@ document.addEventListener('click', e => {
   }
 });
 
+/* ══════════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════════ */
+
+function loadStats(mode) {
+  const def = { played:0, streak:0, maxStreak:0, lastWonDate:null, totalAttempts:0,
+    distribution:{'1':0,'2':0,'3':0,'4':0,'5':0,'6+':0} };
+  try {
+    return Object.assign({}, def, JSON.parse(localStorage.getItem(`anhqvdle_stats_${mode}`) || '{}'));
+  } catch(e) { return def; }
+}
+
+function updateStats(mode, attempts) {
+  const stats   = loadStats(mode);
+  const today   = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  if (stats.lastWonDate === today) return; // ya contado hoy
+  stats.played++;
+  stats.totalAttempts += attempts;
+  const key = attempts <= 5 ? String(attempts) : '6+';
+  stats.distribution[key] = (stats.distribution[key] || 0) + 1;
+  stats.streak = stats.lastWonDate === yesterday ? stats.streak + 1 : 1;
+  stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+  stats.lastWonDate = today;
+  localStorage.setItem(`anhqvdle_stats_${mode}`, JSON.stringify(stats));
+}
+
+function showStatsModal(mode) {
+  const existing = document.getElementById('stats-modal');
+  if (existing) { existing.remove(); return; }
+  const stats    = loadStats(mode);
+  const avg      = stats.played > 0 ? (stats.totalAttempts / stats.played).toFixed(1) : '—';
+  const modeLabel = mode === 'classic' ? '🎬 Clásico' : '💬 Frases';
+  const maxVal   = Math.max(...Object.values(stats.distribution), 1);
+  const distHtml = Object.entries(stats.distribution).map(([k, v]) => {
+    const pct = Math.round((v / maxVal) * 100);
+    return `<div class="stat-dist-row">
+      <span class="stat-dist-label">${k}</span>
+      <div class="stat-dist-bar-wrap">
+        <div class="stat-dist-bar${v > 0 ? ' has-val' : ''}" style="width:${Math.max(pct,8)}%">${v > 0 ? v : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const modal = document.createElement('div');
+  modal.id = 'stats-modal';
+  modal.className = 'stats-modal-overlay';
+  modal.innerHTML = `
+    <div class="stats-modal">
+      <button class="stats-close" onclick="document.getElementById('stats-modal').remove()">✕</button>
+      <h2 class="stats-title">Mis estadísticas</h2>
+      <p class="stats-mode-label">${modeLabel}</p>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-num">${stats.played}</div><div class="stat-lbl">Jugadas</div></div>
+        <div class="stat-item"><div class="stat-num">${stats.streak}</div><div class="stat-lbl">Racha</div></div>
+        <div class="stat-item"><div class="stat-num">${stats.maxStreak}</div><div class="stat-lbl">Máx. racha</div></div>
+        <div class="stat-item"><div class="stat-num">${avg}</div><div class="stat-lbl">Media int.</div></div>
+      </div>
+      <h3 class="stats-dist-title">Distribución de intentos</h3>
+      <div class="stats-dist">${distHtml}</div>
+    </div>`;
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  document.body.appendChild(modal);
+}
+
 /**
  * Marca el input con borde rojo brevemente (nombre no encontrado)
  */

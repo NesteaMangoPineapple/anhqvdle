@@ -100,6 +100,7 @@ function makeGuess() {
     classicDone = true;
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
+    updateStats('classic', classicGuesses.length);
     saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: true, won });
     showDoneMessage('classic-result', won, classicTarget.name, classicGuesses.length);
   } else {
