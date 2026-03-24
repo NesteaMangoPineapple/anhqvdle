@@ -189,7 +189,7 @@ function shareResultClassic(won, attempts) {
   const dateStr = today.toLocaleDateString('es-ES');
   const grid    = classicResults.map(row => row.join('')).join('\n');
   const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
-  const text    = `ANHQVdle 🎬 · ${dateStr}\n${status}\n${grid}\nahqvdle.es`;
+  const text    = `ANHQVdle 🎬 · ${dateStr}\n${status}\n${grid}\nanhqvdle.es`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('share-btn-classic');
     if (!btn) return;

@@ -162,7 +162,7 @@ function shareResultQuote(won, attempts) {
   const dateStr = today.toLocaleDateString('es-ES');
   const emojis  = quoteGuesses.map(name => name === quoteTarget.character ? '✅' : '❌').join('');
   const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
-  const text    = `ANHQVdle 💬 · ${dateStr}\n${status}\n${emojis}\nahqvdle.es`;
+  const text    = `ANHQVdle 💬 · ${dateStr}\n${status}\n${emojis}\nanhqvdle.es`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('share-btn-quote');
     if (!btn) return;
