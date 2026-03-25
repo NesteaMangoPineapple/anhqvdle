@@ -10,7 +10,7 @@
 function getDailyIndex(arrayLength) {
   const now  = new Date();
   const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
-  return seed % arrayLength;
+  return (Math.imul(seed, 2654435761) >>> 0) % arrayLength;
 }
 
 /**
@@ -20,7 +20,7 @@ function getYesterdayIndex(arrayLength) {
   const d    = new Date();
   d.setDate(d.getDate() - 1);
   const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-  return seed % arrayLength;
+  return (Math.imul(seed, 2654435761) >>> 0) % arrayLength;
 }
 
 /**
