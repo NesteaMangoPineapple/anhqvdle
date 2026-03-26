@@ -13,6 +13,7 @@ const CHARACTERS = [
   { name: "Mauri Hidalgo",     type: "Principal",  gender: "Masculino", nationality: "Española", floors: ["1º B"],                 seasons: [1,2,3,4,5], occupations: ["Periodista"] },
   { name: "Fernando Navarro",  type: "Principal",  gender: "Masculino", nationality: "Española", floors: ["1º B"],                 seasons: [1,2,3,4,5], occupations: ["Abogado"] },
   { name: "Bea Villarejo",     type: "Principal",  gender: "Femenino",  nationality: "Española", floors: ["1º B"],                 seasons: [2,3,4,5],   occupations: ["Veterinaria"] },
+  { name: "Diego Álvarez",     type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["1º B","Visita"],        seasons: [3],         occupations: ["Sin empleo fijo"] },
 
   // 2º A
   { name: "Juan Cuesta",       type: "Principal",  gender: "Masculino", nationality: "Española", floors: ["2º A"],                 seasons: [1,2,3,4,5], occupations: ["Profesor de primaria","Presidente comunidad","Director de academia"] },
@@ -27,7 +28,7 @@ const CHARACTERS = [
   { name: "Andrés Guerra",     type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["2º B","Ático"],         seasons: [2,3,4],     occupations: ["Empresario","Estafador"] },
   { name: "Pablo Guerra",      type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["2º B","Ático"],         seasons: [2,3,4,5],   occupations: ["Estudiante"] },
   { name: "Álex Guerra",       type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["2º B"],                 seasons: [2,3],       occupations: ["Estudiante"] },
-  { name: "Higinio Heredia",   type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["2º B"],                 seasons: [4,5],       occupations: ["Funcionario","Presidente comunidad (interino)"] },
+  { name: "Higinio Heredia",   type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["2º B"],                 seasons: [2,4,5],     occupations: ["Funcionario","Presidente comunidad (interino)"] },
   { name: "Mamen Heredia",     type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [4,5],       occupations: ["Ama de casa"] },
   { name: "Candela Heredia",   type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [5],         occupations: ["Estudiante"] },
   { name: "Raquel Heredia",    type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [5],         occupations: ["Sin empleo fijo"] },
@@ -43,9 +44,9 @@ const CHARACTERS = [
 
   // 3º B
   { name: "Belén López",       type: "Principal",  gender: "Femenino",  nationality: "Española", floors: ["3º B","Portería"],      seasons: [1,2,3,4,5], occupations: ["Camarera","Modelo","Empleada de moda","Actriz de anuncios"] },
-  { name: "Alicia Sanz",       type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["3º A","3º B"],          seasons: [1,2],       occupations: ["Sin empleo fijo"] },
-  { name: "Ana",               type: "Secundario", gender: "Femenino",  nationality: "Alemana",  floors: ["3º B"],                 seasons: [3,4],       occupations: ["Sin empleo fijo"] },
-  { name: "María Jesús",       type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["3º B"],                 seasons: [4],         occupations: ["Ama de casa"] },
+  { name: "Alicia Sanz",       type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["3º A","3º B"],          seasons: [1,2,3],     occupations: ["Sin empleo fijo"] },
+  { name: "Ana",               type: "Secundario", gender: "Femenino",  nationality: "Alemana",  floors: ["3º B"],                 seasons: [3,4,5],     occupations: ["Sin empleo fijo"] },
+  { name: "María Jesús",       type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["3º B"],                 seasons: [3,4,5],     occupations: ["Ama de casa"] },
 
   // VIDEOCLUB
   { name: "Paco",              type: "Principal",  gender: "Masculino", nationality: "Española", floors: ["Videoclub","Ático"],    seasons: [1,2,3,4,5], occupations: ["Empleado de videoclub"] },
@@ -56,6 +57,9 @@ const CHARACTERS = [
   { name: "Gregorio",          type: "Esporádico", gender: "Masculino", nationality: "Española", floors: ["Visita"],               seasons: [1,2,3],     occupations: ["Administrador de fincas"] },
   { name: "Hermana Esperanza", type: "Esporádico", gender: "Femenino",  nationality: "Española", floors: ["Visita","1º B"],        seasons: [2,3,4],     occupations: ["Monja","Cuidadora","Locutora de radio"] },
   { name: "Daniel Rubio",      type: "Esporádico", gender: "Masculino", nationality: "Española", floors: ["2º B"],                 seasons: [1],         occupations: ["Estudiante"] },
-  { name: "Rebeca",            type: "Esporádico", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [2],         occupations: ["Estudiante"] },
+  { name: "Rebeca",            type: "Esporádico", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [1],         occupations: ["Estudiante"] },
   { name: "Ezequiel Hidalgo",  type: "Esporádico", gender: "Masculino", nationality: "Española", floors: ["1º B"],                 seasons: [3,4,5],     occupations: ["Niño"] },
+  { name: "Rocío",             type: "Esporádico", gender: "Femenino",  nationality: "Española", floors: ["Visita"],               seasons: [2],         occupations: ["Cartera"] },
+  { name: "José María",        type: "Esporádico", gender: "Masculino", nationality: "Española", floors: ["Visita"],               seasons: [5],         occupations: ["Sin empleo fijo"] },
+  { name: "Abel",              type: "Esporádico", gender: "Masculino", nationality: "Española", floors: ["Visita"],               seasons: [3,4],       occupations: ["Canguro"] },
 ];
