@@ -1462,3 +1462,26 @@ a.mode-card {
   .tutorial-box { padding: 28px 18px 22px; }
   .tutorial-title { font-size: 1.7rem; }
 }
+
+/* ══════════════════════════════════════
+   BOTÓN REVELAR PISTA (Modo Frases)
+══════════════════════════════════════ */
+.hint-reveal-btn {
+  display: block;
+  margin: 12px auto 0;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.hint-reveal-btn:hover {
+  background: var(--accent);
+  color: #000;
+}

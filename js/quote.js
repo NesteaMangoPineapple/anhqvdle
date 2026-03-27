@@ -53,7 +53,11 @@ function initQuote() {
       document.getElementById('quote-attempts').appendChild(card);
     });
     if (quoteGuesses.length >= 2 && !saved.won) {
-      document.getElementById('quote-hint').textContent = '💡 ' + quoteTarget.hint;
+      if (saved.hintRevealed) {
+        document.getElementById('quote-hint').textContent = '💡 ' + quoteTarget.hint;
+      } else {
+        showHintButton();
+      }
     }
     if (quoteDone) {
       document.getElementById('quote-input').disabled = true;
@@ -120,11 +124,26 @@ function makeGuessQuote() {
     showDoneMessageQuote(correct, quoteTarget.character, quoteGuesses.length);
   } else {
     saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: false, won: false });
-    if (quoteGuesses.length >= 2) {
-      const hintEl = document.getElementById('quote-hint');
-      if (!hintEl.textContent) hintEl.textContent = '💡 ' + quoteTarget.hint;
-    }
+    if (quoteGuesses.length >= 2) showHintButton();
   }
+}
+
+function showHintButton() {
+  if (document.getElementById('hint-reveal-btn')) return;
+  const btn = document.createElement('button');
+  btn.id        = 'hint-reveal-btn';
+  btn.className = 'hint-reveal-btn';
+  btn.textContent = '💡 Revelar pista';
+  btn.onclick   = revealHint;
+  document.getElementById('quote-hint').insertAdjacentElement('afterend', btn);
+}
+
+function revealHint() {
+  const btn = document.getElementById('hint-reveal-btn');
+  if (btn) btn.remove();
+  document.getElementById('quote-hint').textContent = '💡 ' + quoteTarget.hint;
+  const saved = loadDailyState(MODE_KEY_Q) || {};
+  saveDailyState(MODE_KEY_Q, { ...saved, hintRevealed: true });
 }
 
 function showDoneMessageQuote(won, charName, attempts) {
