@@ -1468,7 +1468,7 @@ a.mode-card {
 ══════════════════════════════════════ */
 .hint-reveal-btn {
   display: block;
-  margin: 12px auto 0;
+  margin: 0 auto 20px;
   background: transparent;
   border: 1px solid var(--accent);
   color: var(--accent);
@@ -1477,6 +1477,7 @@ a.mode-card {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
+  font-style: normal;
   letter-spacing: 1px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;

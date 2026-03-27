@@ -135,7 +135,7 @@ function showHintButton() {
   btn.className = 'hint-reveal-btn';
   btn.textContent = '💡 Revelar pista';
   btn.onclick   = revealHint;
-  document.getElementById('quote-hint').insertAdjacentElement('afterend', btn);
+  document.querySelector('.quote-box').insertAdjacentElement('afterend', btn);
 }
 
 function revealHint() {
