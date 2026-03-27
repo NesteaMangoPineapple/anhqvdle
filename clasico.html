@@ -45,6 +45,7 @@
       <a href="frases.html"  class="nav-btn">💬 Frases</a>
       <span class="nav-btn nav-soon">🔊 Audio</span>
       <button class="nav-btn nav-stats-btn" onclick="showStatsModal('classic')" aria-label="Estadísticas">📊 Stats</button>
+      <button class="nav-btn" onclick="showTutorial()" aria-label="Cómo jugar">❓ Ayuda</button>
     </nav>
   </header>
 
@@ -100,10 +101,47 @@
     </div>
   </footer>
 
+  <!-- Tutorial primera vez -->
+  <div id="tutorial-modal" class="tutorial-overlay" data-key="anhqvdle_tutorial_classic">
+    <div class="tutorial-box">
+      <button class="tutorial-close" onclick="hideTutorial()" aria-label="Cerrar">✕</button>
+      <div class="tutorial-title">¿Cómo jugar?</div>
+      <div class="tutorial-mode-label">Modo Clásico</div>
+      <p class="tutorial-intro">Adivina el <strong>personaje del día</strong> de Aquí No Hay Quien Viva.<br>Intentos ilimitados · Un personaje nuevo cada día.</p>
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <div class="tutorial-num">1</div>
+          <p>Escribe un nombre en el buscador y pulsa <strong>Adivinar</strong>.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">2</div>
+          <p>Cada intento revela 7 datos del personaje con colores:</p>
+        </div>
+      </div>
+      <div class="tutorial-colors">
+        <div class="tutorial-color-row">
+          <div class="tutorial-cell t-correct">Correcto</div>
+          <span class="tutorial-color-desc">El dato coincide exactamente</span>
+        </div>
+        <div class="tutorial-color-row">
+          <div class="tutorial-cell t-partial">Cerca</div>
+          <span class="tutorial-color-desc">Piso compartido o debut ±1 temporada</span>
+        </div>
+        <div class="tutorial-color-row">
+          <div class="tutorial-cell t-wrong">Incorrecto</div>
+          <span class="tutorial-color-desc">No coincide · ⬆️⬇️ indica dirección en temporada</span>
+        </div>
+      </div>
+      <button class="tutorial-entendido" onclick="hideTutorial()">¡Entendido!</button>
+    </div>
+  </div>
+
   <script src="data/characters.js"></script>
   <script src="js/daily.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/classic.js"></script>
+  <script src="js/tutorial.js"></script>
+  <script>initTutorial('anhqvdle_tutorial_classic');</script>
   <script>
     document.querySelectorAll('.th-wrap').forEach(th => {
       const tip = th.querySelector('.tooltip');

@@ -45,6 +45,7 @@
       <a href="frases.html"  class="nav-btn active">💬 Frases</a>
       <span class="nav-btn nav-soon">🔊 Audio</span>
       <button class="nav-btn nav-stats-btn" onclick="showStatsModal('quote')" aria-label="Estadísticas">📊 Stats</button>
+      <button class="nav-btn" onclick="showTutorial()" aria-label="Cómo jugar">❓ Ayuda</button>
     </nav>
   </header>
 
@@ -83,11 +84,38 @@
     </div>
   </footer>
 
+  <!-- Tutorial primera vez -->
+  <div id="tutorial-modal" class="tutorial-overlay" data-key="anhqvdle_tutorial_quote">
+    <div class="tutorial-box">
+      <button class="tutorial-close" onclick="hideTutorial()" aria-label="Cerrar">✕</button>
+      <div class="tutorial-title">¿Cómo jugar?</div>
+      <div class="tutorial-mode-label">Modo Frases</div>
+      <p class="tutorial-intro">Adivina <strong>quién dijo la frase</strong> del día de Aquí No Hay Quien Viva.<br>Intentos ilimitados · Una frase nueva cada día.</p>
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <div class="tutorial-num">1</div>
+          <p>Lee la frase y escribe el nombre del personaje que crees que la dijo.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">2</div>
+          <p>Tras <strong>2 fallos</strong> aparece una pista adicional sobre la frase.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">3</div>
+          <p>Cada intento fallido muestra la foto del personaje que adivinaste.</p>
+        </div>
+      </div>
+      <button class="tutorial-entendido" onclick="hideTutorial()">¡Entendido!</button>
+    </div>
+  </div>
+
   <script src="data/characters.js"></script>
   <script src="data/quotes.js"></script>
   <script src="js/daily.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/quote.js"></script>
+  <script src="js/tutorial.js"></script>
+  <script>initTutorial('anhqvdle_tutorial_quote');</script>
 
   <script>
   if (new URLSearchParams(window.location.search).has('reset')) {
