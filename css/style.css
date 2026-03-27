@@ -516,7 +516,7 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
   background: rgba(0,0,0,0.65);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 32px 36px;
+  padding: 32px 36px 52px;
   margin: 0 auto 24px;
   position: relative;
   font-size: 1.2rem;
@@ -1467,22 +1467,23 @@ a.mode-card {
    BOTÓN REVELAR PISTA (Modo Frases)
 ══════════════════════════════════════ */
 .hint-reveal-btn {
-  display: block;
-  margin: 0 auto 20px;
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  border-radius: 8px;
-  padding: 8px 20px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  font-style: normal;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.hint-reveal-btn:hover {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
   background: var(--accent);
   color: #000;
+  border: none;
+  border-radius: 50px;
+  padding: 5px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+  z-index: 2;
 }
+.hint-reveal-btn:hover { background: #ffd030; }
