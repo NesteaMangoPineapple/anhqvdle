@@ -38,7 +38,7 @@ const CHARACTERS = [
   { name: "Lucía Álvarez",     type: "Principal",  gender: "Femenino",  nationality: "Española", floors: ["3º A"],                 seasons: [1,2,3,4],   occupations: ["Empleada empresa constructora","Voluntaria ONG"] },
   { name: "Roberto Alonso",    type: "Principal",  gender: "Masculino", nationality: "Española", floors: ["3º A","2º B","Ático"],  seasons: [1,2,3,4],   occupations: ["Arquitecto","Dibujante de cómics","Caricaturista"] },
   { name: "Carlos de Haro",    type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["3º A","2º B"],          seasons: [1,3,4],     occupations: ["Empresario","Dueño del videoclub"] },
-  { name: "Nieves Cuesta",     type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º B"],                 seasons: [3,4],       occupations: ["Funcionaria"] },
+  { name: "Nieves Cuesta",     type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º A","2º B"],          seasons: [3,4],       occupations: ["Funcionaria"] },
   { name: "Rafael Álvarez",    type: "Secundario", gender: "Masculino", nationality: "Española", floors: ["3º A"],                 seasons: [1,4,5],     occupations: ["Empresario de la construcción"] },
   { name: "Carmen Villanueva", type: "Secundario", gender: "Femenino",  nationality: "Española", floors: ["2º B","3º B","Ático"],   seasons: [3,4],       occupations: ["Profesora universitaria"] },
 
