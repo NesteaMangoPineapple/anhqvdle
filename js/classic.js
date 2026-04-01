@@ -80,15 +80,16 @@ function makeGuess() {
 
   const won = guess.name === classicTarget.name;
   const t   = classicTarget;
-  const floorMatch = guess.floors.some(f => t.floors.includes(f));
-  const jobMatch   = guess.occupations.some(o => t.occupations.includes(o));
-  const debutDiff  = Math.abs(guess.seasons[0] - t.seasons[0]);
+  const allFloorsMatch  = guess.floors.length === t.floors.length && guess.floors.every(f => t.floors.includes(f));
+  const floorPartial    = !allFloorsMatch && guess.floors.some(f => t.floors.includes(f));
+  const jobMatch        = guess.occupations.some(o => t.occupations.includes(o));
+  const debutDiff       = Math.abs(guess.seasons[0] - t.seasons[0]);
   const rowEmojis  = [
     guess.name === t.name ? '🟩' : '🟥',
     guess.type === t.type ? '🟩' : '🟥',
     guess.gender === t.gender ? '🟩' : '🟥',
     guess.nationality === t.nationality ? '🟩' : '🟥',
-    floorMatch ? '🟩' : '🟥',
+    allFloorsMatch ? '🟩' : floorPartial ? '🟨' : '🟥',
     jobMatch   ? '🟩' : '🟥',
     guess.seasons[0] === t.seasons[0] ? '🟩' : debutDiff === 1 ? '🟨' : '🟥',
   ];
@@ -114,8 +115,9 @@ function renderGuessRow(guess) {
   const row    = document.createElement('tr');
   row.className = 'guess-row';
 
-  const floorMatch  = guess.floors.some(f => t.floors.includes(f));
-  const jobMatch    = guess.occupations.some(o => t.occupations.includes(o));
+  const allFloorsMatch = guess.floors.length === t.floors.length && guess.floors.every(f => t.floors.includes(f));
+  const floorPartial   = !allFloorsMatch && guess.floors.some(f => t.floors.includes(f));
+  const jobMatch       = guess.occupations.some(o => t.occupations.includes(o));
   const debutGuess  = guess.seasons[0];
   const debutTarget = t.seasons[0];
   const debutClose  = Math.abs(debutGuess - debutTarget) === 1;
@@ -138,7 +140,7 @@ function renderGuessRow(guess) {
     { html: guess.type,               correct: guess.type === t.type,               partial: false, arrow: '' },
     { html: guess.gender,             correct: guess.gender === t.gender,           partial: false, arrow: '' },
     { html: guess.nationality,        correct: guess.nationality === t.nationality, partial: false, arrow: '' },
-    { html: guess.floors.join('<br>'),correct: floorMatch,                          partial: false, arrow: '' },
+    { html: guess.floors.join('<br>'),correct: allFloorsMatch,                       partial: floorPartial, arrow: '' },
     { html: jobsHtml,                 correct: jobMatch,                            partial: false, arrow: '' },
     {
       html:    'T' + debutGuess,
