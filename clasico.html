@@ -23,6 +23,20 @@
   <link rel="icon" type="image/svg+xml" href="img/logo.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ANHQVdle Clásico",
+    "url": "https://anhqvdle.es/clasico.html",
+    "description": "Adivina el personaje del día de Aquí No Hay Quien Viva comparando tipo, género, nacionalidad, piso, ocupación y temporada de debut.",
+    "applicationCategory": "Game",
+    "operatingSystem": "Web",
+    "inLanguage": "es",
+    "isAccessibleForFree": true
+  }
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BGR4GH8P7"></script>
   <script>
@@ -52,11 +66,11 @@
 
   <main>
     <h1 class="game-title">🎬 Modo Clásico</h1>
-    <p class="game-desc">Adivina el personaje del día. Intentos ilimitados. Vuelve mañana para un personaje nuevo.</p>
+    <p class="game-desc">Adivina el personaje del día de <strong>Aquí No Hay Quien Viva</strong> comparando tipo, género, nacionalidad, piso, ocupación y temporada de debut. Intentos ilimitados · Un personaje nuevo cada día.</p>
 
     <div class="legend">
       <div class="legend-item"><div class="legend-dot correct"></div> Correcto</div>
-      <div class="legend-item"><div class="legend-dot partial"></div> Cerca (piso compartido / debut ±1 temporada)</div>
+      <div class="legend-item"><div class="legend-dot partial"></div> Cerca (piso u ocupación compartida / debut ±1 temporada)</div>
       <div class="legend-item"><div class="legend-dot wrong"></div> Incorrecto · ⬆️⬇️ indica dirección</div>
     </div>
 
@@ -126,7 +140,7 @@
         </div>
         <div class="tutorial-color-row">
           <div class="tutorial-cell t-partial">Cerca</div>
-          <span class="tutorial-color-desc">Piso compartido o debut ±1 temporada</span>
+          <span class="tutorial-color-desc">Piso u ocupación compartida, o debut ±1 temporada</span>
         </div>
         <div class="tutorial-color-row">
           <div class="tutorial-cell t-wrong">Incorrecto</div>
