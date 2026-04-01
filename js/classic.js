@@ -92,6 +92,7 @@ function makeGuess() {
     guess.nationality === t.nationality ? '🟩' : '🟥',
     allFloorsMatch ? '🟩' : floorPartial ? '🟨' : '🟥',
     allJobsMatch ? '🟩' : jobPartial ? '🟨' : '🟥',
+    guess.hasChildren === t.hasChildren ? '🟩' : '🟥',
     guess.seasons[0] === t.seasons[0] ? '🟩' : debutDiff === 1 ? '🟨' : '🟥',
   ];
   classicResults.push(rowEmojis);
@@ -120,6 +121,7 @@ function renderGuessRow(guess) {
   const floorPartial   = !allFloorsMatch && guess.floors.some(f => t.floors.includes(f));
   const allJobsMatch   = guess.occupations.length === t.occupations.length && guess.occupations.every(o => t.occupations.includes(o));
   const jobPartial     = !allJobsMatch && guess.occupations.some(o => t.occupations.includes(o));
+  const childrenMatch  = guess.hasChildren === t.hasChildren;
   const debutGuess  = guess.seasons[0];
   const debutTarget = t.seasons[0];
   const debutClose  = Math.abs(debutGuess - debutTarget) === 1;
@@ -143,7 +145,8 @@ function renderGuessRow(guess) {
     { html: guess.gender,             correct: guess.gender === t.gender,           partial: false, arrow: '' },
     { html: guess.nationality,        correct: guess.nationality === t.nationality, partial: false, arrow: '' },
     { html: guess.floors.join('<br>'),correct: allFloorsMatch,                       partial: floorPartial, arrow: '' },
-    { html: jobsHtml,                 correct: allJobsMatch,                        partial: jobPartial, arrow: '' },
+    { html: jobsHtml,                 correct: allJobsMatch,                        partial: jobPartial,  arrow: '' },
+    { html: guess.hasChildren ? 'Sí' : 'No', correct: childrenMatch,                partial: false,       arrow: '' },
     {
       html:    'T' + debutGuess,
       correct: debutGuess === debutTarget,
