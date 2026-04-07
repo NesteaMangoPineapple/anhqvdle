@@ -460,26 +460,25 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
 .cell-partial { background: var(--partial) !important; color: #000 !important; border-radius: 6px; }
 .cell-wrong   { background: var(--wrong)   !important; color: #fff !important; border-radius: 6px; }
 
-/* ── Celda personaje: mismo tamaño que .cell-inner ── */
+/* ── Celda personaje: cuadrado centrado, mismo alto que .cell-inner ── */
 .cell-name {
   position: absolute;
   inset: 4px;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  align-items: stretch;
-}
-
-.cell-avatar {
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+}
+
+.cell-avatar {
+  aspect-ratio: 1;
+  height: 100%;
+  max-height: 110px;
+  width: auto;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
 }
 
 .cell-avatar img {
