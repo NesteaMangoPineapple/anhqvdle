@@ -460,29 +460,23 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
 .cell-partial { background: var(--partial) !important; color: #000 !important; border-radius: 6px; }
 .cell-wrong   { background: var(--wrong)   !important; color: #fff !important; border-radius: 6px; }
 
-/* ── Celda personaje cuadrada con foto y hover ── */
+/* ── Celda personaje: ocupa todo el td ── */
 .cell-name {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  width: 100%;
-  height: 100%;
-  position: relative;
+  align-items: stretch;
 }
 
 .cell-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
   background: rgba(255,255,255,0.08);
-  border: 2px solid rgba(255,255,255,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  flex-shrink: 0;
   overflow: hidden;
   position: relative;
 }
@@ -492,7 +486,6 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  border-radius: 4px;
 }
 
 .cell-avatar .avatar-hover-name {
@@ -653,7 +646,6 @@ footer span { color: var(--accent); }
   .guess-row td { min-width: 0; }
   .guess-row td:first-child { min-width: 120px; }
   .cell-inner { height: 80px; font-size: 0.82rem; padding: 4px; }
-  .cell-avatar { width: 64px; height: 64px; }
 
   .result-banner { padding: 20px; }
   .result-banner-quote h2 { font-size: 2.2rem; }
@@ -700,7 +692,6 @@ footer span { color: var(--accent); }
   .guess-table th { font-size: 0.65rem; padding: 7px 4px; letter-spacing: 0.5px; }
   .guess-row td:first-child { min-width: 100px; }
   .cell-inner { height: 70px; font-size: 0.75rem; gap: 2px; }
-  .cell-avatar { width: 54px; height: 54px; }
   .job-tag { font-size: 0.68rem; }
 
   .result-banner { padding: 16px; border-radius: 12px; }
