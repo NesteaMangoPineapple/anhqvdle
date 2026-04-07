@@ -176,25 +176,33 @@ function renderGuessRow(guess) {
 }
 
 function showDoneMessage(containerId, won, charName, attempts) {
-  const el  = document.getElementById(containerId);
-  const day = getDayNumber();
+  const el      = document.getElementById(containerId);
+  const day     = getDayNumber();
+  const imgPath = `img/personajes/${toSlug(charName)}.webp`;
   startCountdown('countdown-timer');
   el.innerHTML = `
-    <div class="result-banner">
+    <div class="result-banner result-banner-quote">
       <p class="result-day-num">#${day}</p>
-      <h2>${won ? '🎉 ¡Correcto!' : '😭 ¡Uy!'}</h2>
-      <p>${won
+      <h2>${won ? '¡Correcto!' : '¡Uy!'}</h2>
+      <p class="result-sub">${won
         ? `Lo adivinaste en <strong>${attempts}</strong> intento${attempts !== 1 ? 's' : ''}`
         : `Era <strong>${charName}</strong>. ¡Mañana lo intentas de nuevo!`}
       </p>
-      <div class="character-reveal">${won ? charName : '→ ' + charName}</div>
-      <p style="font-size:0.85rem;color:var(--text2);margin-top:8px">${won ? getWinMessage(attempts) : ''}</p>
+      <div class="result-character">
+        <div class="result-avatar">
+          <img src="${imgPath}" alt="${charName}"
+            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+        </div>
+        <div class="character-reveal">${charName}</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">${won ? getWinMessage(attempts) : ''}</p>
+      <div class="result-divider"></div>
       <div class="share-row">
         <button class="share-btn" id="share-btn-classic" onclick="shareResultClassic(${won}, ${attempts})">📋 Texto</button>
         <button class="share-btn" id="share-img-btn-classic" onclick="shareImageClassic(${won}, ${attempts})">📸 Imagen</button>
       </div>
       <div class="countdown-wrap">
-        <p style="font-size:0.8rem;color:var(--text2);margin-top:16px;letter-spacing:1px;text-transform:uppercase">Próximo personaje en</p>
+        <p class="countdown-label">Próximo personaje en</p>
         <div class="countdown" id="countdown-timer">00:00:00</div>
       </div>
     </div>`;
