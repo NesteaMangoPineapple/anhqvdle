@@ -101,7 +101,8 @@ function cleanOldStorage() {
       .filter(k => k.startsWith('anhqvdle_') &&
                    !k.startsWith('anhqvdle_stats_') &&
                    !k.startsWith('anhqvdle_tutorial') &&
-                   k !== 'anhqvdle_cb')
+                   k !== 'anhqvdle_cb' &&
+                   k !== 'anhqvdle_kofi_shown')
       .forEach(k => {
         const match = k.match(/(\d{8})$/);
         if (match) {
