@@ -26,6 +26,8 @@ const QUOTES = [
   { quote: "Las caras, Juan, las caras", character: "Paloma Hurtado", hint: "Riñendo a su marido el presidente por sus expresiones..." },
   { quote: "Que yo te llame borracha no significa que no te aprecie", character: "Paloma Hurtado", hint: "La diplomacia particular de la mujer del presidente..." },
   { quote: "Puteríos aquí no, Juan, aquí ¡no!", character: "Paloma Hurtado", hint: "La vecina del 2º A poniendo límites muy claros..." },
+  { quote: "¡El chalé, Juan, el chalé!", character: "Paloma Hurtado", hint: "El sueño inalcanzable de la mujer del presidente del 2º A..." },
+  { quote: "La Pija nos tiene envidia y eso yo no lo aguanto, ¿eh, Juan?", character: "Paloma Hurtado", hint: "La mujer del presidente sobre su vecina del 3º A..." },
 
   // VICENTA
   { quote: "No le hagas caso, desde que la dejó Manolo está amargada", character: "Vicenta Benito", hint: "Defendiendo a su hermana del 1º A con cariño ingenuo..." },
@@ -52,6 +54,10 @@ const QUOTES = [
   { quote: "Os vais a cagar, ¡Radio Patio se va a cebar más con vosotros que la Cope con Zapatero!", character: "Marisa Benito", hint: "La portavoz de Radio Patio amenazando a los vecinos..." },
   { quote: "Radio Patio 24 horas, así han pasado las cosas, así las hemos contado", character: "Marisa Benito", hint: "El cierre informativo de la emisora del 1º A..." },
   { quote: "¿Y qué le importa a esta gente lo que me hizo a mí Manolo?", character: "Marisa Benito", hint: "La amargada del 1º A sacando a relucir su divorcio..." },
+  { quote: "¡Anarquía! ¡A las barricadas!", character: "Marisa Benito", hint: "La revolucionaria del 1º A boicoteando la junta de vecinos..." },
+  { quote: "Un pitillo, un traguito de chinchón... ¡y a la cama!", character: "Marisa Benito", hint: "La rutina nocturna de la fumadora del 1º A..." },
+  { quote: "Radio Patio ya no da abasto, tenemos que contratar becarios", character: "Marisa Benito", hint: "La directora de informativos del 1º A desbordada de noticias..." },
+  { quote: "Desde fuera parece un poco ridículo... desde dentro es la leche", character: "Marisa Benito", hint: "Una reflexión muy directa de la veterana del 1º A..." },
 
   // CONCHA
   { quote: "¡Váyase, señor Cuesta! ¡Váyase!", character: "Concha de la Fuente", hint: "Su frase más icónica dirigida al presidente de la comunidad..." },
@@ -99,6 +105,7 @@ const QUOTES = [
   { quote: "Que el del banco me ha contado un chiste a plazo fijo y me vencía ahora", character: "Roberto Alonso", hint: "El arquitecto del 3º A con sus ingeniosas comparaciones..." },
   { quote: "Si yo estoy madurando, pero en lo que maduro del todo...", character: "Roberto Alonso", hint: "El eterno inmaduro del 3º A reflexionando sobre su vida..." },
   { quote: "Eso es como cuando te compras un coche de segunda mano y descubres que el cuentakilómetros está trucado, mal rollo", character: "Roberto Alonso", hint: "Las metáforas del vecino del 3º A tienen mucho de mecánica..." },
+  { quote: "Juan, a este edificio no le pasa nada, te lo digo yo que soy arquitecto", character: "Roberto Alonso", hint: "El del 3º A dando garantías estructurales con mucha confianza..." },
 
   // EMILIO
   { quote: "Un poquito de por favor", character: "Emilio Delgado", hint: "La petición más famosa del portero de Desengaño 21..." },
@@ -133,6 +140,11 @@ const QUOTES = [
   { quote: "Concha, tus golfas no te olvidan", character: "Belén López", hint: "La vecina del 3º B dirigiéndose a la propietaria del piso..." },
   { quote: "En el campo y con tacones, parezco un travesti", character: "Belén López", hint: "La chica del 3º B fuera de su elemento natural..." },
   { quote: "Yo de pequeña hacía gimnasia rítmica y tengo los músculos de la vagina muy desarrollados", character: "Belén López", hint: "La vecina del 3º B con sus confesiones inesperadas..." },
+  { quote: "El vibrador y el microondas es lo que nos ha hecho entrar en el siglo XXI", character: "Belén López", hint: "La inquilina del 3º B reflexionando sobre los grandes avances de la humanidad..." },
+  { quote: "No tengo casa, no tengo piso, no tengo novio, no tengo nada", character: "Belén López", hint: "El inventario existencial de la chica del 3º B..." },
+  { quote: "Ya me he cansado de ser el patito feo, a partir de ahora voy a ser el patito... ¡TERMINATOR!", character: "Belén López", hint: "La inquilina del 3º B declarando su nueva actitud ante la vida..." },
+  { quote: "Mi vida es una mierda", character: "Belén López", hint: "El diagnóstico vital más conciso de la chica del alquiler del 3º B..." },
+  { quote: "Cuando a otra persona le va tan mal como a mí, me siento... integrada en la sociedad", character: "Belén López", hint: "La solidaridad particular de la inquilina del 3º B..." },
 
   // ALICIA
   { quote: "¡Qué mala es la envidia!", character: "Alicia Sanz", hint: "La compañera de piso del 3º B con su frase de cabecera..." },
@@ -148,6 +160,8 @@ const QUOTES = [
   { quote: "¿Hamburguesas vegetales? Eso es una contradicción en sí misma", character: "José Miguel Cuesta", hint: "El hijo del presidente del 2º A con su sabiduría adolescente..." },
   { quote: "Mamá, no existe una relación directa entre el volumen de tu voz y el caso que te vayamos a hacer", character: "José Miguel Cuesta", hint: "El hijo del 2º A explicándole algo importante a su madre..." },
   { quote: "Yo voy haciendo una lista de geriátricos para planificar mi venganza", character: "José Miguel Cuesta", hint: "El hijo del presidente del 2º A planificando el futuro..." },
+  { quote: "Bueno, pero tranquilita, ¿eh?", character: "José Miguel Cuesta", hint: "El hijo del presidente del 2º A poniendo calma a su madre..." },
+  { quote: "Cuidado, que te busco un geriátrico en el que aten a los viejos", character: "José Miguel Cuesta", hint: "La amenaza favorita del adolescente del 2º A..." },
 
   // ISABEL
   { quote: "Me estoy hiperventilando", character: "Isabel Ruiz", hint: "La hipocondríaca del 2º A ante cualquier situación de estrés..." },
@@ -159,6 +173,155 @@ const QUOTES = [
   { quote: "Dialoga con tu miedo, dile: 'Hola, ¿qué quieres de mí?'", character: "Isabel Ruiz", hint: "Los consejos terapéuticos de la del 2º A..." },
   { quote: "La vida son ciclos: hay ciclos que estás ¡plof! y hay ciclos que estás ¡uh!", character: "Isabel Ruiz", hint: "La filosofía new age de la vecina del 2º A..." },
   { quote: "Si no se me valora yo me hago un nudito aquí en el corazón y me voy por donde he venido", character: "Isabel Ruiz", hint: "La amenaza más tierna de la hierbas del 2º A..." },
+
+  // FERNANDO NAVARRO
+  { quote: "Mauri, lo nuestro merece más que esto", character: "Fernando Navarro", hint: "El abogado del 1º B en una conversación seria con su pareja..." },
+  { quote: "Soy abogado, no mago", character: "Fernando Navarro", hint: "El legal del 1º B cuando le piden algo imposible..." },
+  { quote: "En Londres aprendes a valorar lo que tienes aquí", character: "Fernando Navarro", hint: "El vecino del 1º B tras su temporada fuera de España..." },
+
+  // BEA VILLAREJO
+  { quote: "Con los animales me entiendo mucho mejor que con las personas", character: "Bea Villarejo", hint: "La veterinaria del 1º B expresando su filosofía de vida..." },
+  { quote: "Yo también tengo derecho a ser madre", character: "Bea Villarejo", hint: "La vecina del 1º B reivindicando algo muy importante para ella..." },
+  { quote: "Mauri, para. Respira. Ahora habla", character: "Bea Villarejo", hint: "La amiga íntima del periodista del 1º B poniéndole freno..." },
+  { quote: "A los animales hay que tratarles con más respeto del que os tratáis vosotros", character: "Bea Villarejo", hint: "La veterinaria del edificio con una lección moral para sus vecinos..." },
+
+  // DIEGO ÁLVAREZ
+  { quote: "Soy el hermano de Lucía, no su secretario", character: "Diego Álvarez", hint: "El del 1º B aclarando su identidad ante los vecinos de su hermana..." },
+  { quote: "Mauri, hay cosas que no se pueden explicar", character: "Diego Álvarez", hint: "El vecino del 1º B hablando con el periodista del piso..." },
+  { quote: "Me da igual lo que piensen los vecinos", character: "Diego Álvarez", hint: "El hermano de la del 3º A siendo directo sobre la opinión ajena..." },
+
+  // NATALIA CUESTA
+  { quote: "¡Que no soy una niña, papá!", character: "Natalia Cuesta", hint: "La hija del presidente del 2º A reclamando su independencia..." },
+  { quote: "Es que en este edificio es imposible tener vida privada", character: "Natalia Cuesta", hint: "La hija de los del 2º A harta de los cotilleos vecinales..." },
+  { quote: "¿Es que nadie puede enamorarse en paz aquí?", character: "Natalia Cuesta", hint: "La joven del 2º A quejándose de la intromisión de sus vecinos..." },
+  { quote: "Yamiley es mía y de Yago, y punto", character: "Natalia Cuesta", hint: "La madre del bebé del edificio siendo contundente..." },
+
+  // YAGO
+  { quote: "El planeta no puede esperar mientras vosotros discutís por el portal", character: "Yago", hint: "El ecologista cubano del edificio con perspectiva medioambiental..." },
+  { quote: "En Cuba, la comunidad de vecinos funciona de otra manera, mi amor", character: "Yago", hint: "El del ático comparando España con su país de origen..." },
+  { quote: "El sabor de la vida está en las cosas sencillas", character: "Yago", hint: "La filosofía del ecologista caribeño del edificio..." },
+
+  // ARMANDO CORTÉS
+  { quote: "Mamá, que ya soy mayor para estas cosas", character: "Armando Cortés", hint: "El hijo de la propietaria del 2º B resistiéndose a su madre..." },
+  { quote: "Soy un hombre libre, eso es todo", character: "Armando Cortés", hint: "El soltero del 2º B explicando su filosofía de vida..." },
+  { quote: "Las mujeres siempre complican todo", character: "Armando Cortés", hint: "El womanizer del 2º B con su particular visión del amor..." },
+
+  // ANDRÉS GUERRA
+  { quote: "Los negocios son los negocios, no lo mezcles con sentimientos", character: "Andrés Guerra", hint: "El empresario del 2º B con su filosofía del mundo..." },
+  { quote: "Todo es cuestión de saber moverse, y yo me muevo muy bien", character: "Andrés Guerra", hint: "El hombre de negocios del 2º B presumiendo de habilidades..." },
+  { quote: "Hacienda somos todos. Yo los represento a todos y por eso pago lo menos posible", character: "Andrés Guerra", hint: "El empresario del 2º B con su interpretación particular de las obligaciones fiscales..." },
+
+  // PABLO GUERRA
+  { quote: "Paso de todo. En serio, de todo", character: "Pablo Guerra", hint: "El joven del ático con su actitud ante la vida..." },
+  { quote: "Es que en este edificio no se puede vivir", character: "Pablo Guerra", hint: "El inquilino del ático compartiendo una opinión con la mayoría..." },
+  { quote: "Yo soy un tío normal metido en una familia de locos", character: "Pablo Guerra", hint: "El hijo de los del 2º B describiendo su situación familiar..." },
+
+  // ÁLEX GUERRA
+  { quote: "¿Y a mí qué me contáis?", character: "Álex Guerra", hint: "El pequeño de los del 2º B sin interés en los dramas del edificio..." },
+  { quote: "Voy a mi cuarto", character: "Álex Guerra", hint: "La respuesta más habitual del adolescente de los Guerra..." },
+
+  // HIGINIO HEREDIA
+  { quote: "Eso lo arreglo yo en un momento", character: "Higinio Heredia", hint: "El manitas del 2º B ante cualquier avería del edificio..." },
+  { quote: "Juan, con todo el respeto, usted no sabe ni poner un enchufe", character: "Higinio Heredia", hint: "El carpintero del 2º B siendo sincero con el presidente..." },
+  { quote: "La presidencia de la comunidad es una responsabilidad muy seria", character: "Higinio Heredia", hint: "El vecino del 2º B tomándose muy en serio su cargo temporal..." },
+  { quote: "Yo vengo de abajo y no me avergüenzo de nada", character: "Higinio Heredia", hint: "El manitas del 2º B siendo orgulloso de sus orígenes..." },
+
+  // MAMEN HEREDIA
+  { quote: "Higinio, si no arreglas esto ahora mismo, a ver si el único que vas a arreglar eres tú", character: "Mamen Heredia", hint: "La mujer del manitas del 2º B dando órdenes en casa..." },
+  { quote: "En esta comunidad nos miran por encima del hombro y me tiene harta", character: "Mamen Heredia", hint: "La fisioterapeuta del 2º B cansada del clasismo vecinal..." },
+  { quote: "Mira que sois raros, vecinos de ciudad", character: "Mamen Heredia", hint: "La recién llegada al 2º B con su visión de los vecinos del edificio..." },
+
+  // CANDELA HEREDIA
+  { quote: "Yo salí en un anuncio de yogur, ¿sabes?", character: "Candela Heredia", hint: "La pequeña del 2º B presumiendo de su carrera artística..." },
+  { quote: "Es que yo tengo mucho tirón, ¿vale?", character: "Candela Heredia", hint: "La joven promesa del 2º B explicando su popularidad..." },
+  { quote: "¡Mamá, me están mirando!", character: "Candela Heredia", hint: "La niña actriz del 2º B con conciencia de ser observada..." },
+
+  // RAQUEL HEREDIA
+  { quote: "Soy quien soy, y no pienso cambiar por nadie", character: "Raquel Heredia", hint: "La vecina del 2º B reivindicando su identidad con firmeza..." },
+  { quote: "A mí me miran raro, pero yo les miro peor", character: "Raquel Heredia", hint: "La del 2º B con una actitud muy clara ante los prejuicios del edificio..." },
+
+  // MONCHO HEREDIA
+  { quote: "Estoy buscando trabajo, no me agobies", character: "Moncho Heredia", hint: "La respuesta estándar del mayor de los Heredia ante las preguntas incómodas..." },
+  { quote: "A los treinta años un hombre está en su mejor momento, ¿no?", character: "Moncho Heredia", hint: "El vividor del 2º B buscando justificaciones para seguir en casa de sus padres..." },
+  { quote: "Papá, el emprendimiento lleva su tiempo", character: "Moncho Heredia", hint: "El hijo mayor de los del 2º B con grandes planes y nulos resultados..." },
+
+  // CARLOS DE HARO
+  { quote: "Dinero tengo. Lo que no tengo es tiempo para tonterías", character: "Carlos de Haro", hint: "El adinerado del 3º A dejando clara su posición..." },
+  { quote: "Roberto, eres mi mejor amigo, pero a veces eres un idiota", character: "Carlos de Haro", hint: "El del 3º A siendo sincero con su amigo de siempre..." },
+  { quote: "En este edificio o estás loco o te vuelves loco", character: "Carlos de Haro", hint: "La conclusión del adinerado del 3º A tras varios años en Desengaño 21..." },
+  { quote: "Lucía no me quiere, pero yo no lo acepto", character: "Carlos de Haro", hint: "El obsesivo del 3º A siendo brutalmente sincero consigo mismo..." },
+
+  // NIEVES CUESTA
+  { quote: "Aquí mando yo mientras mi hermano no sepa mandar", character: "Nieves Cuesta", hint: "La hermana del presidente tomando las riendas de la comunidad..." },
+  { quote: "Soy La Chunga, cariño, y no me pises", character: "Nieves Cuesta", hint: "La cuñada de los del 2º A dejando muy claro su carácter..." },
+  { quote: "Juan siempre ha sido muy blando. Sale a su padre", character: "Nieves Cuesta", hint: "La hermana del presidente siendo muy directa sobre su familia..." },
+
+  // RAFAEL ÁLVAREZ
+  { quote: "Ese edificio lo voy a comprar aunque sea lo último que haga", character: "Rafael Álvarez", hint: "El constructor padre de la del 3º A con su obsesión inmobiliaria..." },
+  { quote: "El dinero no da la felicidad, pero a mí tampoco me la ha quitado", character: "Rafael Álvarez", hint: "La filosofía vital del empresario padre de la abogada pija..." },
+  { quote: "Lucía, soy tu padre, y te digo que ese chico no te conviene", character: "Rafael Álvarez", hint: "El empresario interfiriendo en la vida sentimental de su hija del 3º A..." },
+
+  // CARMEN VILLANUEVA
+  { quote: "Soy profesora de universidad, no la portera", character: "Carmen Villanueva", hint: "La catedrática del 3º B aclarando su estatus profesional..." },
+  { quote: "En mis clases no se habla, se escucha", character: "Carmen Villanueva", hint: "La del 3º B aplicando sus normas universitarias en el edificio..." },
+  { quote: "Emilio, lo nuestro no tiene ningún futuro", character: "Carmen Villanueva", hint: "La profesora del 3º B siendo directa con el portero..." },
+  { quote: "Soy la Rottenmeier y me lo habéis ganado a pulso", character: "Carmen Villanueva", hint: "La vecina más estricta del 3º B asumiendo su apodo..." },
+
+  // ANA
+  { quote: "Llevo tres días en el aire y ni me saludáis", character: "Ana", hint: "La azafata del 3º B llegando del trabajo sin que nadie la reciba..." },
+  { quote: "No, no, no. Yo vengo de Frankfurt, no de la esquina", character: "Ana", hint: "La del 3º B dejando claro que viene de lejos..." },
+  { quote: "En Alemania esto no pasaría", character: "Ana", hint: "La azafata del 3º B comparando su país con lo que ve en el edificio..." },
+
+  // MARÍA JESÚS
+  { quote: "Es el gen López de tu padre", character: "María Jesús", hint: "La madre de la del 3º B explicando el origen de todos los problemas..." },
+  { quote: "¡Tonta, hija, es que eres tonta!", character: "María Jesús", hint: "La madre de la inquilina del 3º B con sus palabras de aliento..." },
+  { quote: "¡He hecho torrijas!", character: "María Jesús", hint: "El anuncio culinario favorito de la madre de la chica del 3º B..." },
+  { quote: "El tupper lo quiero con vuelta, ¡eh!, que esos los uso mucho", character: "María Jesús", hint: "La madre de la del 3º B con sus prioridades muy claras..." },
+  { quote: "¿Ya has visto a mi hija Belén? ¡Aprovecha que ahora está sola!", character: "María Jesús", hint: "La madre de la inquilina del 3º B haciendo de intermediaria sentimental..." },
+
+  // PACO
+  { quote: "Hola, soy Paco, director de cine", character: "Paco", hint: "La presentación oficial del dueño del videoclub del edificio..." },
+  { quote: "¡Qué cabrón, qué cabrón!", character: "Paco", hint: "La admiración involuntaria del dueño del videoclub ante las maniobras de algún vecino..." },
+  { quote: "Las peleas para afuera, que luego con la confusión siempre me faltan chicles", character: "Paco", hint: "El dueño del videoclub poniendo orden en su local..." },
+  { quote: "Esta semana, dos por uno en películas de ficción", character: "Paco", hint: "Las ofertas irresistibles del empresario audiovisual del edificio..." },
+  { quote: "Yo de política no sé, pero de cine sé más que nadie en este edificio", character: "Paco", hint: "El experto cinematográfico del local comercial del edificio..." },
+
+  // GREGORIO
+  { quote: "La derrama está aprobada y hay que pagarla, señores", character: "Gregorio", hint: "El administrador de fincas de Desengaño 21 sin contemplaciones..." },
+  { quote: "Los números no mienten, y estos números son un desastre", character: "Gregorio", hint: "El gestor del edificio con su diagnóstico contable de la comunidad..." },
+
+  // PADRE MIGUEL
+  { quote: "Dios nos perdone a todos en este edificio, que falta nos hace", character: "Padre Miguel", hint: "El sacerdote de San Marcos con su valoración espiritual del vecindario..." },
+  { quote: "He compuesto una canción que refleja el alma de esta comunidad", character: "Padre Miguel", hint: "El cura compositor de San Marcos presentando otra de sus obras..." },
+  { quote: "La fe mueve montañas, pero la derrama necesita dinero contante y sonante", character: "Padre Miguel", hint: "El párroco de San Marcos siendo muy pragmático con las cuentas..." },
+
+  // HERMANA ESPERANZA
+  { quote: "Radio Patio, al aire con la gracia de Dios", character: "Hermana Esperanza", hint: "La locutora del programa vecinal más escuchado del edificio..." },
+  { quote: "El Señor trabaja de maneras misteriosas, pero este edificio ya lo supera", character: "Hermana Esperanza", hint: "La monja presentadora ante los desmanes del vecindario..." },
+  { quote: "Rezo todos los días por estos vecinos. Todos los días", character: "Hermana Esperanza", hint: "La religiosa del programa Radio Patio expresando su devoción..." },
+
+  // DANIEL RUBIO
+  { quote: "¿Puedo irme ya?", character: "Daniel Rubio", hint: "El hijo del que vivía en el 2º B con ganas de escapar del edificio..." },
+
+  // REBECA
+  { quote: "Papá, ¿cuándo nos vamos?", character: "Rebeca", hint: "La hija del que vivía en el 2º B lista para abandonar Desengaño 21..." },
+
+  // ROCÍO
+  { quote: "Emilio Delgado, eres lo peor que le ha pasado al correo español", character: "Rocío", hint: "La cartera del edificio dejando muy claro su opinión sobre el portero..." },
+  { quote: "Llevo años repartiendo correo en esta calle y nunca me había pasado algo así", character: "Rocío", hint: "La trabajadora de Correos ante una situación sin precedentes en Desengaño 21..." },
+  { quote: "Me cambio de ruta. Me cambio de ruta y de vida", character: "Rocío", hint: "La cartera del edificio tomando una decisión drástica tras una decepción..." },
+
+  // JOSÉ MARÍA
+  { quote: "Yo vivo como quiero, y quiero vivir así", character: "José María", hint: "El personaje alternativo del entorno del edificio explicando su estilo de vida..." },
+  { quote: "Desde aquí se ve todo el edificio, y me sé todos los secretos", character: "José María", hint: "El observador externo del edificio Desengaño 21..." },
+
+  // ABEL
+  { quote: "Ezequiel es el niño más listo que he cuidado en mi vida", character: "Abel", hint: "El canguro del 1º B presumiendo de su protegido..." },
+  { quote: "Cuido niños, no hago milagros", character: "Abel", hint: "El niñero del edificio poniendo límites a su trabajo..." },
+
+  // MARTA «LA PANTUMACA»
+  { quote: "En mi comunidad las cosas se hacen bien. Aquí no sé cómo os apañáis", character: "Marta «La Pantumaca»", hint: "La presidenta de la comunidad de San Marcos con su opinión sobre Desengaño 21..." },
+  { quote: "Soy la Pantumaca, cariño, no me confundas con cualquiera", character: "Marta «La Pantumaca»", hint: "La vecina catalana dejando claro quién es..." },
 ];
 
 const EMOJIS = [
