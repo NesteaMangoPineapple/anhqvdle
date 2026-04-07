@@ -1028,7 +1028,7 @@ nav a.nav-btn {
 }
 .yesterday-pill strong { color: var(--text); }
 
-.countdown-wrap { margin-top: 28px; }
+.countdown-wrap { margin-top: 48px; }
 
 .countdown {
   font-family: 'Bebas Neue', cursive;
@@ -1590,11 +1590,11 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 ══════════════════════════════════════ */
 .result-day-num {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.4rem;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text2);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 /* ══════════════════════════════════════
