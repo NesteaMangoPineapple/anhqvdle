@@ -3,40 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ANHQVdle – Aquí No Hay Quien Viva</title>
-  <meta name="description" content="El juego tipo Wordle de Aquí No Hay Quien Viva. Adivina el personaje del día comparando sus atributos. Vuelve cada día para un nuevo reto.">
-  <link rel="canonical" href="https://anhqvdle.es/">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://anhqvdle.es/">
-  <meta property="og:title" content="ANHQVdle – El Wordle de Aquí No Hay Quien Viva">
-  <meta property="og:description" content="El juego tipo Wordle de Aquí No Hay Quien Viva. Adivina el personaje del día comparando sus atributos. Vuelve cada día para un nuevo reto.">
-  <meta property="og:image" content="https://anhqvdle.es/img/og-image.jpg">
-  <meta property="og:locale" content="es_ES">
-  <meta property="og:site_name" content="ANHQVdle">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ANHQVdle – El Wordle de Aquí No Hay Quien Viva">
-  <meta name="twitter:description" content="El juego tipo Wordle de Aquí No Hay Quien Viva. Adivina el personaje del día comparando sus atributos. Vuelve cada día para un nuevo reto.">
-  <meta name="twitter:image" content="https://anhqvdle.es/img/og-image.jpg">
+  <title>¿Qué personaje eres? – ANHQVdle</title>
+  <meta name="description" content="Descubre qué personaje de Aquí No Hay Quien Viva eres tú. 8 preguntas para saber si eres más Emilio, Juan, Concha, Marisa o cualquiera de los vecinos de Desengaño 21.">
+  <link rel="canonical" href="https://anhqvdle.es/quiz.html">
   <link rel="icon" type="image/x-icon" href="img/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/svg+xml" href="img/logo.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "ANHQVdle",
-    "url": "https://anhqvdle.es",
-    "description": "El juego tipo Wordle de Aquí No Hay Quien Viva. Adivina el personaje del día comparando sus atributos o identifica quién dijo cada frase mítica.",
-    "applicationCategory": "Game",
-    "operatingSystem": "Web",
-    "inLanguage": "es",
-    "isAccessibleForFree": true
-  }
-  </script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1251819701012590" crossorigin="anonymous"></script>
   <!-- Google Analytics -->
@@ -57,38 +31,16 @@
       <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
     </div>
     <nav>
-      <a href="index.html"   class="nav-btn active">🏠 Inicio</a>
+      <a href="index.html"   class="nav-btn">🏠 Inicio</a>
       <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
       <a href="frases.html"  class="nav-btn">💬 Frases</a>
-      <a href="quiz.html"  class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quiz.html"    class="nav-btn active">🪞 ¿Quién eres?</a>
       <span class="nav-btn nav-soon">🔊 Audio</span>
     </nav>
   </header>
 
   <main>
-    <div class="home-panel">
-      <h1 class="home-title">¡Bienvenido al portal de <span style="color:var(--accent)">Desengaño 21</span>!</h1>
-      <p class="home-sub">¿Adivinarás al vecino de hoy?</p>
-      <div class="mode-cards">
-        <a href="clasico.html" class="mode-card">
-          <span class="mode-icon">🎬</span>
-          <div class="mode-card-title">Clásico</div>
-          <p class="mode-card-desc">Adivina comparando atributos. Un personaje nuevo cada día.</p>
-        </a>
-        <a href="frases.html" class="mode-card">
-          <span class="mode-icon">💬</span>
-          <div class="mode-card-title">Frases</div>
-          <p class="mode-card-desc">¿Reconoces las frases más icónicas? Adivina quién lo dijo.</p>
-        </a>
-        <div class="mode-card mode-card-soon">
-          <span class="mode-icon">🔊</span>
-          <div class="mode-card-title">Audio</div>
-          <p class="mode-card-desc">Escucha la voz del personaje y adivina quién es. ¡Próximamente!</p>
-          <div class="soon-badge">Próximamente</div>
-        </div>
-      </div>
-      <p class="home-seo-text">ANHQVdle es un juego de preguntas basado en la serie <strong>Aquí No Hay Quien Viva</strong> (Antena 3, 2003–2006). Pon a prueba tus conocimientos sobre los vecinos de Desengaño 21: en el <strong>Modo Clásico</strong> adivinas el personaje comparando sus atributos, y en el <strong>Modo Frases</strong> identificas quién dijo cada frase mítica. Un reto nuevo cada día.</p>
-    </div>
+    <div class="quiz-wrap" id="quiz-wrap"></div>
   </main>
 
   <footer>
@@ -109,5 +61,7 @@
       </a>
     </div>
   </footer>
+
+  <script src="js/quiz.js"></script>
 </body>
 </html>
