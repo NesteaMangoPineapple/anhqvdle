@@ -62,8 +62,6 @@
       <a href="frases.html"  class="nav-btn active">💬 Frases</a>
       <a href="quiz.html"  class="nav-btn">🪞 ¿Quién eres?</a>
       <span class="nav-btn nav-soon">🔊 Audio</span>
-      <button class="nav-btn nav-stats-btn" onclick="showStatsModal('quote')" aria-label="Estadísticas">📊 Stats</button>
-      <button class="nav-btn" onclick="showTutorial()" aria-label="Cómo jugar">❓ Ayuda</button>
     </nav>
   </header>
 
@@ -155,5 +153,14 @@
     document.body.appendChild(btn);
   }
   </script>
+
+  <div class="side-actions">
+    <button class="side-btn" onclick="showStatsModal('quote')" aria-label="Estadísticas">
+      <span class="side-icon">📊</span>Stats
+    </button>
+    <button class="side-btn" onclick="showTutorial()" aria-label="Cómo jugar">
+      <span class="side-icon">❓</span>Ayuda
+    </button>
+  </div>
 </body>
 </html>
