@@ -177,7 +177,7 @@ function initQuiz() {
 
 function showIntro() {
   document.getElementById('quiz-wrap').innerHTML = `
-    <div class="quiz-intro">
+    <div class="quiz-card quiz-intro">
       <div class="quiz-intro-icon">🪞</div>
       <h2 class="quiz-intro-title">¿Qué vecino de Desengaño 21 eres?</h2>
       <p class="quiz-intro-desc">Responde ${QUIZ_QUESTIONS.length} preguntas y descubre qué personaje de <strong>Aquí No Hay Quien Viva</strong> se esconde en ti.</p>
@@ -195,7 +195,7 @@ function showQuestion() {
   const q        = QUIZ_QUESTIONS[currentQ];
   const progress = Math.round((currentQ / QUIZ_QUESTIONS.length) * 100);
   document.getElementById('quiz-wrap').innerHTML = `
-    <div>
+    <div class="quiz-card">
       <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${progress}%"></div></div>
       <p class="quiz-counter">${currentQ + 1} / ${QUIZ_QUESTIONS.length}</p>
       <h2 class="quiz-question">${q.q}</h2>
@@ -227,7 +227,7 @@ function showResult() {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   document.getElementById('quiz-wrap').innerHTML = `
-    <div class="quiz-result">
+    <div class="quiz-card quiz-result">
       <p class="quiz-result-label">¡Eres...</p>
       <div class="quiz-result-avatar">
         <img src="img/personajes/${slug}.webp" alt="${r.name}"
