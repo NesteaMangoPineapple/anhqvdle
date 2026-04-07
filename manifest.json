@@ -1,0 +1,22 @@
+{
+  "name": "ANHQVdle",
+  "short_name": "ANHQVdle",
+  "description": "El Wordle de Aquí No Hay Quien Viva. Adivina el personaje del día.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#f0c020",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "img/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

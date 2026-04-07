@@ -2,7 +2,7 @@
    ANHQVdle — Estética oscura con edificio de fondo
    ================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap');
+/* Google Fonts se carga mediante <link> en el HTML para mejor rendimiento */
 
 :root {
   --bg:      #0a0a0a;
@@ -1094,9 +1094,12 @@ nav a.nav-btn {
 .stats-mode-label { color: var(--text2); font-size: 0.85rem; margin-bottom: 20px; }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
   margin-bottom: 24px;
+}
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
 }
 .stat-item { text-align: center; }
 .stat-num {
@@ -1132,6 +1135,8 @@ nav a.nav-btn {
   transition: width 0.4s ease;
 }
 .stat-dist-bar.has-val { background: var(--correct); color: #fff; }
+.stat-dist-bar.stat-dist-bar-lost { background: var(--wrong); }
+.stat-dist-label.stat-dist-lost { color: var(--wrong); font-weight: 700; }
 
 /* ══════════════════════════════════════
    NOSOTROS
@@ -1570,3 +1575,54 @@ a.mode-card {
   transform: scale(1.06);
 }
 @media (max-width: 600px) { .side-actions { display: none; } }
+
+/* Botón activo en side panel (ej. modo daltónico activado) */
+.side-btn.active { color: var(--accent); border-color: rgba(240,192,32,0.5); }
+
+/* ══════════════════════════════════════
+   MODO DALTÓNICO
+   Reemplaza rojo/verde por azul/naranja
+══════════════════════════════════════ */
+body.cb { --correct: #2563eb; --wrong: #d97706; }
+
+/* ══════════════════════════════════════
+   NÚMERO DE DÍA EN RESULTADO
+══════════════════════════════════════ */
+.result-day-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+
+/* ══════════════════════════════════════
+   SHARE ROW — dos botones en línea
+══════════════════════════════════════ */
+.share-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.share-row .share-btn { margin-top: 0; }
+
+/* ══════════════════════════════════════
+   HOME — badge "ya jugaste hoy"
+══════════════════════════════════════ */
+.mode-card-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.mode-card-badge.done-won  { background: rgba(22,163,74,0.2);  color: #4ade80; border: 1px solid rgba(22,163,74,0.5); }
+.mode-card-badge.done-lost { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.4); }
+.mode-card-badge.in-progress { background: rgba(240,192,32,0.15); color: var(--accent); border: 1px solid rgba(240,192,32,0.4); }

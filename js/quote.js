@@ -9,23 +9,23 @@ let quoteGuesses = [];
 let quoteDone    = false;
 
 function renderYesterdayQuote() {
-  const yQuote = QUOTES[getYesterdayIndex(QUOTES.length)];
-  const slug   = yQuote.character.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const el = document.getElementById('quote-yesterday');
+  const yQuote = getYesterdayQuote();
+  const el     = document.getElementById('quote-yesterday');
   if (!el) return;
+  const imgPath = `img/personajes/${toSlug(yQuote.character)}.webp`;
   el.innerHTML = `
     <div class="yesterday-pill">
-      <img src="img/personajes/${slug}.webp" alt="${yQuote.character}"
+      <img src="${imgPath}" alt="${yQuote.character}"
         onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
       <span>La frase de ayer era de <strong>${yQuote.character}</strong></span>
     </div>`;
 }
 
 function initQuote() {
-  const idx   = getDailyIndex(QUOTES.length);
-  quoteTarget = QUOTES[idx];
+  cleanOldStorage();
+  initColorblind();
+
+  quoteTarget = getDailyQuote();
   renderYesterdayQuote();
 
   const saved = loadDailyState(MODE_KEY_Q);
@@ -33,15 +33,11 @@ function initQuote() {
     quoteGuesses = saved.guesses || [];
     quoteDone    = saved.done || false;
     document.getElementById('quote-text').textContent = quoteTarget.quote;
-      quoteGuesses.forEach(name => {
-      const correct  = name === quoteTarget.character;
-      const char     = CHARACTERS.find(c => c.name === name);
-      const imgSlug  = name.toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      const imgPath  = `img/personajes/${imgSlug}.webp`;
-      const emoji    = getQuoteEmoji(name);
-      const card     = document.createElement('div');
+    quoteGuesses.forEach(name => {
+      const correct = name === quoteTarget.character;
+      const imgPath = `img/personajes/${toSlug(name)}.webp`;
+      const emoji   = getQuoteEmoji(name);
+      const card    = document.createElement('div');
       card.className = 'quote-guess-card ' + (correct ? 'correct' : 'wrong');
       card.innerHTML = `
         <div class="quote-guess-avatar">
@@ -93,18 +89,19 @@ function makeGuessQuote() {
   const guess = CHARACTERS.find(c => c.name.toLowerCase() === val.toLowerCase());
   if (!guess) { shakeInput('quote-input'); return; }
 
+  // Evitar adivinar el mismo personaje dos veces
+  if (quoteGuesses.includes(guess.name)) { input.value = ''; input.focus(); return; }
+
   quoteGuesses.push(guess.name);
   input.value = '';
 
   const correct = guess.name === quoteTarget.character;
-  const imgSlug  = guess.name.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const imgPath  = `img/personajes/${imgSlug}.webp`;
-  const emoji    = getQuoteEmoji(guess.name);
+  const imgPath = `img/personajes/${toSlug(guess.name)}.webp`;
+  const emoji   = getQuoteEmoji(guess.name);
 
   const card = document.createElement('div');
   card.className = 'quote-guess-card ' + (correct ? 'correct' : 'wrong');
+  card.setAttribute('role', 'listitem');
   card.innerHTML = `
     <div class="quote-guess-avatar">
       <img src="${imgPath}" alt="${guess.name}"
@@ -119,12 +116,13 @@ function makeGuessQuote() {
     quoteDone = true;
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
-    updateStats('quote', quoteGuesses.length);
-    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: correct });
-    showDoneMessageQuote(correct, quoteTarget.character, quoteGuesses.length);
+    updateStats('quote', quoteGuesses.length, true);
+    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: true });
+    showDoneMessageQuote(true, quoteTarget.character, quoteGuesses.length);
   } else {
     saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: false, won: false });
     if (quoteGuesses.length >= 2) showHintButton();
+    input.focus();
   }
 }
 
@@ -147,14 +145,13 @@ function revealHint() {
 }
 
 function showDoneMessageQuote(won, charName, attempts) {
-  const el = document.getElementById('quote-result');
-  startCountdownQuote();
-  const slug = charName.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const imgPath = `img/personajes/${slug}.webp`;
+  const el  = document.getElementById('quote-result');
+  const day = getDayNumber();
+  startCountdown('countdown-timer-q');
+  const imgPath = `img/personajes/${toSlug(charName)}.webp`;
   el.innerHTML = `
     <div class="result-banner result-banner-quote">
+      <p class="result-day-num">#${day}</p>
       <div class="result-header">
         <h2>${won ? '¡Correcto!' : '¡Uy!'}</h2>
       </div>
@@ -169,7 +166,10 @@ function showDoneMessageQuote(won, charName, attempts) {
         <div class="character-reveal">${won ? charName : '→ ' + charName}</div>
       </div>
       <div class="result-divider"></div>
-      <button class="share-btn" id="share-btn-quote" onclick="shareResultQuote(${won}, ${attempts})">📋 Compartir resultado</button>
+      <div class="share-row">
+        <button class="share-btn" id="share-btn-quote" onclick="shareResultQuote(${won}, ${attempts})">📋 Texto</button>
+        <button class="share-btn" id="share-img-btn-quote" onclick="shareImageQuote(${won}, ${attempts})">📸 Imagen</button>
+      </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próxima frase en</p>
         <div class="countdown" id="countdown-timer-q">00:00:00</div>
@@ -182,24 +182,75 @@ function shareResultQuote(won, attempts) {
   const dateStr = today.toLocaleDateString('es-ES');
   const emojis  = quoteGuesses.map(name => name === quoteTarget.character ? '✅' : '❌').join('');
   const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
-  const text    = `ANHQVdle 💬 · ${dateStr}\n${status}\n${emojis}\nanhqvdle.es`;
+  const text    = `ANHQVdle 💬 #${getDayNumber()} · ${dateStr}\n${status}\n${emojis}\nanhqvdle.es`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('share-btn-quote');
     if (!btn) return;
     btn.textContent = '¡Copiado! ✓';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '📋 Compartir resultado'; btn.classList.remove('copied'); }, 2000);
+    setTimeout(() => { btn.textContent = '📋 Texto'; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-function startCountdownQuote() {
-  function tick() {
-    const el = document.getElementById('countdown-timer-q');
-    if (!el) return;
-    el.textContent = formatCountdown(msUntilMidnight());
-  }
-  tick();
-  setInterval(tick, 1000);
+function shareImageQuote(won, attempts) {
+  const n    = quoteGuesses.length;
+  const CELL = 40, GAP = 6;
+  const W    = Math.max(300, 60 + n * (CELL + GAP));
+  const H    = 210;
+
+  const canvas = document.createElement('canvas');
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = 'rgba(240,192,32,0.45)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+
+  ctx.font = 'bold 38px Impact, "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#f0c020';
+  ctx.textAlign = 'center';
+  ctx.fillText('ANHQVdle', W / 2, 48);
+
+  ctx.font = '13px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText(`💬 Frases #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}`, W / 2, 72);
+
+  ctx.font = 'bold 15px Arial, sans-serif';
+  ctx.fillStyle = won ? '#4ade80' : '#f87171';
+  ctx.fillText(won ? `✓ ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ Sin adivinar', W / 2, 100);
+
+  const totalW = n * (CELL + GAP) - GAP;
+  let x = (W - totalW) / 2;
+  quoteGuesses.forEach(name => {
+    ctx.fillStyle = name === quoteTarget.character ? '#16a34a' : '#dc2626';
+    ctx.fillRect(x, 122, CELL, CELL);
+    x += CELL + GAP;
+  });
+
+  ctx.font = '12px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillText('anhqvdle.es', W / 2, H - 14);
+
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    const file = new File([blob], 'anhqvdle-frases.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-frases.png'));
+    } else {
+      _downloadBlob(blob, 'anhqvdle-frases.png');
+    }
+  }, 'image/png');
+}
+
+function _downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 initQuote();

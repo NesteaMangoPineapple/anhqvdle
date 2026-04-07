@@ -22,6 +22,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/svg+xml" href="img/logo.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
   <link rel="stylesheet" href="css/style.css">
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -109,5 +114,37 @@
       </a>
     </div>
   </footer>
+  <script>
+  // Badge "ya jugaste hoy" en las tarjetas de modo
+  (function() {
+    try {
+      const now = new Date();
+      const d   = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+      [
+        { mode: 'classic', href: 'clasico.html' },
+        { mode: 'quote',   href: 'frases.html'  }
+      ].forEach(({ mode, href }) => {
+        const raw = localStorage.getItem(`anhqvdle_${mode}_${d}`);
+        if (!raw) return;
+        const state = JSON.parse(raw);
+        const card  = document.querySelector(`a.mode-card[href="${href}"]`);
+        if (!card) return;
+        const badge = document.createElement('div');
+        const guesses = state.guesses ? state.guesses.length : 0;
+        if (state.done && state.won) {
+          badge.className = 'mode-card-badge done-won';
+          badge.textContent = `✓ ${guesses} intento${guesses !== 1 ? 's' : ''}`;
+        } else if (state.done && !state.won) {
+          badge.className = 'mode-card-badge done-lost';
+          badge.textContent = '✗ Sin adivinar';
+        } else if (guesses > 0) {
+          badge.className = 'mode-card-badge in-progress';
+          badge.textContent = `${guesses} intento${guesses !== 1 ? 's' : ''}…`;
+        }
+        if (badge.className) card.appendChild(badge);
+      });
+    } catch(e) {}
+  })();
+  </script>
 </body>
 </html>

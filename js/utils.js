@@ -3,12 +3,41 @@
    ================================================ */
 
 /**
- * Renderiza los puntos de intentos (pips)
- * @param {string} id    - ID del contenedor
- * @param {number} max   - Máximo de intentos
- * @param {number} used  - Intentos usados
- * @param {boolean} won  - Si se ganó en el último intento
+ * Convierte un nombre de personaje a slug URL-safe.
+ * Centralizado aquí para evitar duplicación en classic/quote/quiz.
  */
+function toSlug(name) {
+  return name.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+/* ══════════════════════════════════════
+   MODO DALTONISMO
+══════════════════════════════════════ */
+
+function initColorblind() {
+  if (localStorage.getItem('anhqvdle_cb') === '1') document.body.classList.add('cb');
+  document.querySelectorAll('.cb-toggle').forEach(btn => {
+    btn.classList.toggle('active', document.body.classList.contains('cb'));
+    btn.title = document.body.classList.contains('cb') ? 'Desactivar modo daltónico' : 'Activar modo daltónico';
+  });
+}
+
+function toggleColorblind() {
+  document.body.classList.toggle('cb');
+  const on = document.body.classList.contains('cb');
+  localStorage.setItem('anhqvdle_cb', on ? '1' : '0');
+  document.querySelectorAll('.cb-toggle').forEach(btn => {
+    btn.classList.toggle('active', on);
+    btn.title = on ? 'Desactivar modo daltónico' : 'Activar modo daltónico';
+  });
+}
+
+/* ══════════════════════════════════════
+   PIPS
+══════════════════════════════════════ */
+
 function renderPips(id, max, used, won = false) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -19,37 +48,10 @@ function renderPips(id, max, used, won = false) {
   }).join('');
 }
 
-/**
- * Muestra el banner de resultado (victoria o derrota)
- * @param {string} containerId - ID del div de resultado
- * @param {boolean} won        - Si ganó
- * @param {string} charName    - Nombre del personaje correcto
- * @param {number} attempts    - Número de intentos usados
- * @param {string} mode        - Modo de juego ('classic' | 'quote' | 'emoji')
- */
-function showResult(containerId, won, charName, attempts, mode) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  el.innerHTML = `
-    <div class="result-banner">
-      <h2>${won ? '🎉 ¡Correcto!' : '😭 ¡Uy!'}</h2>
-      <p>
-        ${won
-          ? `Lo adivinaste en <strong>${attempts}</strong> intento${attempts !== 1 ? 's' : ''}`
-          : 'No lo has adivinado esta vez...'}
-      </p>
-      <div class="character-reveal">${won ? charName : '→ Era: ' + charName}</div>
-      <p style="font-size:0.85rem; color:var(--text2); margin-top:8px">
-        ${won ? getWinMessage(attempts) : '¡Sigue practicando, vecino!'}
-      </p>
-      <button class="play-again-btn" onclick="restartMode('${mode}')">🔄 Jugar de nuevo</button>
-    </div>
-  `;
-}
+/* ══════════════════════════════════════
+   RESULTADO (shared helper — sin uso activo)
+══════════════════════════════════════ */
 
-/**
- * Mensaje aleatorio según intentos usados
- */
 function getWinMessage(n) {
   if (n === 1) return '¡Increíble! ¡Eres un experto de la comunidad!';
   if (n <= 3)  return '¡Muy bien! El portal del edificio te conoce bien...';
@@ -57,31 +59,35 @@ function getWinMessage(n) {
   return '¡Justo a tiempo! Casi te tira Vicenta a escobazos.';
 }
 
+/* ══════════════════════════════════════
+   AUTOCOMPLETE
+══════════════════════════════════════ */
+
 /**
- * Genera el desplegable de autocompletado
- * @param {string} inputId   - ID del input
- * @param {string} acId      - ID del contenedor autocomplete
- * @param {Function} onSelect - Callback al seleccionar un nombre
+ * Genera el desplegable de autocompletado con soporte de acentos.
  */
 function buildAutocomplete(inputId, acId, onSelect) {
   const input = document.getElementById(inputId);
   const ac    = document.getElementById(acId);
   if (!input || !ac) return;
 
-  const val = input.value.trim().toLowerCase();
-  if (!val) { ac.style.display = 'none'; return; }
+  const rawVal = input.value.trim();
+  if (!rawVal) { ac.style.display = 'none'; return; }
+
+  // Normalizar acentos para que "Jose" encuentre "José"
+  const val = rawVal.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
   const matches = CHARACTERS
-    .filter(c => c.name.toLowerCase().includes(val))
+    .filter(c => {
+      const norm = c.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return norm.includes(val);
+    })
     .slice(0, 6);
 
   if (!matches.length) { ac.style.display = 'none'; return; }
 
   ac.innerHTML = matches.map(c => {
-    const slug = c.name.toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const imgPath = `img/personajes/${slug}.webp`;
+    const imgPath = `img/personajes/${toSlug(c.name)}.webp`;
     const subtitle = c.occupations && c.occupations.length ? c.occupations[0] : '';
     return `
       <div class="autocomplete-item" data-name="${c.name}">
@@ -96,7 +102,6 @@ function buildAutocomplete(inputId, acId, onSelect) {
       </div>`;
   }).join('');
 
-  // Añadir eventos con JS en vez de inline onclick
   ac.querySelectorAll('.autocomplete-item').forEach(item => {
     item.addEventListener('click', () => {
       onSelect(item.dataset.name);
@@ -107,13 +112,20 @@ function buildAutocomplete(inputId, acId, onSelect) {
   ac.style.display = 'block';
 }
 
-/**
- * Cierra todos los autocompletes al hacer clic fuera
- */
+// Cierra autocomplete al hacer clic fuera
 document.addEventListener('click', e => {
   if (!e.target.closest('.search-wrap')) {
     document.querySelectorAll('.autocomplete').forEach(a => a.style.display = 'none');
   }
+});
+
+// Cierra modales con Escape
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const stats = document.getElementById('stats-modal');
+  if (stats) stats.remove();
+  const tutorial = document.getElementById('tutorial-modal');
+  if (tutorial && tutorial.classList.contains('active') && typeof hideTutorial === 'function') hideTutorial();
 });
 
 /* ══════════════════════════════════════
@@ -121,44 +133,72 @@ document.addEventListener('click', e => {
 ══════════════════════════════════════ */
 
 function loadStats(mode) {
-  const def = { played:0, streak:0, maxStreak:0, lastWonDate:null, totalAttempts:0,
-    distribution:{'1':0,'2':0,'3':0,'4':0,'5':0,'6+':0} };
+  const def = {
+    played: 0, streak: 0, maxStreak: 0,
+    lastWonDate: null, lastPlayedDate: null,
+    totalAttempts: 0,
+    distribution: { '1':0,'2':0,'3':0,'4':0,'5':0,'6+':0,'X':0 }
+  };
   try {
-    return Object.assign({}, def, JSON.parse(localStorage.getItem(`anhqvdle_stats_${mode}`) || '{}'));
+    const parsed = JSON.parse(localStorage.getItem(`anhqvdle_stats_${mode}`) || '{}');
+    // Garantizar que distribution tiene la clave X
+    if (parsed.distribution && !('X' in parsed.distribution)) parsed.distribution['X'] = 0;
+    return Object.assign({}, def, parsed);
   } catch(e) { return def; }
 }
 
-function updateStats(mode, attempts) {
-  const stats   = loadStats(mode);
-  const today   = new Date().toISOString().slice(0, 10);
+function updateStats(mode, attempts, won) {
+  const stats     = loadStats(mode);
+  const today     = new Date().toISOString().slice(0, 10);
   const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-  if (stats.lastWonDate === today) return; // ya contado hoy
+
+  // Evitar doble conteo por si se llama dos veces el mismo día
+  if (stats.lastPlayedDate === today) return;
+
   stats.played++;
-  stats.totalAttempts += attempts;
-  const key = attempts <= 5 ? String(attempts) : '6+';
-  stats.distribution[key] = (stats.distribution[key] || 0) + 1;
-  stats.streak = stats.lastWonDate === yesterday ? stats.streak + 1 : 1;
-  stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
-  stats.lastWonDate = today;
+  stats.lastPlayedDate = today;
+
+  if (won) {
+    stats.totalAttempts += attempts;
+    const key = attempts <= 5 ? String(attempts) : '6+';
+    stats.distribution[key] = (stats.distribution[key] || 0) + 1;
+    stats.streak    = stats.lastWonDate === yesterday ? stats.streak + 1 : 1;
+    stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+    stats.lastWonDate = today;
+  } else {
+    stats.distribution['X'] = (stats.distribution['X'] || 0) + 1;
+    stats.streak = 0;
+  }
+
   localStorage.setItem(`anhqvdle_stats_${mode}`, JSON.stringify(stats));
 }
 
 function showStatsModal(mode) {
   const existing = document.getElementById('stats-modal');
   if (existing) { existing.remove(); return; }
+
   const stats    = loadStats(mode);
-  const avg      = stats.played > 0 ? (stats.totalAttempts / stats.played).toFixed(1) : '—';
+  const lost     = stats.distribution['X'] || 0;
+  const won      = stats.played - lost;
+  const winRate  = stats.played > 0 ? Math.round(won / stats.played * 100) : 0;
+  const avg      = won > 0 ? (stats.totalAttempts / won).toFixed(1) : '—';
   const modeLabel = mode === 'classic' ? '🎬 Clásico' : '💬 Frases';
-  const maxVal   = Math.max(...Object.values(stats.distribution), 1);
-  const distHtml = Object.entries(stats.distribution).map(([k, v]) => {
+
+  const distOrder = ['1','2','3','4','5','6+','X'];
+  const maxVal    = Math.max(...distOrder.map(k => stats.distribution[k] || 0), 1);
+
+  const distHtml = distOrder.map(k => {
+    const v   = stats.distribution[k] || 0;
     const pct = Math.round((v / maxVal) * 100);
+    const isX = k === 'X';
     return `<div class="stat-dist-row">
-      <span class="stat-dist-label">${k}</span>
+      <span class="stat-dist-label${isX ? ' stat-dist-lost' : ''}">${isX ? '✗' : k}</span>
       <div class="stat-dist-bar-wrap">
-        <div class="stat-dist-bar${v > 0 ? ' has-val' : ''}" style="width:${Math.max(pct,8)}%">${v > 0 ? v : ''}</div>
+        <div class="stat-dist-bar${v > 0 ? ' has-val' : ''}${isX && v > 0 ? ' stat-dist-bar-lost' : ''}" style="width:${Math.max(pct,8)}%">${v > 0 ? v : ''}</div>
       </div>
     </div>`;
   }).join('');
+
   const modal = document.createElement('div');
   modal.id = 'stats-modal';
   modal.className = 'stats-modal-overlay';
@@ -169,6 +209,7 @@ function showStatsModal(mode) {
       <p class="stats-mode-label">${modeLabel}</p>
       <div class="stats-grid">
         <div class="stat-item"><div class="stat-num">${stats.played}</div><div class="stat-lbl">Jugadas</div></div>
+        <div class="stat-item"><div class="stat-num">${winRate}%</div><div class="stat-lbl">% Victorias</div></div>
         <div class="stat-item"><div class="stat-num">${stats.streak}</div><div class="stat-lbl">Racha</div></div>
         <div class="stat-item"><div class="stat-num">${stats.maxStreak}</div><div class="stat-lbl">Máx. racha</div></div>
         <div class="stat-item"><div class="stat-num">${avg}</div><div class="stat-lbl">Media int.</div></div>
@@ -180,9 +221,24 @@ function showStatsModal(mode) {
   document.body.appendChild(modal);
 }
 
-/**
- * Marca el input con borde rojo brevemente (nombre no encontrado)
- */
+/* ══════════════════════════════════════
+   CUENTA ATRÁS (compartida)
+══════════════════════════════════════ */
+
+function startCountdown(elementId) {
+  function tick() {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.textContent = formatCountdown(msUntilMidnight());
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ══════════════════════════════════════
+   INPUT FEEDBACK
+══════════════════════════════════════ */
+
 function shakeInput(inputId) {
   const input = document.getElementById(inputId);
   if (!input) return;

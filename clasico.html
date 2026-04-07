@@ -22,6 +22,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/svg+xml" href="img/logo.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
   <link rel="stylesheet" href="css/style.css">
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -97,7 +102,7 @@
             <th><div class="th-wrap">1ª Temporada<div class="tooltip"><div class="tooltip-title">Temporada</div><ul><li>Temporada en la que apareció por primera vez</li></ul></div></div></th>
           </tr>
         </thead>
-        <tbody id="guess-tbody"></tbody>
+        <tbody id="guess-tbody" role="log" aria-live="polite" aria-label="Intentos realizados"></tbody>
       </table>
     </div>
 
@@ -201,6 +206,9 @@
     </button>
     <button class="side-btn" onclick="showTutorial()" aria-label="Cómo jugar">
       <span class="side-icon">❓</span>Ayuda
+    </button>
+    <button class="side-btn cb-toggle" onclick="toggleColorblind()" aria-label="Modo daltónico" title="Activar modo daltónico">
+      <span class="side-icon">👁️</span>A11y
     </button>
   </div>
 </body>
