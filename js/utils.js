@@ -236,6 +236,42 @@ function startCountdown(elementId) {
 }
 
 /* ══════════════════════════════════════
+   KOFI POPUP
+══════════════════════════════════════ */
+
+function maybeShowKofiPopup() {
+  const key  = 'anhqvdle_kofi_shown';
+  const last = parseInt(localStorage.getItem(key) || '0', 10);
+  if (Date.now() - last < 7 * 24 * 60 * 60 * 1000) return;
+
+  setTimeout(() => {
+    if (document.getElementById('kofi-popup')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'kofi-popup';
+    overlay.className = 'kofi-popup-overlay';
+    overlay.innerHTML = `
+      <div class="kofi-popup">
+        <button class="kofi-popup-close" onclick="closeKofiPopup()" aria-label="Cerrar">✕</button>
+        <div class="kofi-popup-icon">☕</div>
+        <h3 class="kofi-popup-title">¿Te gusta el juego?</h3>
+        <p class="kofi-popup-text">Invita a Marisa a su chínchón y ayúdanos a seguir añadiendo nuevos modos de juego.</p>
+        <div class="kofi-popup-btns">
+          <a href="https://ko-fi.com/anhqvdle" target="_blank" rel="noopener" class="kofi-popup-donate" onclick="closeKofiPopup()">☕ Invitar a Marisa</a>
+          <button class="kofi-popup-skip" onclick="closeKofiPopup()">Ahora no</button>
+        </div>
+      </div>`;
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeKofiPopup(); });
+    document.body.appendChild(overlay);
+    localStorage.setItem(key, String(Date.now()));
+  }, 2500);
+}
+
+function closeKofiPopup() {
+  const popup = document.getElementById('kofi-popup');
+  if (popup) popup.remove();
+}
+
+/* ══════════════════════════════════════
    INPUT FEEDBACK
 ══════════════════════════════════════ */
 

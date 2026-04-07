@@ -41,6 +41,9 @@ body {
 ::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
+@keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
 /* ══════════════════════════════════════
    HEADER
 ══════════════════════════════════════ */
@@ -1673,3 +1676,55 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 .mode-card-badge.done-won  { background: rgba(22,163,74,0.2);  color: #4ade80; border: 1px solid rgba(22,163,74,0.5); }
 .mode-card-badge.done-lost { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.4); }
 .mode-card-badge.in-progress { background: rgba(240,192,32,0.15); color: var(--accent); border: 1px solid rgba(240,192,32,0.4); }
+
+/* ══════════════════════════════════════
+   KOFI POPUP
+══════════════════════════════════════ */
+.kofi-popup-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.72);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.25s ease;
+}
+.kofi-popup {
+  background: #1c1c1c;
+  border: 1px solid rgba(240,192,32,0.3);
+  border-radius: 18px;
+  padding: 36px 28px 26px;
+  max-width: 320px; width: 90%;
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.28s ease;
+}
+.kofi-popup-close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; color: var(--text2);
+  font-size: 1rem; cursor: pointer; padding: 4px 8px;
+  transition: color 0.15s;
+}
+.kofi-popup-close:hover { color: var(--text); }
+.kofi-popup-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.kofi-popup-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.55rem; color: var(--accent);
+  letter-spacing: 2px; margin-bottom: 10px;
+}
+.kofi-popup-text {
+  font-size: 0.88rem; color: var(--text2);
+  line-height: 1.55; margin-bottom: 20px;
+}
+.kofi-popup-btns { display: flex; flex-direction: column; gap: 10px; }
+.kofi-popup-donate {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 24px; background: #ff5e5b; color: #fff;
+  border-radius: 50px; font-weight: 700; text-decoration: none;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+  letter-spacing: 1px; transition: background 0.2s;
+}
+.kofi-popup-donate:hover { background: #ff3a37; }
+.kofi-popup-skip {
+  background: none; border: none; color: var(--text2);
+  font-size: 0.82rem; cursor: pointer; padding: 4px;
+  text-decoration: underline; font-family: 'Barlow', sans-serif;
+}
+.kofi-popup-skip:hover { color: var(--text); }

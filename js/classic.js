@@ -206,6 +206,7 @@ function showDoneMessage(containerId, won, charName, attempts) {
         <div class="countdown" id="countdown-timer">00:00:00</div>
       </div>
     </div>`;
+  maybeShowKofiPopup();
 }
 
 function shareResultClassic(won, attempts) {

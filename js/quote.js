@@ -175,6 +175,7 @@ function showDoneMessageQuote(won, charName, attempts) {
         <div class="countdown" id="countdown-timer-q">00:00:00</div>
       </div>
     </div>`;
+  maybeShowKofiPopup();
 }
 
 function shareResultQuote(won, attempts) {
