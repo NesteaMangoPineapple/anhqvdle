@@ -111,7 +111,7 @@ async function createOnlineRoom() {
     guestReveal: null
   });
 
-  _roomRef.onDisconnect().update({ phase: 'abandoned' });
+  _roomRef.onDisconnect().remove();
 
   hideLobbyOverlay();
   _resetOnlineBoard();
@@ -165,7 +165,7 @@ async function joinOnlineRoom() {
   _roomRef  = ref;
 
   await _roomRef.update({ phase: 'setup', guestJoined: true });
-  _roomRef.onDisconnect().update({ phase: 'abandoned' });
+  _roomRef.onDisconnect().remove();
 
   hideLobbyOverlay();
   _resetOnlineBoard();
@@ -210,12 +210,13 @@ async function _subscribeRoom() {
 function _onRoomUpdate(data) {
   if (!data) return;
 
-  if (data.phase === 'abandoned') {
+  if (!data || data.phase === 'abandoned') {
     renderQuestions(false);
     _setBoardTitle(null);
+    if (_roomRef) { _roomRef.off(); _roomRef = null; }
     setStatus(`<div class="quien-setup">
       <p class="quien-title" style="color:#f87171;font-size:1.4rem">😔 Oponente desconectado</p>
-      <button class="guess-btn" onclick="location.reload()" style="margin-top:16px">Volver al inicio</button>
+      <button class="guess-btn" onclick="initGame()" style="margin-top:16px">Volver al inicio</button>
     </div>`);
     return;
   }
@@ -555,6 +556,17 @@ function _handleGameover(data) {
   if (!data[myRevealKey] && mySecret && _roomRef) {
     _roomRef.update({ [myRevealKey]: mySecret.name });
   }
+
+  // Borrar sala automáticamente 60s después (ambos jugadores lo intentan, solo uno lo ejecuta)
+  setTimeout(() => {
+    if (_roomRef && phase === 'gameover') {
+      _roomRef.once('value').then(snap => {
+        if (snap.exists() && snap.val()?.phase === 'gameover') {
+          _roomRef.remove();
+        }
+      });
+    }
+  }, 60000);
 
   const iWon      = data.winner === _myRole;
   const oppReveal = _myRole === 'host' ? data.guestReveal : data.hostReveal;
