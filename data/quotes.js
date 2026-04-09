@@ -128,7 +128,7 @@ const QUOTES = [
   { quote: "No he podido evitar oíros porque estaba escuchando", character: "Mariano Delgado", hint: "El cotilla oficial de la portería con su lógica aplastante..." },
   { quote: "Los sentimientos, la asignatura pendiente del ser humano", character: "Mariano Delgado", hint: "La profundidad inesperada del padre del portero..." },
   { quote: "Le miro poco para no cogerle cariño, como a tu madre", character: "Mariano Delgado", hint: "La ternura a su manera del padre del portero..." },
-  { quote: "No pienses, que es una trampa", character: "Mariano Delgado", hint: "El consejo más útil del vendedor de libros de la portería..." },
+  { quote: "No pienses, que es una trampa. Te dan vacaciones para pensar y te hacen polvo.", character: "Mariano Delgado", hint: "El consejo más útil del vendedor de libros de la portería..." },
   { quote: "Bastante perjudicado está el perjudicado como para perjudicarle más", character: "Mariano Delgado", hint: "La lógica irrefutable del padre que vive en la portería..." },
   { quote: "A mí me encanta el rey, le voto en todas las elecciones", character: "Mariano Delgado", hint: "El ciudadano ejemplar de la portería y su educación cívica..." },
   { quote: "Las construcciones tardan en asentarse cinco años, de toda la vida de Dios", character: "Mariano Delgado", hint: "El experto en todo del piso de la portería..." },

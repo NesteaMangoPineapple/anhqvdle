@@ -65,9 +65,11 @@
       <a href="index.html"   class="nav-btn active">🏠 Inicio</a>
       <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
       <a href="frases.html"  class="nav-btn">💬 Frases</a>
-      <a href="quiz.html"  class="nav-btn">🪞 ¿Quién eres?</a>
-      <span class="nav-btn nav-soon">🔊 Audio</span>
+      <a href="quiz.html"    class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"   class="nav-btn">🎭 Quién es Quién</a>
     </nav>
+    <span class="auth-nav-item"></span>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
   </header>
 
   <main>
@@ -89,6 +91,11 @@
           <span class="mode-icon">🪞</span>
           <div class="mode-card-title">¿Quién eres?</div>
           <p class="mode-card-desc">15 preguntas para descubrir qué personaje de Desengaño 21 eres tú.</p>
+        </a>
+        <a href="quien.html" class="mode-card">
+          <span class="mode-icon">🎭</span>
+          <div class="mode-card-title">Quién es Quién</div>
+          <p class="mode-card-desc">Elige un personaje secreto y adivina el del rival preguntando sí o no. Vs máquina u online.</p>
         </a>
         <div class="mode-card mode-card-soon">
           <span class="mode-icon">🔊</span>
@@ -152,5 +159,11 @@
     } catch(e) {}
   })();
   </script>
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>

@@ -171,6 +171,11 @@ function updateStats(mode, attempts, won) {
   }
 
   localStorage.setItem(`anhqvdle_stats_${mode}`, JSON.stringify(stats));
+
+  // Sync to Firebase if user is logged in
+  if (typeof StatsFirebase !== 'undefined') {
+    StatsFirebase.saveGameResult(mode, attempts, won);
+  }
 }
 
 function showStatsModal(mode) {

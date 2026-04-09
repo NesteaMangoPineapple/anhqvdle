@@ -83,15 +83,13 @@ function initGame() {
   turnCount     = 0;
   busy          = false;
 
-  document.querySelector('.quien-wrap').classList.add('is-setup');
+  const wrap = document.querySelector('.quien-wrap');
+  wrap.classList.remove('is-setup', 'is-playing');
   document.getElementById('quien-start-btn').classList.remove('visible');
   renderBoard();
   updateMyCard(null);
   renderQuestions(false);
   setStatus('');
-
-  // Mostrar overlay de selección de modo
-  if (typeof showModeOverlay === 'function') showModeOverlay();
 }
 
 // ── Iniciar partida vs máquina ────────────────────────
@@ -106,7 +104,9 @@ function startMachineGame() {
   turnCount     = 0;
   busy          = false;
 
-  document.querySelector('.quien-wrap').classList.add('is-setup');
+  const wrap = document.querySelector('.quien-wrap');
+  wrap.classList.remove('is-playing');
+  wrap.classList.add('is-setup');
   document.getElementById('quien-start-btn').classList.remove('visible');
   renderBoard();
   updateMyCard(null);
@@ -149,7 +149,9 @@ function selectSecret(name) {
 function startGame() {
   if (!mySecret) return;
   phase = 'player_turn';
-  document.querySelector('.quien-wrap').classList.remove('is-setup');
+  const wrap2 = document.querySelector('.quien-wrap');
+  wrap2.classList.remove('is-setup');
+  wrap2.classList.add('is-playing');
   document.getElementById('quien-board').classList.remove('is-setup');
   document.getElementById('quien-start-btn').classList.remove('visible');
   renderBoard();
@@ -222,6 +224,11 @@ function playerGuess(name) {
   renderQuestions(false);
 
   const correct = name === machineSecret.name;
+
+  // Save stats to Firebase
+  if (typeof StatsFirebase !== 'undefined') {
+    StatsFirebase.saveGameResult('quien_machine', 1, correct);
+  }
   if (correct) {
     const slug = makeSlug(name);
     setStatus(`
@@ -525,6 +532,33 @@ function makeSlug(name) {
 }
 
 initGame();
+
+// ── Tutorial ────────────────────────────────────────
+function showQuienTutorial() {
+  if (document.getElementById('quien-tutorial')) return;
+  const d = document.createElement('div');
+  d.id = 'quien-tutorial';
+  d.className = 'stats-modal-overlay';
+  d.innerHTML = `
+    <div class="stats-modal" style="max-width:480px">
+      <button class="stats-close" onclick="document.getElementById('quien-tutorial').remove()">✕</button>
+      <h2 class="stats-title">🪟 Cómo jugar</h2>
+      <div style="text-align:left;color:var(--text2);font-size:0.92rem;line-height:1.7;display:flex;flex-direction:column;gap:10px">
+        <p>Cada jugador elige un <strong style="color:var(--text)">personaje secreto</strong> del tablero sin que el rival lo vea.</p>
+        <p>Por turnos, cada jugador hace una <strong style="color:var(--text)">pregunta de sí o no</strong> sobre el personaje rival (ej: ¿Es mujer? ¿Tiene hijos?).</p>
+        <p>Usa las respuestas para <strong style="color:var(--text)">eliminar personajes</strong> del tablero. Los descartados se atenúan.</p>
+        <p>Cuando creas que sabes quién es, pulsa en la carta del personaje y elige <strong style="color:var(--text)">Adivinar</strong>. ¡El primero en acertar gana!</p>
+        <p style="color:#f87171">⚠️ Si fallas la adivinanza, pierdes automáticamente.</p>
+        <hr style="border-color:rgba(255,255,255,0.1)">
+        <p><strong style="color:var(--text)">Modos:</strong><br>
+          🤖 <strong style="color:var(--text)">Vs Máquina</strong> — juegas solo, la IA lleva el otro tablero.<br>
+          👥 <strong style="color:var(--text)">Multijugador</strong> — crea una sala y comparte el código con un amigo.
+        </p>
+      </div>
+    </div>`;
+  d.addEventListener('click', e => { if (e.target === d) d.remove(); });
+  document.body.appendChild(d);
+}
 
 // Tooltip hover en carta secreta
 document.getElementById('quien-my-card').addEventListener('mouseenter', () => {

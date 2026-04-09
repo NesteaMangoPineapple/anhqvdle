@@ -35,6 +35,39 @@
       visibility: hidden;
     }
 
+    /* Panel de bienvenida (solo en idle) */
+    .quien-play-wrap {
+      text-align: center; padding: 32px 20px 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .quien-wrap.is-setup .quien-play-wrap,
+    .quien-wrap.is-playing .quien-play-wrap { display: none; }
+
+    .quien-play-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem;
+      color: var(--accent); letter-spacing: 5px; margin: 0;
+      text-shadow: 0 0 24px rgba(240,192,32,0.35);
+    }
+    .quien-play-desc {
+      color: var(--text2); font-size: 0.95rem; line-height: 1.6;
+      max-width: 480px; margin: 0;
+    }
+    .quien-play-big-btn {
+      background: var(--accent); color: #000; border: none;
+      font-family: 'Bebas Neue', cursive; font-size: 1.4rem;
+      letter-spacing: 3px; padding: 14px 48px; border-radius: 50px;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 0 24px rgba(240,192,32,0.4);
+    }
+    .quien-play-big-btn:hover { opacity: 0.88; transform: scale(1.04); }
+    .quien-play-help-btn {
+      background: none; border: 1px solid var(--border); color: var(--text2);
+      font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem;
+      padding: 8px 20px; border-radius: 50px; cursor: pointer;
+      transition: all 0.2s; letter-spacing: 1px;
+    }
+    .quien-play-help-btn:hover { border-color: var(--accent); color: var(--text); }
+
     /* Título encima del tablero (solo en setup) */
     .quien-board-title {
       display: none;
@@ -478,13 +511,16 @@
       <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
       <a href="frases.html"  class="nav-btn">💬 Frases</a>
       <a href="quiz.html"    class="nav-btn">🪞 ¿Quién eres?</a>
-      <a href="quien.html"   class="nav-btn active">🪟 Quién es Quién</a>
+      <a href="quien.html"   class="nav-btn active">🎭 Quién es Quién</a>
     </nav>
+    <span class="auth-nav-item"></span>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
   </header>
 
   <!-- ── Selector de modo ── -->
   <div id="quien-mode-overlay" class="quien-mode-overlay" style="display:none">
     <div class="quien-mode-box">
+      <button class="lobby-back" onclick="hideModeOverlay()" style="align-self:flex-start">← Volver</button>
       <div class="quien-intro-icon">🪟</div>
       <h2 class="quien-title">QUIÉN ES QUIÉN</h2>
       <p class="quien-desc">Elige cómo quieres jugar</p>
@@ -543,6 +579,13 @@
 
       <!-- Tablero 3D -->
       <div class="quien-3d-scene">
+        <!-- Panel de bienvenida (solo en idle) -->
+        <div id="quien-play-wrap" class="quien-play-wrap">
+          <h2 class="quien-play-title">🎭 Quién es Quién</h2>
+          <p class="quien-play-desc">Elige un personaje secreto. Tu rival tendrá que adivinarlo haciendo preguntas de sí o no.<br>¡El primero en adivinar gana!</p>
+          <button class="quien-play-big-btn" onclick="if(typeof showModeOverlay==='function')showModeOverlay()">🎮 Jugar</button>
+          <button class="quien-play-help-btn" onclick="showQuienTutorial()">❓ Cómo jugar</button>
+        </div>
         <div class="quien-board-title">
           <h2>Elige tu personaje secreto</h2>
           <p>Haz clic en el personaje que vas a ser. La máquina intentará adivinarlo.</p>
@@ -560,6 +603,13 @@
 
     </div>
   </main>
+
+  <!-- Botón de ayuda lateral -->
+  <div class="side-actions">
+    <button class="side-btn" onclick="showQuienTutorial()" aria-label="Cómo jugar">
+      <span class="side-icon">❓</span>Ayuda
+    </button>
+  </div>
 
   <footer>
     <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
@@ -584,9 +634,12 @@
   <!-- Firebase SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <script src="data/characters.js"></script>
   <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/stats-firebase.js"></script>
   <script src="js/quien-online.js"></script>
   <script src="js/quien.js"></script>
 </body>

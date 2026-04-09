@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking – ANHQVdle</title>
+  <meta name="description" content="Ranking global de los mejores jugadores de ANHQVdle en todos los modos de juego.">
+  <link rel="canonical" href="https://anhqvdle.es/ranking.html">
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1251819701012590" crossorigin="anonymous"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BGR4GH8P7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9BGR4GH8P7');
+  </script>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" style="text-decoration:none">
+        <div class="logo"><span>ANHQV</span>dle</div>
+      </a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="index.html"   class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"  class="nav-btn">💬 Frases</a>
+      <a href="quiz.html"    class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"   class="nav-btn">🎭 Quién es Quién</a>
+      <a href="ranking.html" class="nav-btn active">🏆 Ranking</a>
+    </nav>
+    <span class="auth-nav-item"></span>
+  </header>
+
+  <main>
+    <h1 class="game-title">🏆 Ranking Global</h1>
+    <p class="game-desc">Los mejores jugadores de Desengaño 21 en cada modo de juego.</p>
+
+    <div class="ranking-tabs">
+      <button class="rtab active" data-mode="classic"       onclick="loadTab(this,'classic')">🎬 Clásico</button>
+      <button class="rtab"        data-mode="quote"         onclick="loadTab(this,'quote')">💬 Frases</button>
+      <button class="rtab"        data-mode="quien_machine" onclick="loadTab(this,'quien_machine')">🪟 Vs Máquina</button>
+      <button class="rtab"        data-mode="quien_online"  onclick="loadTab(this,'quien_online')">🎭 Online</button>
+    </div>
+
+    <div id="ranking-content" class="ranking-content">
+      <p class="ranking-loading">Cargando…</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+    <p style="margin-top:8px">
+      <a href="nosotros.html" style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Nosotros</a>
+      &nbsp;·&nbsp;
+      <a href="privacidad.html" style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Privacidad</a>
+      &nbsp;·&nbsp;
+      <a href="serie.html" style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">La serie</a>
+    </p>
+  </footer>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+  var _currentMode = 'classic';
+  var _db = null;
+
+  function _initRanking() {
+    if (typeof firebase === 'undefined' || typeof FIREBASE_CONFIG === 'undefined') {
+      document.getElementById('ranking-content').innerHTML =
+        '<p class="ranking-empty">El ranking no está disponible en este momento.</p>';
+      return;
+    }
+    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    _db = firebase.database();
+    loadTab(document.querySelector('.rtab.active'), 'classic');
+  }
+
+  function loadTab(btn, mode) {
+    _currentMode = mode;
+    document.querySelectorAll('.rtab').forEach(function (b) { b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    document.getElementById('ranking-content').innerHTML = '<p class="ranking-loading">Cargando…</p>';
+    if (!_db) { _initRanking(); return; }
+    _fetchLeaderboard(mode);
+  }
+
+  function _fetchLeaderboard(mode) {
+    _db.ref('leaderboard/' + mode).once('value').then(function (snap) {
+      var data = snap.val();
+      if (!data) {
+        document.getElementById('ranking-content').innerHTML =
+          '<p class="ranking-empty">Todavía no hay jugadores registrados en este modo.<br>¡Sé el primero en aparecer aquí!</p>';
+        return;
+      }
+
+      // Convert to array and sort
+      var rows = Object.entries(data).map(function (entry) {
+        return Object.assign({ uid: entry[0] }, entry[1]);
+      });
+      var isDaily = (mode === 'classic' || mode === 'quote');
+
+      // Sort: daily → avg attempts asc (fewer = better), then wins desc, then streak desc
+      //       online/machine → wins desc, then win% desc
+      rows.sort(function (a, b) {
+        if (isDaily) {
+          var avgA = a.won > 0 ? (a.totalAttempts || 0) / a.won : 999;
+          var avgB = b.won > 0 ? (b.totalAttempts || 0) / b.won : 999;
+          if (avgA !== avgB) return avgA - avgB;
+          if (b.won !== a.won) return b.won - a.won;
+          return (b.maxStreak || 0) - (a.maxStreak || 0);
+        } else {
+          if (b.won !== a.won) return b.won - a.won;
+          var pctA = a.played > 0 ? a.won / a.played : 0;
+          var pctB = b.played > 0 ? b.won / b.played : 0;
+          return pctB - pctA;
+        }
+      });
+
+      var currentUser = window.AuthModule ? AuthModule.getCurrentUser() : null;
+      var myUid = currentUser ? currentUser.uid : null;
+
+      var html = '<div class="ranking-table-wrap"><table class="ranking-table">';
+      html += '<thead><tr>';
+      html += '<th>#</th>';
+      html += '<th>Jugador</th>';
+      if (isDaily) {
+        html += '<th>Media int.</th>';
+        html += '<th>Días jugados</th>';
+        html += '<th>Racha máx.</th>';
+      } else {
+        html += '<th>Victorias</th>';
+        html += '<th>Jugadas</th>';
+        html += '<th>% Vic.</th>';
+      }
+      html += '</tr></thead><tbody>';
+
+      rows.forEach(function (row, i) {
+        var rank  = i + 1;
+        var medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+        var avg   = row.won > 0 ? ((row.totalAttempts || 0) / row.won).toFixed(1) : '—';
+        var pct   = row.played > 0 ? Math.round(row.won / row.played * 100) : 0;
+        var isSelf = row.uid === myUid;
+        var photo  = row.photo
+          ? '<img src="' + row.photo + '" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
+          : '<span class="rank-av-letter">' + (row.name || '?')[0].toUpperCase() + '</span>';
+
+        html += '<tr class="' + (isSelf ? 'rank-row-me' : '') + '">';
+        html += '<td class="rank-pos">' + medal + '</td>';
+        html += '<td class="rank-player"><div class="rank-av">' + photo + '</div><span>' + (row.name || 'Vecino') + '</span></td>';
+        if (isDaily) {
+          html += '<td class="rank-won">' + avg + '</td>';
+          html += '<td>' + (row.won || 0) + '</td>';
+          html += '<td>' + (row.maxStreak || 0) + '</td>';
+        } else {
+          html += '<td class="rank-won">' + (row.won || 0) + '</td>';
+          html += '<td>' + (row.played || 0) + '</td>';
+          html += '<td>' + pct + '%</td>';
+        }
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+
+      if (!myUid) {
+        html += '<p class="ranking-login-hint">👤 <a href="#" onclick="AuthModule.showLogin();return false">Inicia sesión</a> para aparecer en el ranking</p>';
+      }
+
+      document.getElementById('ranking-content').innerHTML = html;
+    }).catch(function () {
+      document.getElementById('ranking-content').innerHTML =
+        '<p class="ranking-empty">No se pudo cargar el ranking. Inténtalo más tarde.</p>';
+    });
+  }
+
+  // Init once DOM is ready
+  document.addEventListener('DOMContentLoaded', _initRanking);
+  </script>
+</body>
+</html>

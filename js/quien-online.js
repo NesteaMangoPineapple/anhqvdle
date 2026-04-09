@@ -571,6 +571,11 @@ function _handleGameover(data) {
   const iWon      = data.winner === _myRole;
   const oppReveal = _myRole === 'host' ? data.guestReveal : data.hostReveal;
 
+  // Save stats to Firebase
+  if (typeof StatsFirebase !== 'undefined') {
+    StatsFirebase.saveGameResult('quien_online', 1, iWon);
+  }
+
   let html = `<div class="quien-result">`;
   html += iWon
     ? `<p class="quien-result-label">🎉 ¡Has ganado!</p>`
