@@ -152,34 +152,18 @@ function _savePushSubscription(sub) {
   });
 }
 
-// ── Floating 🔔 button for desktop users ─────────────
-function _showNotifButton() {
+// ── Popup automático de notificaciones ───────────────
+function _maybeShowPushPopup() {
   if (!('PushManager' in window)) return;
   if (!('serviceWorker' in navigator)) return;
   if (Notification.permission === 'granted') return;
   if (localStorage.getItem('anhqvdle_push_asked')) return;
-  if (document.getElementById('pwa-notif-btn')) return;
-
-  var btn = document.createElement('button');
-  btn.id = 'pwa-notif-btn';
-  btn.setAttribute('aria-label', 'Activar notificaciones');
-  btn.innerHTML = '<span class="pwa-notif-icon">🔔</span><span>Avisos diarios</span>';
-  btn.addEventListener('click', function () {
-    btn.remove();
-    _showPushPrompt();
-  });
-  document.body.appendChild(btn);
-
-  // Auto-hide after 20 seconds if user ignores it
-  setTimeout(function () {
-    var b = document.getElementById('pwa-notif-btn');
-    if (b) b.remove();
-  }, 20000);
+  _showPushPrompt();
 }
 
-// Show the button after 4 seconds on page load
+// Mostrar popup 5 segundos después de cargar
 window.addEventListener('load', function () {
-  setTimeout(_showNotifButton, 4000);
+  setTimeout(_maybeShowPushPopup, 5000);
 });
 
 // Exponer globalmente
