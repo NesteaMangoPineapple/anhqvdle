@@ -1,7 +1,7 @@
 /* ================================================
    ANHQVdle — Firebase Stats Sync
    Saves game results to Firebase when user is logged in.
-   Modes: 'classic', 'quote', 'quien_machine', 'quien_online'
+   Modes tracked in leaderboard: 'classic', 'quote'
    ================================================ */
 
 window.StatsFirebase = (function () {
@@ -45,7 +45,10 @@ window.StatsFirebase = (function () {
       return s;
     }).then(function (res) {
       if (res.committed && res.snapshot.val()) {
-        _updateLeaderboard(db, user, mode, res.snapshot.val());
+        // Only push to leaderboard for daily modes
+        if (mode === 'classic' || mode === 'quote') {
+          _updateLeaderboard(db, user, mode, res.snapshot.val());
+        }
       }
     }).catch(function () { /* fail silently */ });
   }

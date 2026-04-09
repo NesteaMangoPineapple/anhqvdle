@@ -245,10 +245,8 @@ window.AuthModule = (function () {
       if (!el) return;
       var s = snap.val() || {};
       var modes = [
-        { k: 'classic',       lbl: '🎬 Cl\u00e1sico',       daily: true  },
-        { k: 'quote',         lbl: '💬 Frases',         daily: true  },
-        { k: 'quien_machine', lbl: '🎭 Qui\u00e9n vs M\u00e1q.', daily: false },
-        { k: 'quien_online',  lbl: '🎭 Qui\u00e9n Online',  daily: false }
+        { k: 'classic', lbl: '🎬 Cl\u00e1sico', daily: true },
+        { k: 'quote',   lbl: '💬 Frases',   daily: true }
       ];
       el.innerHTML = modes.map(function (m) {
         var data = s[m.k] || {};
