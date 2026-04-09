@@ -1,9 +1,8 @@
 /* ================================================
    ANHQVdle — PWA: Service Worker + Web Push nativo
-   VAPID Public Key: BLUlNyJm-Tfg_Q56DX5sMwctTloVLQ4j1XdbapHC3MwJ-WxYng4bDk08GfpGXm1cln97oZB9MHkheN3NHqxw8jw
    ================================================ */
 
-var VAPID_PUBLIC_KEY = 'BLUlNyJm-Tfg_Q56DX5sMwctTloVLQ4j1XdbapHC3MwJ-WxYng4bDk08GfpGXm1cln97oZB9MHkheN3NHqxw8jw';
+var VAPID_PUBLIC_KEY = 'BLDItKuQj4aYujxuQP1xNHFDljsVn3oMdgZK6FxivWTVQLtAVFqRfs9kNCuc5AKNl2J0QWhih2NVBNY83pvnXfs';
 
 // ── Service Worker ───────────────────────────────
 if ('serviceWorker' in navigator) {

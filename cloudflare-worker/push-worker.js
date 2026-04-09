@@ -2,11 +2,11 @@
    ANHQVdle — Cloudflare Worker: Daily Push Sender
    ================================================
    Configurar en Cloudflare Workers con estas variables de entorno:
-   - VAPID_PRIVATE_KEY  = O9swnrSq6shDTroJDZL8ft-GXvMy77BZ9xEafXtEGqM
-   - VAPID_PUBLIC_KEY   = BLUlNyJm-Tfg_Q56DX5sMwctTloVLQ4j1XdbapHC3MwJ-WxYng4bDk08GfpGXm1cln97oZB9MHkheN3NHqxw8jw
-   - FIREBASE_DB_URL    = https://TU-PROYECTO.firebaseio.com
-   - FIREBASE_SECRET    = (token de acceso de Firebase — Admin SDK)
-   - CRON_SECRET        = cadena aleatoria para proteger el endpoint
+   - VAPID_PRIVATE_KEY  = (configurar en Cloudflare Worker Settings → Secrets)
+   - VAPID_PUBLIC_KEY   = (configurar en Cloudflare Worker Settings → Secrets)
+   - FIREBASE_DB_URL    = (configurar en Cloudflare Worker Settings → Secrets)
+   - FIREBASE_SECRET    = (configurar en Cloudflare Worker Settings → Secrets)
+   - CRON_SECRET        = (configurar en Cloudflare Worker Settings → Secrets)
 
    Trigger: Cron diario a las 00:05 (hora España = UTC+2, so 22:05 UTC)
    ================================================ */
