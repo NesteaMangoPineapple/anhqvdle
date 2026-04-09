@@ -35,6 +35,18 @@
       visibility: hidden;
     }
 
+    /* Idle: colapsar grid y centrar solo el panel de bienvenida */
+    .quien-wrap:not(.is-setup):not(.is-playing) {
+      grid-template-columns: 1fr;
+    }
+    .quien-wrap:not(.is-setup):not(.is-playing) .quien-left,
+    .quien-wrap:not(.is-setup):not(.is-playing) .quien-right { display: none; }
+    .quien-wrap:not(.is-setup):not(.is-playing) #quien-board { display: none; }
+    .quien-wrap:not(.is-setup):not(.is-playing) .quien-board-title { display: none !important; }
+    .quien-wrap:not(.is-setup):not(.is-playing) .quien-3d-scene {
+      display: flex; justify-content: center; align-items: center; min-height: 55vh;
+    }
+
     /* Panel de bienvenida (solo en idle) */
     .quien-play-wrap {
       text-align: center; padding: 32px 20px 24px;
@@ -521,7 +533,7 @@
   <div id="quien-mode-overlay" class="quien-mode-overlay" style="display:none">
     <div class="quien-mode-box">
       <button class="lobby-back" onclick="hideModeOverlay()" style="align-self:flex-start">← Volver</button>
-      <div class="quien-intro-icon">🪟</div>
+      <div class="quien-intro-icon">🎭</div>
       <h2 class="quien-title">QUIÉN ES QUIÉN</h2>
       <p class="quien-desc">Elige cómo quieres jugar</p>
       <div class="quien-mode-btns">
