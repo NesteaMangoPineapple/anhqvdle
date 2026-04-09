@@ -1,46 +1,23 @@
 /* ================================================
-   ANHQVdle — PWA: Service Worker + Install Banner
-   ================================================
-   OneSignal App ID: REEMPLAZAR cuando esté disponible
+   ANHQVdle — PWA: Service Worker + Web Push nativo
+   VAPID Public Key: BLUlNyJm-Tfg_Q56DX5sMwctTloVLQ4j1XdbapHC3MwJ-WxYng4bDk08GfpGXm1cln97oZB9MHkheN3NHqxw8jw
    ================================================ */
 
-var ONESIGNAL_APP_ID = 'TU-APP-ID-AQUI'; // ← reemplazar con el ID de OneSignal
+var VAPID_PUBLIC_KEY = 'BLUlNyJm-Tfg_Q56DX5sMwctTloVLQ4j1XdbapHC3MwJ-WxYng4bDk08GfpGXm1cln97oZB9MHkheN3NHqxw8jw';
 
 // ── Service Worker ───────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('/service-worker.js')
       .then(function (reg) {
-        console.log('[PWA] Service worker registrado:', reg.scope);
+        // Guardar registro para usar en suscripción
+        window._swReg = reg;
       })
       .catch(function (err) {
         console.warn('[PWA] Service worker error:', err);
       });
   });
 }
-
-// ── OneSignal Push ───────────────────────────────
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(function (OneSignal) {
-  OneSignal.init({
-    appId: ONESIGNAL_APP_ID,
-    safari_web_id: '', // opcional, para Safari macOS
-    notifyButton: { enable: false }, // usamos nuestro propio botón
-    promptOptions: {
-      slidedown: {
-        prompts: [{
-          type: 'push',
-          autoPrompt: false, // no mostrar automáticamente — lo hacemos nosotros
-          text: {
-            actionMessage:    '¿Quieres recibir un aviso diario cuando salga el personaje de hoy?',
-            acceptButton:     '¡Sí, avísame!',
-            cancelButton:     'Ahora no'
-          }
-        }]
-      }
-    }
-  });
-});
 
 // ── Install Banner (A2HS) ────────────────────────
 var _deferredPrompt = null;
@@ -49,6 +26,12 @@ window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
   _deferredPrompt = e;
   _showInstallBanner();
+});
+
+window.addEventListener('appinstalled', function () {
+  _deferredPrompt = null;
+  // Tras instalar, pedir permiso de notificaciones después de 3s
+  setTimeout(_askPushPermission, 3000);
 });
 
 function _showInstallBanner() {
@@ -66,7 +49,6 @@ function _showInstallBanner() {
     '</div>';
   document.body.appendChild(banner);
 
-  // Auto-dismiss after 15s
   setTimeout(function () {
     var b = document.getElementById('pwa-install-banner');
     if (b) b.remove();
@@ -77,10 +59,6 @@ function pwaInstall() {
   if (!_deferredPrompt) return;
   _deferredPrompt.prompt();
   _deferredPrompt.userChoice.then(function (choice) {
-    if (choice.outcome === 'accepted') {
-      // Tras instalar, pedir permiso de notificaciones
-      _askPushPermission();
-    }
     _deferredPrompt = null;
     var b = document.getElementById('pwa-install-banner');
     if (b) b.remove();
@@ -93,16 +71,83 @@ function pwaDismiss() {
   if (b) b.remove();
 }
 
-// ── Push permission ──────────────────────────────
+// ── Web Push nativo ──────────────────────────────
+function _urlBase64ToUint8Array(base64String) {
+  var padding = '='.repeat((4 - base64String.length % 4) % 4);
+  var base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  var raw     = window.atob(base64);
+  var output  = new Uint8Array(raw.length);
+  for (var i = 0; i < raw.length; i++) output[i] = raw.charCodeAt(i);
+  return output;
+}
+
 function _askPushPermission() {
-  if (ONESIGNAL_APP_ID === 'TU-APP-ID-AQUI') return; // no configurado aún
-  if (!window.OneSignal) return;
-  window.OneSignalDeferred.push(function (OneSignal) {
-    OneSignal.Slidedown.promptPush();
+  if (!('PushManager' in window)) return;
+  if (!('serviceWorker' in navigator)) return;
+  if (localStorage.getItem('anhqvdle_push_asked')) return;
+
+  // Mostrar nuestro propio diálogo antes del nativo
+  _showPushPrompt();
+}
+
+function _showPushPrompt() {
+  if (document.getElementById('push-prompt')) return;
+  var d = document.createElement('div');
+  d.id = 'push-prompt';
+  d.className = 'auth-overlay';
+  d.innerHTML =
+    '<div class="auth-box" style="max-width:360px;text-align:center">' +
+      '<div style="font-size:2rem;margin-bottom:12px">🔔</div>' +
+      '<h2 class="auth-h2">¿Aviso diario?</h2>' +
+      '<p class="auth-p">Recibe una notificación cada día cuando salga el nuevo personaje. Sin spam.</p>' +
+      '<button class="auth-btn" style="margin-top:16px" onclick="pwaSubscribePush()">¡Sí, avísame!</button>' +
+      '<button class="auth-signout" style="margin-top:8px" onclick="pwaDenyPush()">Ahora no</button>' +
+    '</div>';
+  d.addEventListener('click', function (e) { if (e.target === d) pwaDenyPush(); });
+  document.body.appendChild(d);
+}
+
+function pwaSubscribePush() {
+  var prompt = document.getElementById('push-prompt');
+  if (prompt) prompt.remove();
+  localStorage.setItem('anhqvdle_push_asked', '1');
+
+  var reg = window._swReg;
+  if (!reg) return;
+
+  reg.pushManager.subscribe({
+    userVisibleOnly:      true,
+    applicationServerKey: _urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+  }).then(function (sub) {
+    // Guardar suscripción en Firebase para poder enviar el push diario
+    _savePushSubscription(sub);
+  }).catch(function () { /* usuario denegó */ });
+}
+
+function pwaDenyPush() {
+  localStorage.setItem('anhqvdle_push_asked', '1');
+  var prompt = document.getElementById('push-prompt');
+  if (prompt) prompt.remove();
+}
+
+function _savePushSubscription(sub) {
+  if (!window.AuthModule) return;
+  AuthModule.onReady(function (user) {
+    var db = AuthModule.getDb();
+    if (!db) return;
+    // Guardar con uid si está logado, o con un ID anónimo si no
+    var uid = user ? user.uid : ('anon_' + Math.random().toString(36).slice(2));
+    db.ref('push_subscriptions/' + btoa(sub.endpoint).slice(0, 40)).set({
+      uid:          uid,
+      subscription: JSON.stringify(sub),
+      savedAt:      Date.now()
+    }).catch(function () {});
   });
 }
 
-// Exponer para botón manual (si quisiéramos ponerlo en el perfil)
-window.pwaInstall   = pwaInstall;
-window.pwaDismiss   = pwaDismiss;
-window.pwaAskPush   = _askPushPermission;
+// Exponer globalmente
+window.pwaInstall        = pwaInstall;
+window.pwaDismiss        = pwaDismiss;
+window.pwaAskPush        = _askPushPermission;
+window.pwaSubscribePush  = pwaSubscribePush;
+window.pwaDenyPush       = pwaDenyPush;

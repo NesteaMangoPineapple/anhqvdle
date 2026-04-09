@@ -65,9 +65,10 @@ self.addEventListener('fetch', function (e) {
 
 // Push notifications
 self.addEventListener('push', function (e) {
-  var data = e.data ? e.data.json() : {};
-  var title   = data.title   || 'ANHQVdle';
-  var body    = data.body    || '¡El personaje de hoy ya está esperando!';
+  var data = {};
+  try { data = e.data ? e.data.json() : {}; } catch(err) {}
+  var title   = data.title   || 'ANHQVdle 🏠';
+  var body    = data.body    || '¡El personaje de hoy ya está esperando! ¿Adivinas quién es?';
   var icon    = data.icon    || '/img/apple-touch-icon.png';
   var url     = data.url     || '/clasico.html';
 
