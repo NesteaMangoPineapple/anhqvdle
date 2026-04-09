@@ -502,11 +502,20 @@
 
     /* ── Mobile ── */
     @media (max-width: 640px) {
-      .quien-3d-board { transform: rotateX(15deg); }
-      .quien-3d-row { gap: 3px; margin-bottom: 4px; }
-      .quien-card-3d { width: 46px; height: 58px; }
-      .quien-card-3d img { height: calc(100% - 13px); }
-      .quien-card-3d .card-name { font-size: 0.42rem; line-height: 12px; }
+      .quien-3d-scene {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 14px 6px;
+      }
+      .quien-3d-board {
+        transform: rotateX(0deg);
+        min-width: max-content;
+        margin: 0 auto;
+      }
+      .quien-3d-row { gap: 4px; margin-bottom: 4px; justify-content: flex-start; }
+      .quien-card-3d { width: 52px; height: 66px; }
+      .quien-card-3d img { height: calc(100% - 14px); }
+      .quien-card-3d .card-name { font-size: 0.44rem; line-height: 14px; }
     }
   </style>
 </head>
