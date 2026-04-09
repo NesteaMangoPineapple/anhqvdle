@@ -596,7 +596,7 @@
           <h2 class="quien-play-title">🎭 Quién es Quién</h2>
           <p class="quien-play-desc">Elige un personaje secreto. Tu rival tendrá que adivinarlo haciendo preguntas de sí o no.<br>¡El primero en adivinar gana!</p>
           <button class="quien-play-big-btn" onclick="if(typeof showModeOverlay==='function')showModeOverlay()">🎮 Jugar</button>
-          <button class="quien-play-help-btn" onclick="showQuienTutorial()">❓ Cómo jugar</button>
+          <button class="quien-play-help-btn" onclick="showTutorial()">❓ Cómo jugar</button>
         </div>
         <div class="quien-board-title">
           <h2>Elige tu personaje secreto</h2>
@@ -618,9 +618,38 @@
 
   <!-- Botón de ayuda lateral -->
   <div class="side-actions">
-    <button class="side-btn" onclick="showQuienTutorial()" aria-label="Cómo jugar">
+    <button class="side-btn" onclick="showTutorial()" aria-label="Cómo jugar">
       <span class="side-icon">❓</span>Ayuda
     </button>
+  </div>
+
+  <!-- Tutorial modal -->
+  <div id="tutorial-modal" class="tutorial-overlay" data-key="anhqvdle_tutorial_quien">
+    <div class="tutorial-box">
+      <button class="tutorial-close" onclick="hideTutorial()" aria-label="Cerrar">✕</button>
+      <div class="tutorial-title">¿Cómo jugar?</div>
+      <div class="tutorial-mode-label">Modo Quién es Quién</div>
+      <p class="tutorial-intro">Cada jugador elige un <strong>personaje secreto</strong>. Por turnos, haz preguntas de sí o no para adivinar el del rival.<br>¡El primero en acertar gana!</p>
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <div class="tutorial-num">1</div>
+          <p>Elige tu <strong>personaje secreto</strong> en el tablero. Nadie puede verlo.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">2</div>
+          <p>Por turnos, haz <strong>preguntas de sí o no</strong> (ej: ¿Es mujer? ¿Tiene hijos?). Usa las respuestas para <strong>eliminar personajes</strong> del tablero.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">3</div>
+          <p>Cuando estés seguro, haz clic en la carta y pulsa <strong>Adivinar</strong>. ⚠️ Si fallas, pierdes automáticamente.</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-num">4</div>
+          <p>🤖 <strong>Vs Máquina</strong>: juegas solo contra la IA. &nbsp;👥 <strong>Multijugador</strong>: crea sala y comparte el código.</p>
+        </div>
+      </div>
+      <button class="tutorial-entendido" onclick="hideTutorial()">¡Entendido!</button>
+    </div>
   </div>
 
   <footer>
@@ -654,5 +683,7 @@
   <script src="js/stats-firebase.js"></script>
   <script src="js/quien-online.js"></script>
   <script src="js/quien.js"></script>
+  <script src="js/tutorial.js"></script>
+  <script>initTutorial('anhqvdle_tutorial_quien');</script>
 </body>
 </html>
