@@ -176,6 +176,10 @@ function updateStats(mode, attempts, won) {
   if (typeof StatsFirebase !== 'undefined') {
     StatsFirebase.saveGameResult(mode, attempts, won);
   }
+  // Global anonymous stats (no login required)
+  if (typeof GlobalStats !== 'undefined') {
+    GlobalStats.update(mode, attempts, won);
+  }
 }
 
 function showStatsModal(mode) {

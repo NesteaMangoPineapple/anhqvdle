@@ -2055,6 +2055,77 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 }
 .pwa-banner-close:hover { color: var(--text); }
 
+/* ── Global daily stats panel ───────────────── */
+#global-stats-panel { margin: 32px auto 0; max-width: 480px; }
+
+.gs-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.4s ease;
+}
+.gs-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.gs-summary {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+.gs-stat { text-align: center; }
+.gs-num {
+  display: block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.8rem;
+  color: var(--text);
+  line-height: 1;
+}
+.gs-label {
+  font-size: 0.75rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.gs-bars { display: flex; flex-direction: column; gap: 5px; }
+.gs-bar-row { display: flex; align-items: center; gap: 8px; }
+.gs-bar-label {
+  width: 18px;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.gs-label-x { color: var(--wrong); }
+.gs-bar-track {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  height: 14px;
+  overflow: hidden;
+}
+.gs-bar-fill {
+  height: 100%;
+  background: var(--correct);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  min-width: 2px;
+}
+.gs-fill-x { background: var(--wrong); }
+.gs-bar-count {
+  width: 24px;
+  font-size: 0.75rem;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+
 /* ── Push notification floating button ─────── */
 #pwa-notif-btn {
   position: fixed; bottom: 80px; right: 16px; z-index: 9990;

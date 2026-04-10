@@ -92,6 +92,7 @@
 
     <div id="quote-result"></div>
     <div id="quote-yesterday"></div>
+    <div id="global-stats-panel"></div>
   </main>
 
   <footer>
@@ -148,6 +149,7 @@
   <!-- OneSignal + PWA -->
   <script src="js/pwa.js"></script>
   <script src="js/stats-firebase.js"></script>
+  <script src="js/global-stats.js"></script>
   <script src="data/characters.js"></script>
   <script src="data/quotes.js"></script>
   <script src="js/daily.js"></script>
@@ -155,6 +157,7 @@
   <script src="js/quote.js"></script>
   <script src="js/tutorial.js"></script>
   <script>initTutorial('anhqvdle_tutorial_quote');</script>
+  <script>GlobalStats.load('quote', 'global-stats-panel');</script>
 
   <script>
   if (new URLSearchParams(window.location.search).has('reset')) {

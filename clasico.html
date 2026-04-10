@@ -110,6 +110,7 @@
 
     <div id="classic-result"></div>
     <div id="classic-yesterday"></div>
+    <div id="global-stats-panel"></div>
   </main>
 
   <footer>
@@ -176,12 +177,14 @@
   <!-- OneSignal + PWA -->
   <script src="js/pwa.js"></script>
   <script src="js/stats-firebase.js"></script>
+  <script src="js/global-stats.js"></script>
   <script src="data/characters.js"></script>
   <script src="js/daily.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/classic.js"></script>
   <script src="js/tutorial.js"></script>
   <script>initTutorial('anhqvdle_tutorial_classic');</script>
+  <script>GlobalStats.load('classic', 'global-stats-panel');</script>
   <script>
     document.querySelectorAll('.th-wrap').forEach(th => {
       const tip = th.querySelector('.tooltip');
