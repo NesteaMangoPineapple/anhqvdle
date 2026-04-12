@@ -355,7 +355,9 @@ function _handleTurn(data) {
 
   // Siempre salir del modo setup y mostrar el tablero completo
   _setBoardTitle(null);
-  document.querySelector('.quien-wrap').classList.remove('is-setup');
+  const wrap = document.querySelector('.quien-wrap');
+  wrap.classList.remove('is-setup');
+  wrap.classList.add('is-playing');
   document.getElementById('quien-board').classList.remove('is-setup');
   document.getElementById('quien-start-btn').classList.remove('visible');
   renderBoard();
