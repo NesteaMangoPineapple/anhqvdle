@@ -62,12 +62,24 @@ window.GlobalStats = (function () {
 
     // Claves de distribución según modo
     var keys = (mode === 'classic')
-      ? ['1','2','3','4','5','6','7','8']
+      ? ['1','2','3','4','5','6','7']
       : ['1','2','3','4','5','6p'];
+
+    // Para clásico, agrupar 8+ en una sola barra
+    var extraCount = 0;
+    if (mode === 'classic') {
+      for (var k in data) {
+        if (/^dist_(\d+)$/.test(k)) {
+          var n = parseInt(k.replace('dist_', ''));
+          if (n >= 8) extraCount += data[k];
+        }
+      }
+    }
 
     // Máximo para escalar las barras
     var maxVal = 1;
     keys.forEach(function (k) { maxVal = Math.max(maxVal, data['dist_' + k] || 0); });
+    if (mode === 'classic') maxVal = Math.max(maxVal, extraCount);
     maxVal = Math.max(maxVal, data.dist_X || 0);
 
     function bar(label, count, isX) {
@@ -85,6 +97,7 @@ window.GlobalStats = (function () {
       var label = k.replace('p', '+');
       return bar(label, data['dist_' + k] || 0, false);
     }).join('');
+    if (mode === 'classic') barsHtml += bar('8+', extraCount, false);
     barsHtml += bar('✗', data.dist_X || 0, true);
 
     el.innerHTML =
