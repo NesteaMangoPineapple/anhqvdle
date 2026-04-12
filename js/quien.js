@@ -10,33 +10,36 @@ const Q_GROUPS = [
   {
     label: 'Básico',
     qs: [
-      { id: 'female',    text: '¿Es mujer?',               fn: c => c.gender === 'Femenino' },
-      { id: 'hijos',     text: '¿Tiene hijos?',            fn: c => c.hasChildren },
-      { id: 'principal', text: '¿Es principal?',           fn: c => c.type === 'Principal' },
-      { id: 'espora',    text: '¿Es esporádico?',          fn: c => c.type === 'Esporádico' },
+      { id: 'female',      text: '¿Es mujer?',          fn: c => c.gender === 'Femenino' },
+      { id: 'hijos',       text: '¿Tiene hijos?',       fn: c => c.hasChildren },
+      { id: 'principal',   text: '¿Es principal?',      fn: c => c.type === 'Principal' },
+      { id: 'secundario',  text: '¿Es secundario?',     fn: c => c.type === 'Secundario' },
+      { id: 'espora',      text: '¿Es esporádico?',     fn: c => c.type === 'Esporádico' },
     ]
   },
   {
     label: 'Temporadas',
     qs: [
-      { id: 'seas1',    text: 'T1',           fn: c => c.seasons.includes(1) },
-      { id: 'seas2',    text: 'T2',           fn: c => c.seasons.includes(2) },
-      { id: 'seas3',    text: 'T3',           fn: c => c.seasons.includes(3) },
-      { id: 'seas4',    text: 'T4',           fn: c => c.seasons.includes(4) },
-      { id: 'seas5',    text: 'T5',           fn: c => c.seasons.includes(5) },
-      { id: 'seas_gt3', text: '¿Más de 3T?',  fn: c => c.seasons.length > 3  },
-      { id: 'seas_all', text: '¿Las 5T?',     fn: c => c.seasons.length === 5 },
+      { id: 'seas1',    text: 'T1',              fn: c => c.seasons.includes(1) },
+      { id: 'seas2',    text: 'T2',              fn: c => c.seasons.includes(2) },
+      { id: 'seas3',    text: 'T3',              fn: c => c.seasons.includes(3) },
+      { id: 'seas4',    text: 'T4',              fn: c => c.seasons.includes(4) },
+      { id: 'seas5',    text: 'T5',              fn: c => c.seasons.includes(5) },
+      { id: 'seas_gt3', text: '¿Más de 3T?',     fn: c => c.seasons.length > 3  },
+      { id: 'seas_all', text: '¿Las 5T?',        fn: c => c.seasons.length === 5 },
+      { id: 'seas_one', text: '¿Solo 1 temporada?', fn: c => c.seasons.length === 1 },
     ]
   },
   {
     label: 'Zona',
     qs: [
-      { id: 'piso1',    text: '1er piso',  fn: c => c.floors.some(f => f.startsWith('1º')) },
-      { id: 'piso2',    text: '2º piso',   fn: c => c.floors.some(f => f.startsWith('2º')) },
-      { id: 'piso3',    text: '3er piso',  fn: c => c.floors.some(f => f.startsWith('3º')) },
-      { id: 'atico',    text: 'Ático',     fn: c => c.floors.includes('Ático') },
-      { id: 'porteria', text: 'Portería',  fn: c => c.floors.includes('Portería') },
-      { id: 'visita',   text: 'De visita', fn: c => c.floors.includes('Visita') },
+      { id: 'piso1',      text: '1er piso',        fn: c => c.floors.some(f => f.startsWith('1º')) },
+      { id: 'piso2',      text: '2º piso',         fn: c => c.floors.some(f => f.startsWith('2º')) },
+      { id: 'piso3',      text: '3er piso',        fn: c => c.floors.some(f => f.startsWith('3º')) },
+      { id: 'atico',      text: 'Ático',           fn: c => c.floors.includes('Ático') },
+      { id: 'porteria',   text: 'Portería',        fn: c => c.floors.includes('Portería') },
+      { id: 'visita',     text: 'De visita',       fn: c => c.floors.includes('Visita') },
+      { id: 'multi_piso', text: '¿Varios pisos?',  fn: c => c.floors.length > 1 },
     ]
   },
   {
@@ -48,6 +51,19 @@ const Q_GROUPS = [
       { id: 'p2b', text: '2º B', fn: c => c.floors.includes('2º B') },
       { id: 'p3a', text: '3º A', fn: c => c.floors.includes('3º A') },
       { id: 'p3b', text: '3º B', fn: c => c.floors.includes('3º B') },
+    ]
+  },
+  {
+    label: 'Profesión',
+    qs: [
+      { id: 'occ_student',  text: '¿Ha sido estudiante?',    fn: c => c.occupations.some(o => /estudiante/i.test(o)) },
+      { id: 'occ_jubilado', text: '¿Está jubilado/a?',       fn: c => c.occupations.some(o => /jubilad/i.test(o)) },
+      { id: 'occ_ama',      text: '¿Es ama de casa?',        fn: c => c.occupations.includes('Ama de casa') },
+      { id: 'occ_empresa',  text: '¿Ha sido empresario?',    fn: c => c.occupations.some(o => /empresario/i.test(o)) },
+      { id: 'occ_sinempleo',text: '¿Sin empleo / en paro?',  fn: c => c.occupations.some(o => /sin empleo|en paro|vividor/i.test(o)) },
+      { id: 'occ_arte',     text: '¿Profesión artística?',   fn: c => c.occupations.some(o => /escritor|dibujante|caricaturista|modelo|actriz|cantautor/i.test(o)) },
+      { id: 'occ_videoclub',text: '¿Vinculado al videoclub?',fn: c => c.occupations.some(o => /videoclub/i.test(o)) },
+      { id: 'occ_multi',    text: '¿Más de un trabajo?',     fn: c => c.occupations.length > 1 },
     ]
   },
 ];
