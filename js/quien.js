@@ -67,6 +67,17 @@ let askedByMachine = new Set();
 let phase          = 'idle';
 let turnCount      = 0;
 let busy           = false;
+let _boardBuilt    = false; // el DOM del tablero solo se construye una vez
+
+// ── Precarga de fotos en segundo plano ───────────────
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    CHARACTERS.forEach(function (c) {
+      var img = new Image();
+      img.src = 'img/personajes/' + makeSlug(c.name) + '.webp';
+    });
+  }, 1500); // esperar a que cargue lo importante primero
+});
 
 // ── Init: muestra selector de modo ───────────────────
 function initGame() {
@@ -416,25 +427,33 @@ function renderBoard() {
   const el = document.getElementById('quien-board');
   if (!el) return;
 
-  el.innerHTML = BOARD_ROWS.map(row => `
-    <div class="quien-3d-row">
-      ${row.map(c => {
-        const slug    = makeSlug(c.name);
-        const out     = playerElim.has(c.name);
-        const secret  = phase === 'setup' && mySecret && c.name === mySecret.name;
-        let cls = out ? 'eliminated' : 'active';
-        if (secret) cls += ' my-secret';
-        return `
-          <div class="quien-card-3d ${cls}"
-               data-name="${c.name}"
-               onclick="boardClick('${c.name.replace(/'/g, "\\'")}')">
-            <img src="img/personajes/${slug}.webp" alt="${c.name}"
-              onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none'}">
-            <span class="card-name">${c.name.split(' ')[0]}</span>
-          </div>`;
-      }).join('')}
-    </div>`
-  ).join('');
+  // Construir el DOM solo la primera vez — las fotos quedan cacheadas
+  if (!_boardBuilt) {
+    el.innerHTML = BOARD_ROWS.map(row => `
+      <div class="quien-3d-row">
+        ${row.map(c => {
+          const slug = makeSlug(c.name);
+          return `
+            <div class="quien-card-3d active"
+                 data-name="${c.name}"
+                 onclick="boardClick('${c.name.replace(/'/g, "\\'")}')">
+              <img src="img/personajes/${slug}.webp" alt="${c.name}"
+                onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none'}">
+              <span class="card-name">${c.name.split(' ')[0]}</span>
+            </div>`;
+        }).join('')}
+      </div>`
+    ).join('');
+    _boardBuilt = true;
+  }
+
+  // Solo actualizar clases en llamadas sucesivas
+  el.querySelectorAll('.quien-card-3d').forEach(card => {
+    const name   = card.dataset.name;
+    const out    = playerElim.has(name);
+    const secret = phase === 'setup' && mySecret && name === mySecret.name;
+    card.className = 'quien-card-3d ' + (out ? 'eliminated' : 'active') + (secret ? ' my-secret' : '');
+  });
 }
 
 function updateMyCard(char) {
