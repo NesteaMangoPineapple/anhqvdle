@@ -28,7 +28,10 @@ function initQuote() {
   quoteTarget = getDailyQuote();
   renderYesterdayQuote();
 
-  const saved = loadDailyState(MODE_KEY_Q);
+  let saved = loadDailyState(MODE_KEY_Q);
+  if (saved && saved.character && saved.character !== quoteTarget.character) {
+    saved = null; // estado de otro día (pestaña abierta overnight), descartar
+  }
   if (saved) {
     quoteGuesses = saved.guesses || [];
     quoteDone    = saved.done || false;
@@ -117,10 +120,10 @@ function makeGuessQuote() {
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
     updateStats('quote', quoteGuesses.length, true);
-    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: true });
+    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: true, character: quoteTarget.character });
     showDoneMessageQuote(true, quoteTarget.character, quoteGuesses.length);
   } else {
-    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: false, won: false });
+    saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: false, won: false, character: quoteTarget.character });
     if (quoteGuesses.length >= 2) showHintButton();
     input.focus();
   }

@@ -30,7 +30,10 @@ function initClassic() {
   classicTarget = CHARACTERS[idx];
   renderYesterdayClassic();
 
-  const saved = loadDailyState(MODE_KEY);
+  let saved = loadDailyState(MODE_KEY);
+  if (saved && saved.character && saved.character !== classicTarget.name) {
+    saved = null; // estado de otro día (pestaña abierta overnight), descartar
+  }
   if (saved) {
     classicGuesses = saved.guesses || [];
     classicResults = saved.results || [];
@@ -103,10 +106,10 @@ function makeGuess() {
     input.disabled = true;
     document.getElementById('search-wrap').style.display = 'none';
     updateStats('classic', classicGuesses.length, true);
-    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: true, won: true });
+    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: true, won: true, character: classicTarget.name });
     showDoneMessage('classic-result', true, classicTarget.name, classicGuesses.length);
   } else {
-    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: false, won: false });
+    saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: false, won: false, character: classicTarget.name });
     input.focus();
   }
 }
