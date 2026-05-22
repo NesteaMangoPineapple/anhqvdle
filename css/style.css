@@ -1144,6 +1144,9 @@ nav a.nav-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(240,192,32,0.2);
+  border-radius: 16px;
 }
 .about-title {
   font-family: 'Bebas Neue', cursive;
@@ -1676,6 +1679,92 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 .mode-card-badge.done-won  { background: rgba(22,163,74,0.2);  color: #4ade80; border: 1px solid rgba(22,163,74,0.5); }
 .mode-card-badge.done-lost { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.4); }
 .mode-card-badge.in-progress { background: rgba(240,192,32,0.15); color: var(--accent); border: 1px solid rgba(240,192,32,0.4); }
+
+/* ══════════════════════════════════════
+   HOME — sección Explora el edificio
+══════════════════════════════════════ */
+.explore-section {
+  max-width: 960px;
+  margin: 32px auto 0;
+  text-align: left;
+}
+
+.explore-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  color: var(--text2);
+  margin-bottom: 12px;
+  padding-left: 2px;
+}
+
+.explore-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .explore-cards { grid-template-columns: 1fr; }
+}
+
+.explore-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.explore-card:hover {
+  background: rgba(240,192,32,0.08);
+  border-color: rgba(240,192,32,0.35);
+  transform: translateY(-2px);
+}
+
+.explore-card-soon {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.explore-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.explore-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.explore-card-desc {
+  font-size: 0.78rem;
+  color: var(--text2);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.explore-soon-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  background: rgba(240,192,32,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(240,192,32,0.3);
+  padding: 1px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
 
 /* ══════════════════════════════════════
    KOFI POPUP

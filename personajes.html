@@ -242,6 +242,9 @@
     <div class="personajes-page">
       <h1 class="personajes-heading">Los vecinos de Desengaño 21</h1>
       <p class="personajes-sub">Todos los personajes de <strong>Aquí No Hay Quien Viva</strong> y sus fichas completas</p>
+      <div style="text-align:center;margin-bottom:20px">
+        <a href="/" class="play-again-btn" style="display:inline-block;text-decoration:none;font-size:0.85rem">← Volver al inicio</a>
+      </div>
 
       <div class="personajes-controls">
         <div class="filter-tabs">
@@ -277,6 +280,13 @@
   </footer>
 
   <script src="data/characters.js"></script>
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pwa.js"></script>
   <script>
     const CHAR_DESC = {
       "Emilio Delgado":      "Portero del edificio Desengaño 21 y columna vertebral proletaria de la comunidad. Cotilla, entrometido e incompetente en las labores de mantenimiento, se autodefine con orgullo como «un profesional de la información». Su frase «un poquito de por favor» —nacida de un error real del actor durante los ensayos— se convirtió en la más recordada de la serie. Cierra la historia de la serie al casarse con Belén López en el último capítulo.",
