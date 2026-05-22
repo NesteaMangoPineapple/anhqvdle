@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personajes de Aquí No Hay Quien Viva – ANHQVdle</title>
+  <meta name="description" content="Todos los personajes del edificio Desengaño 21 de Aquí No Hay Quien Viva: fichas, pisos, temporadas y curiosidades de cada vecino de la serie.">
+  <link rel="canonical" href="https://anhqvdle.es/personajes.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://anhqvdle.es/personajes.html">
+  <meta property="og:title" content="Personajes de Aquí No Hay Quien Viva – ANHQVdle">
+  <meta property="og:description" content="Todos los personajes del edificio Desengaño 21: fichas, pisos, temporadas y curiosidades de cada vecino de la serie.">
+  <meta property="og:image" content="https://anhqvdle.es/img/og-image.jpg">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="ANHQVdle">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Personajes de Aquí No Hay Quien Viva – ANHQVdle">
+  <meta name="twitter:description" content="Todos los personajes del edificio Desengaño 21: fichas, pisos, temporadas y curiosidades de cada vecino.">
+  <meta name="twitter:image" content="https://anhqvdle.es/img/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Personajes de Aquí No Hay Quien Viva",
+    "description": "Fichas completas de todos los personajes del edificio Desengaño 21 de la serie Aquí No Hay Quien Viva.",
+    "inLanguage": "es",
+    "url": "https://anhqvdle.es/personajes.html",
+    "publisher": { "@type": "Organization", "name": "ANHQVdle", "url": "https://anhqvdle.es" }
+  }
+  </script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1251819701012590" crossorigin="anonymous"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BGR4GH8P7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9BGR4GH8P7');
+  </script>
+  <style>
+    .personajes-page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .personajes-heading {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 4px;
+      text-align: center;
+      text-shadow: 0 0 30px rgba(240,192,32,0.3);
+    }
+
+    .personajes-sub {
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .personajes-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-tab {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .filter-tab:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+    .filter-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    .personajes-search {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      padding: 8px 14px;
+      border-radius: 20px;
+      outline: none;
+      width: 220px;
+      transition: border-color 0.15s;
+    }
+
+    .personajes-search:focus { border-color: var(--accent); }
+    .personajes-search::placeholder { color: var(--text2); }
+
+    .personajes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .char-card {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(240,192,32,0.2);
+      border-radius: 14px;
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+
+    .char-card:hover {
+      background: rgba(0,0,0,0.7);
+      border-color: rgba(240,192,32,0.45);
+      transform: translateY(-2px);
+    }
+
+    .char-card-top {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .char-photo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 15%;
+      border: 2px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .char-card-info { flex: 1; min-width: 0; }
+
+    .char-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .char-type-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .badge-Principal  { background: rgba(240,192,32,0.2); color: var(--accent); }
+    .badge-Secundario { background: rgba(255,255,255,0.1); color: var(--text2); }
+    .badge-Esporádico { background: rgba(150,150,150,0.1); color: rgba(255,255,255,0.3); }
+
+    .char-meta {
+      font-size: 0.75rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .char-meta span { margin-right: 6px; }
+
+    .char-desc {
+      font-size: 0.82rem;
+      color: var(--text2);
+      line-height: 1.6;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 10px;
+    }
+
+    .char-occupations {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    .no-results {
+      text-align: center;
+      color: var(--text2);
+      padding: 60px 0;
+      font-size: 0.9rem;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" style="text-decoration:none">
+        <div class="logo"><span>ANHQV</span>dle</div>
+      </a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="/"            class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"  class="nav-btn">💬 Frases</a>
+      <a href="quiz.html"    class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"   class="nav-btn">🎭 Quién es Quién</a>
+    </nav>
+    <span class="auth-nav-item"></span>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
+  </header>
+
+  <main>
+    <div class="personajes-page">
+      <h1 class="personajes-heading">Los vecinos de Desengaño 21</h1>
+      <p class="personajes-sub">Todos los personajes de <strong>Aquí No Hay Quien Viva</strong> y sus fichas completas</p>
+
+      <div class="personajes-controls">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="Todos">Todos</button>
+          <button class="filter-tab" data-filter="Principal">Principales</button>
+          <button class="filter-tab" data-filter="Secundario">Secundarios</button>
+          <button class="filter-tab" data-filter="Esporádico">Esporádicos</button>
+        </div>
+        <input class="personajes-search" type="text" placeholder="Buscar personaje…" id="search-personajes" autocomplete="off">
+      </div>
+
+      <div class="personajes-grid" id="personajes-grid"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+    <p style="margin-top:8px">
+      <a href="nosotros.html"  style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Nosotros</a>
+      &nbsp;·&nbsp;
+      <a href="privacidad.html" style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Privacidad</a>
+      &nbsp;·&nbsp;
+      <a href="serie.html"     style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">La serie</a>
+    </p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/anhqvdle/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@anhqvdle" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="data/characters.js"></script>
+  <script>
+    const CHAR_DESC = {
+      "Emilio Delgado":      "Portero del edificio Desengaño 21 y columna vertebral proletaria de la comunidad. Cotilla, entrometido e incompetente en las labores de mantenimiento, se autodefine con orgullo como «un profesional de la información». Su frase «un poquito de por favor» —nacida de un error real del actor durante los ensayos— se convirtió en la más recordada de la serie. Cierra la historia de la serie al casarse con Belén López en el último capítulo.",
+      "Mariano Delgado":     "Padre de Emilio y representante máximo de la filosofía del mínimo esfuerzo. Vendedor de enciclopedias y autoproclamado «metrosexual y pensador», su sabiduría popular —siempre precedida de un condescendiente «tú, ignorante de la vida…»— es tan inverosímil como irresistible. Sus reflexiones filosóficas sin base alguna y su incapacidad para trabajar de verdad son fuente constante de humor.",
+      "Vicenta Benito":      "Hermana mayor de Marisa y pieza clave de «Radio Patio». Jubilada del 1º A, es ingenua y literalista hasta extremos cómicos: interpreta todo al pie de la letra, lo que genera situaciones de enredo constante. Su bondad sin límites contrasta con el cinismo de su hermana, formando uno de los dúos cómicos más queridos de la serie.",
+      "Marisa Benito":       "Hermana de Vicenta y directora de informativos de «Radio Patio», la red de cotilleos del edificio. Fumadora empedernida, cínica y directa, es la contraparte perfecta de la inocencia de Vicenta. Su capacidad para obtener y difundir información comprometida de todos sus vecinos es legendaria, y su sentido del humor negro nunca falla.",
+      "Concha de la Fuente": "Propietaria del 3º B y la vecina más combativa del edificio. Su grito de guerra «¡Yo no pago otra derrama!» y su desprecio sistemático hacia el presidente Cuesta —al que llama habitualmente «chorizo»— la convirtieron en uno de los personajes más queridos de la serie. Enérgica, escandalosa y con una opinión muy clara sobre todo, es la voz del sentido común del edificio, aunque expresada siempre a gritos.",
+      "Mauri Hidalgo":       "Periodista neurótico del 1º B, forma pareja con Fernando Navarro en la primera representación normalizada de una pareja homosexual protagonista en una serie española de máxima audiencia. Celoso, inseguro y con tendencia a dramatizar cualquier situación, su amor por Fernando es el hilo emocional más sólido de toda la serie. Su personaje evolucionó hasta convertirse en padre adoptivo de Ezequiel.",
+      "Fernando Navarro":    "Abogado del 1º B y pareja de Mauri. Guapo, tranquilo y con una carrera profesional en ascenso, representa el polo opuesto a la neurosis de Mauri. Viajó a Londres durante varias temporadas para desarrollar su carrera, lo que puso a prueba su relación. Su regreso y el proceso de adopción de Ezequiel marcaron los momentos más emotivos de la serie.",
+      "Bea Villarejo":       "Veterinaria que llegó al edificio en la segunda temporada, instalando su consulta en el ático. Práctica, directa y con los pies en el suelo, fue la pareja de Fernando Navarro antes de que éste regresara con Mauri. Acabó formando parte del núcleo estable del 1º B y su relación con todos los vecinos fue siempre de confianza y cercanía.",
+      "Juan Cuesta":         "Presidente de la comunidad de vecinos y maestro de primaria. Sus juntas de vecinos, siempre inauguradas con un solemne «Queridos convecinos», terminan invariablemente en caos absoluto. Paradigma de la clase media española cuya única fuente de poder real es su cargo vecinal, vive atrapado entre sus aspiraciones de autoridad y su incapacidad total para ejercerla. Tras la marcha de Paloma, rehízo su vida con Isabel Ruiz.",
+      "Paloma Hurtado":      "Esposa de Juan y la verdadera fuerza detrás del trono durante las dos primeras temporadas. Manipuladora, ambiciosa y con un delirio de grandeza desproporcionado para una vecina del segundo piso, su sueño eterno era abandonar el piso de propiedad y mudarse a un chalé. Su sentencia «¡Y punto en boca!» fue la última frase que pronunció antes de caer accidentalmente al patio interior.",
+      "Natalia Cuesta":      "Hija mayor de Juan y Paloma, estudiante de psicología con una vida amorosa especialmente turbulenta. Su arco argumental más memorable fue el de madre de alquiler, que generó uno de los debates más intensos del edificio. Impulsiva y con criterio propio, representa a la generación más joven de la familia Cuesta.",
+      "José Miguel Cuesta":  "Hijo de Juan y Paloma, adolescente cuya mayor preocupación en la vida es no tener que madurar nunca. Adicto a los videojuegos y con una capacidad extraordinaria para evitar cualquier responsabilidad, es el catalizador involuntario de muchos enredos. Su relación con su padre Juan es una fuente constante de situaciones cómicas.",
+      "Isabel Ruiz":         "Conocida en el edificio como «La Hierbas» por su obsesión con las plantas medicinales y las terapias alternativas. Hipocondríaca empedernida, su protocolo ante cualquier situación de estrés pasa siempre por anunciar que «se está hiperventilando». Llegó al edificio como esposa de Andrés Guerra y acabó siendo la segunda pareja de Juan Cuesta, aportando una nueva dinámica familiar al 2º A.",
+      "Yago":                "Ecologista cubano apodado «El Sabroso» que irrumpió en el ático en la cuarta temporada con una personalidad exuberante y una filosofía de vida tan contagiosa como impráctica. Su llegada aportó una energía nueva al edificio y sus debates con los vecinos sobre sostenibilidad y medio ambiente contrastaban de forma hilarante con la cotidianeidad del inmueble.",
+      "Andrés Guerra":       "Empresario y estafador que llegó al 2º B en la segunda temporada con su familia y sacudió el equilibrio del edificio. Sus negocios turbios y su tendencia a enredar a sus vecinos en sus tramas le convirtieron en uno de los antagonistas más entretenidos de la serie. Padre de Pablo y Álex.",
+      "Pablo Guerra":        "Hijo mayor de Andrés, estudiante con aspiraciones artísticas y una actitud más reflexiva que la del resto de su familia. Su transición desde el 2º B hasta el ático reflejó su búsqueda de independencia. Mantuvo relaciones con varias vecinas del edificio a lo largo de las temporadas.",
+      "Álex Guerra":         "Hijo menor de Andrés y el más rebelde de la familia Guerra. Conocido por sus travesuras, su actitud desafiante y su capacidad para meterse en líos sin aparente esfuerzo. Su presencia en el edificio fue breve pero intensa, y dejó huella en varios vecinos.",
+      "Higinio Heredia":     "Carpintero que lidera la familia Heredia, los nuevos inquilinos del 2º B en la quinta temporada. Su llegada, junto a su numerosa familia, representó la irrupción de la clase obrera enriquecida en el edificio y generó un choque cultural intenso, especialmente con Juan Cuesta.",
+      "Mamen Heredia":       "Esposa de Higinio y matriarca de la familia Heredia. Su llegada al edificio en la quinta temporada junto al resto de la familia aportó una nueva dinámica de clase al inmueble, contrastando con los valores más conservadores de los vecinos establecidos.",
+      "Candela Heredia":     "Hija de los Heredia, estudiante y la más adaptable de la familia al entorno del edificio Desengaño 21. Su juventud y carácter abierto le permitieron integrarse con relativa facilidad entre los demás jóvenes del inmueble.",
+      "Raquel Heredia":      "Hija de los Heredia, con una actitud más despreocupada e independiente que su hermana Candela. Su falta de empleo fijo y su forma de afrontar la vida generaron situaciones cómicas con los vecinos más convencionales del edificio.",
+      "Moncho Heredia":      "Hermano de Higinio y el parásito oficial de la familia Heredia. Sin empleo fijo y con vocación de vividor, se instaló en el 2º B aprovechando la generosidad de su hermano. Sus fracasos empresariales y su talento para no hacer nada son su principal aportación cómica.",
+      "Lucía Álvarez":       "Vecina del 3º A y empleada en una empresa constructora propiedad de su padre Rafael. Independiente y con carácter, mantuvo una relación central con Roberto Alonso a lo largo de varias temporadas. Su partida a Somalia en misión humanitaria en la cuarta temporada marcó el final de su arco argumental en la serie.",
+      "Roberto Alonso":      "Arquitecto del 3º A con una vocación paralela de dibujante de cómics y caricaturista que nunca terminaba de despegar. Enamorado de Lucía Álvarez, fue uno de los personajes que más pisos habitó en el edificio, pasando por el 3º A, el 2º B y el ático. Su relación con el arte y su imposibilidad de decidirse entre la arquitectura y el cómic definieron su arco.",
+      "Carlos de Haro":      "Empresario adinerado, propietario del videoclub del edificio y del piso del 3º A durante varias temporadas. Excéntrico y con una relación intermitente con Lucía Álvarez, su vida sentimental y empresarial fue siempre fuente de tramas. Su ingreso en una clínica psiquiátrica en la cuarta temporada marcó su salida de la serie.",
+      "Nieves Cuesta":       "Hermana de Juan Cuesta, apodada «La Chunga» por sus vecinos. Llegó al edificio en la tercera temporada y su carácter agresivo y poco diplomático contrastaba con el de su hermano, generando un tipo de caos diferente pero igual de efectivo.",
+      "Rafael Álvarez":      "Padre de Lucía y empresario de la construcción. Sus apariciones en el edificio solían estar relacionadas con los asuntos sentimentales o laborales de su hija, y su relación con los demás vecinos nunca fue especialmente cómoda.",
+      "Carmen Villanueva":   "Profesora universitaria apodada «La Rottenmeier» por su carácter estricto, perfeccionista y su tendencia a corregir a todo el mundo. Llegó al edificio en la tercera temporada y sus interacciones con los vecinos menos cultivados fueron siempre una fuente de humor basado en el choque de clases.",
+      "Belén López":         "Inquilina del 3º B y el avatar de la precariedad laboral de toda una generación. Encadena trabajos sin futuro —camarera, modelo, empleada de moda, actriz de anuncios— y relaciones fallidas con una resignación que ella misma resume con «voy a acabar sola y amargada». Sin embargo, su cinismo esconde una vitalidad y un humor que la convierten en el personaje más cercano de la serie. Protagonizó el final feliz al casarse con Emilio.",
+      "Alicia Sanz":         "Vecina del 3º B y compañera de piso de Belén durante las primeras temporadas. Sin empleo fijo y con una vida amorosa accidentada, su marcha a Nueva York al final de la tercera temporada dejó a Belén sola en el piso y abrió el camino para los nuevos inquilinos.",
+      "Ana":                 "Azafata de vuelo que vivió en el 3º B durante las temporadas tres, cuatro y cinco. Su trabajo le obligaba a estar frecuentemente fuera, lo que hacía que sus apariciones en el edificio fueran siempre bienvenidas por los vecinos.",
+      "María Jesús":         "Ama de casa del 3º B con una vida doméstica que contrasta con el caos habitual del piso. Su estabilidad y sencillez aportaban un contrapunto a las tramas más disparatadas de sus compañeras de planta.",
+      "Paco":                "Empleado del videoclub de la planta baja y uno de los personajes más queridos de la serie. Tranquilo, bondadoso y ajeno a los conflictos, es el único vecino del edificio que nunca genera enemigos. Vive en el ático y su amistad con todos los vecinos le convierte en el nexo de unión del inmueble.",
+      "Diego Álvarez":       "Hermano de Lucía que llegó al edificio en la tercera temporada. Su presencia aportó una perspectiva externa a las dinámicas del edificio, aunque su paso por Desengaño 21 fue relativamente breve.",
+      "Armando Cortés":      "Primer inquilino del 2º B junto a su familia en la primera temporada. Su paso por el edificio fue corto pero sirvió para establecer las dinámicas de ese piso antes de la llegada de los Guerra.",
+      "Gerardo":             "El hombre para todo, siempre disponible para cualquier trabajo en el edificio: instalar alarmas, exterminar plagas, arreglar averías, montar duchas, trabajar en seguridad… Cada vez que aparece, lo hace con un nombre y un trabajo distintos, aunque su incompetencia es siempre la misma.",
+      "Padre Miguel":        "El cura del barrio y confesor habitual de los vecinos más devotos del edificio. Su paciencia con los pecados de los vecinos de Desengaño 21 es prácticamente ilimitada, aunque su afición secreta al canto de cantautor le ha generado algún que otro apuro.",
+      "Gregorio":            "Administrador de fincas que gestionó el edificio Desengaño 21 durante las temporadas tres y cuatro. Sus apariciones solían coincidir con conflictos sobre gastos comunitarios, derramas o problemas legales del inmueble.",
+      "Hermana Esperanza":   "Monja con una trayectoria vital sorprendentemente variada: cuidadora, locutora de radio… Su paso por el 1º B junto a Mauri y Fernando generó situaciones inesperadas y su carácter fuerte la hizo muy popular entre los fans.",
+      "Daniel Rubio":        "Estudiante que vivió en el 2º B durante la primera temporada. Su presencia fue parte del ambiente juvenil del piso compartido de esa planta en los inicios de la serie.",
+      "Rebeca":              "Estudiante del 2º B en la primera temporada y compañera de piso de Daniel. Su paso por Desengaño 21 fue breve pero dejó su huella en las primeras tramas del edificio.",
+      "Ezequiel Hidalgo":    "El hijo adoptivo de Mauri y Fernando, un niño cuya adopción fue uno de los arcos argumentales más emotivos de las últimas temporadas. Su llegada al 1º B cambió para siempre la dinámica de la pareja y del edificio.",
+      "Rocío":               "La cartera del edificio, personaje recurrente de la segunda temporada. Sus visitas al portal siempre traían noticias, facturas o situaciones que desencadenaban nuevos enredos entre los vecinos.",
+      "José María":          "Personaje esporádico de la quinta temporada con una vida sin empleo estable. Sus apariciones en el edificio solían estar relacionadas con alguna trama secundaria de los últimos capítulos.",
+      "Abel":                "Canguro que trabajó cuidando a los niños del edificio durante las temporadas tres y cuatro. Su relación con las familias del inmueble le llevó a involucrarse en más de un enredo vecinal.",
+      "Marta «La Pantumaca»": "Presidenta de comunidad de vecinos de otro edificio que acabó cruzando su camino con los vecinos de Desengaño 21. Su manera de gestionar —o más bien de no gestionar— los conflictos comunitarios la convirtió en un personaje memorable pese a su carácter esporádico."
+    };
+
+    function toSlug(name) {
+      return name.toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+
+    let activeFilter = 'Todos';
+    let searchQuery  = '';
+
+    function render() {
+      const grid = document.getElementById('personajes-grid');
+      const visible = CHARACTERS.filter(c => {
+        if (activeFilter !== 'Todos' && c.type !== activeFilter) return false;
+        if (searchQuery && !c.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+        return true;
+      });
+
+      if (visible.length === 0) {
+        grid.innerHTML = '<p class="no-results">No se encontró ningún personaje.</p>';
+        return;
+      }
+
+      grid.innerHTML = visible.map(c => {
+        const slug    = toSlug(c.name);
+        const seas    = c.seasons.map(s => 'T' + s).join(' · ');
+        const floors  = c.floors.join(', ');
+        const occs    = c.occupations.join(', ');
+        const desc    = CHAR_DESC[c.name] || '';
+        return `
+          <article class="char-card">
+            <div class="char-card-top">
+              <img class="char-photo"
+                src="img/personajes/${slug}.webp"
+                alt="Foto de ${c.name}"
+                onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.opacity='0.2'}">
+              <div class="char-card-info">
+                <div class="char-name">${c.name}</div>
+                <span class="char-type-badge badge-${c.type}">${c.type}</span>
+                <div class="char-meta">
+                  <span>🏠 ${floors}</span><br>
+                  <span>📺 ${seas}</span>
+                </div>
+              </div>
+            </div>
+            ${desc ? `<p class="char-desc">${desc}</p>` : ''}
+            <div class="char-occupations">${occs}</div>
+          </article>`;
+      }).join('');
+    }
+
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeFilter = this.dataset.filter;
+        render();
+      });
+    });
+
+    document.getElementById('search-personajes').addEventListener('input', function () {
+      searchQuery = this.value;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
