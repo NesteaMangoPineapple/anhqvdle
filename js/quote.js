@@ -153,6 +153,10 @@ function showDoneMessageQuote(won, charName, attempts) {
   const day = getDayNumber();
   startCountdown('countdown-timer-q');
   const imgPath = `img/personajes/${toSlug(charName)}.webp`;
+  const streak  = (typeof getStreakData === 'function') ? getStreakData() : { count: 0 };
+  const streakHtml = streak.count >= 1
+    ? `<div class="result-streak">🔥 <strong>${streak.count}</strong> día${streak.count !== 1 ? 's' : ''} seguido${streak.count !== 1 ? 's' : ''}</div>`
+    : '';
   el.innerHTML = `
     <div class="result-banner result-banner-quote">
       <p class="result-day-num">#${day}</p>
@@ -162,6 +166,7 @@ function showDoneMessageQuote(won, charName, attempts) {
       <p class="result-sub">${won
         ? `Lo adivinaste en <strong>${attempts}</strong> intento${attempts !== 1 ? 's' : ''}`
         : 'No lo has adivinado esta vez...'}</p>
+      ${streakHtml}
       <div class="result-character">
         <div class="result-avatar">
           <img src="${imgPath}" alt="${charName}"

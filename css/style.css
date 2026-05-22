@@ -1738,6 +1738,17 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   text-transform: uppercase;
 }
 
+.result-streak {
+  display: inline-block;
+  background: rgba(255,90,0,0.12);
+  border: 1px solid rgba(255,90,0,0.35);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 0.85rem;
+  color: #ff6400;
+  margin: 8px 0 4px;
+}
+
 /* ══════════════════════════════════════
    HOME — sección Explora el edificio
 ══════════════════════════════════════ */
