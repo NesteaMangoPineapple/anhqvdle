@@ -1898,10 +1898,21 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   align-items: center;
 }
 
+.home-sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.home-sub-row .home-sub { margin: 0; }
+.home-sub-row .streak-badge { margin: 0; }
+
 .streak-header-badge {
   position: fixed;
   top: 14px;
-  right: 170px;
+  right: 185px;
   z-index: 500;
   display: none;
   align-items: center;
