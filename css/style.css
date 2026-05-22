@@ -1915,7 +1915,7 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 }
 .home-sub-row .streak-flame { font-size: 0.85rem; }
 .home-sub-row .streak-num   { font-size: 0.85rem; }
-.home-sub-row .streak-text  { font-size: 0.5rem; letter-spacing: 1px; }
+.home-sub-row .streak-text  { display: none; }
 
 .streak-header-badge {
   position: fixed;
