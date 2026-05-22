@@ -76,6 +76,15 @@
     <div class="home-panel">
       <h1 class="home-title">¡Bienvenido al portal de <span style="color:var(--accent)">Desengaño 21</span>!</h1>
       <p class="home-sub">¿Adivinarás al vecino de hoy?</p>
+
+      <div class="streak-badge" id="streak-badge" style="display:none">
+        <span class="streak-flame">🔥</span>
+        <div class="streak-info">
+          <span class="streak-num" id="streak-num">0</span>
+          <span class="streak-text" id="streak-text">días seguidos</span>
+        </div>
+      </div>
+
       <div class="mode-cards">
         <a href="clasico.html" class="mode-card">
           <span class="mode-icon">🎬</span>
@@ -183,6 +192,30 @@
         }
         if (badge.className) card.appendChild(badge);
       });
+    } catch(e) {}
+  })();
+  </script>
+  <script src="js/streak.js"></script>
+  <script>
+  (function() {
+    try {
+      const pad = n => String(n).padStart(2, '0');
+      const now  = new Date();
+      const today = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+      const yest  = new Date(now); yest.setDate(yest.getDate() - 1);
+      const yesterStr = `${yest.getFullYear()}${pad(yest.getMonth()+1)}${pad(yest.getDate())}`;
+
+      const data  = getStreakData();
+      const badge = document.getElementById('streak-badge');
+      const numEl = document.getElementById('streak-num');
+      const txtEl = document.getElementById('streak-text');
+
+      if (data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr)) {
+        numEl.textContent = data.count;
+        txtEl.textContent = data.count === 1 ? 'día seguido' : 'días seguidos';
+        if (data.lastDate === yesterStr) badge.classList.add('pending');
+        badge.style.display = 'inline-flex';
+      }
     } catch(e) {}
   })();
   </script>
