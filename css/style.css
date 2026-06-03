@@ -2104,9 +2104,10 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   gap: 4px;
   border-radius: 30px;
 }
-.home-sub-row .streak-flame { font-size: 0.85rem; }
-.home-sub-row .streak-num   { font-size: 0.85rem; }
+.home-sub-row .streak-flame { font-size: 0.85rem; line-height: 1; }
+.home-sub-row .streak-num   { font-size: 0.85rem; line-height: 1; }
 .home-sub-row .streak-text  { display: none; }
+.home-sub-row .streak-info  { flex-direction: row; align-items: center; gap: 2px; }
 
 .streak-header-badge {
   position: fixed;
