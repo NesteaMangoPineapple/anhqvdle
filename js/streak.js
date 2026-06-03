@@ -56,7 +56,7 @@ function triggerStreakAnimation(count) {
           color:#ff6400;
           letter-spacing:4px;
           line-height:1;
-          margin-top:8px;
+          margin-top:24px;
           animation: streakNumPop 0.5s ease forwards;
           animation-delay: 0.6s;
           opacity:0;
