@@ -40,8 +40,9 @@
       <a href="clasico.html" class="nav-btn">🎬 Clásico</a>
       <a href="frases.html"  class="nav-btn">💬 Frases</a>
       <a href="quiz.html"    class="nav-btn">🪞 ¿Quién eres?</a>
-      <a href="quien.html"   class="nav-btn">🎭 Quién es Quién</a>
-      <a href="ranking.html" class="nav-btn active">🏆 Ranking</a>
+      <a href="quien.html"    class="nav-btn">🎭 Quién es Quién</a>
+      <a href="impostor.html" class="nav-btn">🕵️ Impostor</a>
+      <a href="ranking.html"  class="nav-btn active">🏆 Ranking</a>
     </nav>
     <span class="auth-nav-item"></span>
   </header>
@@ -51,8 +52,9 @@
     <p class="game-desc">Los mejores jugadores de Desengaño 21 en cada modo de juego.</p>
 
     <div class="ranking-tabs">
-      <button class="rtab active" data-mode="classic" onclick="loadTab(this,'classic')">🎬 Clásico</button>
-      <button class="rtab"        data-mode="quote"   onclick="loadTab(this,'quote')">💬 Frases</button>
+      <button class="rtab active" data-mode="classic"   onclick="loadTab(this,'classic')">🎬 Clásico</button>
+      <button class="rtab"        data-mode="quote"     onclick="loadTab(this,'quote')">💬 Frases</button>
+      <button class="rtab"        data-mode="impostor"  onclick="loadTab(this,'impostor')">🕵️ Impostor</button>
     </div>
 
     <div id="ranking-content" class="ranking-content">
@@ -117,7 +119,7 @@
       var rows = Object.entries(data).map(function (entry) {
         return Object.assign({ uid: entry[0] }, entry[1]);
       });
-      var isDaily = (mode === 'classic' || mode === 'quote');
+      var isDaily = (mode === 'classic' || mode === 'quote' || mode === 'impostor');
 
       // Mínimo 5 victorias para aparecer en el ranking diario
       if (isDaily) rows = rows.filter(function (r) { return (r.won || 0) >= 5; });

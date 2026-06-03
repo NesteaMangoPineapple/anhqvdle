@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:es.wikipedia.org)",
+      "WebFetch(domain:seriesespanolas.fandom.com)",
+      "WebFetch(domain:anhqv.eu)",
+      "Bash(powershell -Command \"node -e \"\"console.log\\(''''ok''''\\)\"\"\")",
+      "Bash(powershell -Command \":*)",
+      "Bash(grep -n \"firebase-app-compat\\\\|firebase-database-compat\\\\|firebase-auth-compat\" /c/Users/Yeremy/Documents/Proyectos/anhqvdle/*.html)",
+      "WebSearch",
+      "WebFetch(domain:es-academic.com)",
+      "WebFetch(domain:anhqv.es)",
+      "WebFetch(domain:www.tvmaze.com)",
+      "WebFetch(domain:lodelosvecinos.es)",
+      "WebFetch(domain:www.imdb.com)",
+      "WebFetch(domain:x.com)",
+      "WebFetch(domain:www.hbomax.com)",
+      "WebFetch(domain:filmeu.es)",
+      "WebFetch(domain:laficharosadeltrivial.blogspot.com)",
+      "WebFetch(domain:www.sensacine.com)",
+      "WebFetch(domain:www.movistarplus.es)",
+      "WebFetch(domain:rebelcry.com)",
+      "WebFetch(domain:www.anhqv-stats.es)",
+      "WebFetch(domain:support.google.com)"
+    ]
+  }
+}
