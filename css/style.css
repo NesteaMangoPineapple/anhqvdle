@@ -2105,8 +2105,8 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   border-radius: 30px;
 }
 .home-sub-row .streak-info  { display: contents; }
-.home-sub-row .streak-flame { font-size: 0.9rem; transform: translateY(1px); }
-.home-sub-row .streak-num   { font-size: 0.9rem; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; }
+.home-sub-row .streak-flame { font-size: 0.72rem; }
+.home-sub-row .streak-num   { font-size: 0.88rem; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; }
 .home-sub-row .streak-text  { display: none; }
 
 .streak-header-badge {
