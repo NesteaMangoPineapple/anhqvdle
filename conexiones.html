@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conexiones – ANHQVdle</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    #cnx-board { max-width: 620px; margin: 0 auto; padding: 0 8px; }
+
+    .cnx-header { text-align: center; margin-bottom: 16px; }
+    .cnx-instruction { color: var(--text2); font-size: 0.88rem; margin-bottom: 10px; }
+
+    .cnx-lives { display: flex; gap: 6px; justify-content: center; }
+    .cnx-life { font-size: 1.2rem; color: var(--accent); transition: color 0.3s; }
+    .cnx-life.used { color: rgba(255,255,255,0.15); }
+
+    /* Grupo resuelto */
+    .cnx-solved-group {
+      border-radius: 12px; padding: 12px 16px; margin-bottom: 10px;
+      animation: slideUp 0.3s ease;
+    }
+    .cnx-solved-label {
+      font-family: 'Bebas Neue', cursive; font-size: 1rem;
+      letter-spacing: 2px; margin-bottom: 10px; text-align: center;
+    }
+    .cnx-solved-chars {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .cnx-solved-char {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      width: 70px;
+    }
+    .cnx-solved-char img {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; object-position: 50% 15%;
+    }
+    .cnx-solved-char span { font-size: 0.62rem; text-align: center; color: var(--text); line-height: 1.2; }
+
+    /* Grid 4×3 */
+    .cnx-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 480px) {
+      .cnx-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .cnx-card {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 10px 6px 8px;
+      cursor: pointer; user-select: none; transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cnx-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(240,192,32,0.3); }
+    .cnx-card.selected { background: rgba(240,192,32,0.18); border-color: var(--accent); }
+    .cnx-card.shake { animation: shake 0.35s ease; }
+    .cnx-card img {
+      width: 66px; height: 66px; border-radius: 50%;
+      object-fit: cover; object-position: 50% 15%;
+    }
+    .cnx-card span { font-size: 0.64rem; color: var(--text); text-align: center; line-height: 1.2; }
+
+    .cnx-action-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 4px 0 12px;
+    }
+    .cnx-sel-count { font-size: 0.82rem; color: var(--text2); }
+
+    .cnx-toast {
+      text-align: center; background: rgba(240,192,32,0.15);
+      border: 1px solid rgba(240,192,32,0.4); border-radius: 20px;
+      padding: 8px 20px; font-size: 0.85rem; color: var(--accent);
+      margin-top: 8px; animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-5px); }
+      75%      { transform: translateX(5px); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" style="text-decoration:none"><div class="logo"><span>ANHQV</span>dle</div></a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="/"             class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html"  class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"   class="nav-btn">💬 Frases</a>
+      <a href="quiz.html"     class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"    class="nav-btn">🎭 Quién es Quién</a>
+      <a href="impostor.html" class="nav-btn">🕵️ Impostor</a>
+    </nav>
+    <span class="auth-nav-item"></span>
+    <div class="streak-header-badge" id="streak-header-badge" style="display:none"></div>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
+  </header>
+
+  <main>
+    <h1 class="game-title">🔗 Conexiones</h1>
+    <p class="game-desc">12 personajes, 3 categorías ocultas de 4. Encuéntralas todas con un máximo de 3 errores.</p>
+
+    <div id="cnx-board"></div>
+    <div id="cnx-result"></div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="data/characters.js"></script>
+  <script src="js/daily.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/streak.js"></script>
+  <script src="js/conexiones.js"></script>
+  <script src="js/pwa.js"></script>
+</body>
+</html>

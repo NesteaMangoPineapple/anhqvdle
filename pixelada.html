@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foto Pixelada – ANHQVdle</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    #pix-board { max-width: 480px; margin: 0 auto; text-align: center; padding: 0 16px; }
+
+    .pix-wrap {
+      position: relative; display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .pix-canvas {
+      display: block;
+      border-radius: 16px;
+      border: 2px solid rgba(240,192,32,0.3);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+      image-rendering: pixelated;
+      width: 280px; height: 280px;
+    }
+
+    .pix-reveal-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 20px 12px 10px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem; letter-spacing: 2px;
+      color: var(--accent); text-align: center;
+      border-radius: 0 0 14px 14px;
+      opacity: 0; transition: opacity 0.5s;
+    }
+
+    .pix-attempts {
+      display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;
+    }
+    .pix-attempt-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    .pix-attempt-dot.used-wrong {
+      background: rgba(220,38,38,0.6); border-color: #dc2626;
+    }
+
+    .pix-guesses {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      justify-content: center; margin-bottom: 14px; min-height: 30px;
+    }
+    .pix-guess-pill {
+      font-size: 0.78rem; padding: 4px 12px; border-radius: 20px;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    }
+    .pix-guess-pill.wrong { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.4); }
+
+    .pix-input-wrap { text-align: center; }
+    .pix-input {
+      width: 100%; max-width: 360px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text); font-family: 'Barlow', sans-serif;
+      font-size: 1rem; padding: 12px 16px;
+      border-radius: 50px; outline: none;
+      transition: border-color 0.15s;
+    }
+    .pix-input:focus { border-color: var(--accent); }
+    .pix-input::placeholder { color: var(--text2); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" style="text-decoration:none"><div class="logo"><span>ANHQV</span>dle</div></a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="/"             class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html"  class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"   class="nav-btn">💬 Frases</a>
+      <a href="quiz.html"     class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"    class="nav-btn">🎭 Quién es Quién</a>
+      <a href="impostor.html" class="nav-btn">🕵️ Impostor</a>
+    </nav>
+    <span class="auth-nav-item"></span>
+    <div class="streak-header-badge" id="streak-header-badge" style="display:none"></div>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
+  </header>
+
+  <main>
+    <h1 class="game-title">🖼️ Foto Pixelada</h1>
+    <p class="game-desc">La foto empieza completamente pixelada. Cada fallo la va revelando. ¿Cuántos intentos necesitas?</p>
+
+    <div id="pix-board"></div>
+    <div id="pix-result"></div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="data/characters.js"></script>
+  <script src="js/daily.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/streak.js"></script>
+  <script src="js/pixelada.js"></script>
+  <script src="js/pwa.js"></script>
+</body>
+</html>

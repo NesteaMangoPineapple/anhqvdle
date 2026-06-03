@@ -21,6 +21,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://anhqvdle.es/conexiones.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anhqvdle.es/pixelada.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://anhqvdle.es/impostor.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
