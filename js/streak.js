@@ -32,12 +32,12 @@ function initStreakHeader() {
   const yest  = new Date(now); yest.setDate(yest.getDate() - 1);
   const yesterStr = `${yest.getFullYear()}${pad(yest.getMonth()+1)}${pad(yest.getDate())}`;
   const data  = getStreakData();
-  if (data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr)) {
-    el.textContent = `🔥 ${data.count}`;
-    el.style.display = 'flex';
-    if (data.lastDate === yesterStr) el.classList.add('pending');
-    el.addEventListener('click', () => showStreakPopup(data, today));
-  }
+  const active = data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr);
+  el.textContent = `🔥 ${active ? data.count : 0}`;
+  el.style.display = 'flex';
+  if (!active) el.classList.add('empty');
+  else if (data.lastDate === yesterStr) el.classList.add('pending');
+  el.addEventListener('click', () => showStreakPopup(active ? data : { count: 0 }, today));
 }
 
 function showStreakPopup(data, today) {
@@ -80,9 +80,11 @@ function showStreakPopup(data, today) {
 
       <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;margin-bottom:16px">
         <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6;margin:0">
-          ${playedToday
-            ? `✅ <strong>Ya jugaste hoy.</strong> ¡Tu racha está a salvo!`
-            : `⚠️ <strong>Todavía no has jugado hoy.</strong><br>¡Juega antes de medianoche para no perder tu racha!`
+          ${count === 0
+            ? `🎮 <strong>¡Empieza tu racha hoy!</strong><br>Completa un modo para conseguir tu primer día.`
+            : playedToday
+              ? `✅ <strong>Ya jugaste hoy.</strong> ¡Tu racha está a salvo!`
+              : `⚠️ <strong>Todavía no has jugado hoy.</strong><br>¡Juega antes de medianoche para no perder tu racha!`
           }
         </p>
       </div>

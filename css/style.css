@@ -1946,6 +1946,14 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   border-color: rgba(255,90,0,0.25);
 }
 
+.streak-header-badge.empty {
+  color: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.5);
+  filter: grayscale(1);
+  box-shadow: none;
+}
+
 .ranking-nav-fixed {
   position: fixed;
   top: 64px;
