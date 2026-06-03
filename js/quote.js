@@ -166,7 +166,7 @@ function showDoneMessageQuote(won, charName, attempts) {
       <div class="result-header">
         <h2>${won ? '¡Correcto!' : '¡Uy!'}</h2>
       </div>
-      <p class="result-sub">${won
+      <p class="result-sub" style="${streakHtml ? 'margin-bottom:8px' : ''}">${won
         ? `Lo adivinaste en <strong>${attempts}</strong> intento${attempts !== 1 ? 's' : ''}`
         : 'No lo has adivinado esta vez...'}</p>
       ${streakHtml}

@@ -195,7 +195,7 @@ function showDoneMessage(containerId, won, charName, attempts) {
     <div class="result-banner result-banner-quote">
       <p class="result-day-num">#${day}</p>
       <h2>${won ? '¡Correcto!' : '¡Uy!'}</h2>
-      <p class="result-sub">${won
+      <p class="result-sub" style="${streakHtml ? 'margin-bottom:8px' : ''}">${won
         ? `Lo adivinaste en <strong>${attempts}</strong> intento${attempts !== 1 ? 's' : ''}`
         : `Era <strong>${charName}</strong>. ¡Mañana lo intentas de nuevo!`}
       </p>
