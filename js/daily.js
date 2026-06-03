@@ -50,21 +50,24 @@ function _seededShuffle(arr, seed) {
   return a;
 }
 
+function _localDayOfYear(date) {
+  const midnight = new Date(date);
+  midnight.setHours(0, 0, 0, 0);
+  const yearStart = new Date(date.getFullYear(), 0, 1);
+  return Math.floor((midnight - yearStart) / 86400000);
+}
+
 function getDailyQuote() {
-  const now      = new Date();
-  const yearStart = new Date(now.getFullYear(), 0, 1);
-  const dayOfYear = Math.floor((now - yearStart) / 86400000);
-  const shuffled  = _seededShuffle(QUOTES, now.getFullYear() * 31337);
-  return shuffled[dayOfYear % shuffled.length];
+  const now     = new Date();
+  const shuffled = _seededShuffle(QUOTES, now.getFullYear() * 31337);
+  return shuffled[_localDayOfYear(now) % shuffled.length];
 }
 
 function getYesterdayQuote() {
-  const d        = new Date();
+  const d = new Date();
   d.setDate(d.getDate() - 1);
-  const yearStart = new Date(d.getFullYear(), 0, 1);
-  const dayOfYear = Math.floor((d - yearStart) / 86400000);
-  const shuffled  = _seededShuffle(QUOTES, d.getFullYear() * 31337);
-  return shuffled[dayOfYear % shuffled.length];
+  const shuffled = _seededShuffle(QUOTES, d.getFullYear() * 31337);
+  return shuffled[_localDayOfYear(d) % shuffled.length];
 }
 
 /* ══════════════════════════════════════
