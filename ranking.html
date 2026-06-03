@@ -119,13 +119,17 @@
       });
       var isDaily = (mode === 'classic' || mode === 'quote');
 
-      // Sort: daily → avg attempts asc (fewer = better), then wins desc, then streak desc
+      // Mínimo 5 victorias para aparecer en el ranking diario
+      if (isDaily) rows = rows.filter(function (r) { return (r.won || 0) >= 5; });
+
+      // Sort: daily → media bayesiana (penaliza pocas partidas), luego días jugados, luego racha
       //       online/machine → wins desc, then win% desc
       rows.sort(function (a, b) {
         if (isDaily) {
-          var avgA = a.won > 0 ? (a.totalAttempts || 0) / a.won : 999;
-          var avgB = b.won > 0 ? (b.totalAttempts || 0) / b.won : 999;
-          if (avgA !== avgB) return avgA - avgB;
+          var C = 5, MEAN = 2.5; // media bayesiana: penaliza a quienes tienen pocas partidas
+          var avgA = ((a.totalAttempts || 0) + C * MEAN) / ((a.won || 0) + C);
+          var avgB = ((b.totalAttempts || 0) + C * MEAN) / ((b.won || 0) + C);
+          if (Math.abs(avgA - avgB) > 0.001) return avgA - avgB;
           if (b.won !== a.won) return b.won - a.won;
           return (b.maxStreak || 0) - (a.maxStreak || 0);
         } else {
@@ -136,10 +140,15 @@
         }
       });
 
+      // Top 100 únicamente
+      rows = rows.slice(0, 100);
+
       var currentUser = window.AuthModule ? AuthModule.getCurrentUser() : null;
       var myUid = currentUser ? currentUser.uid : null;
 
-      var html = '<div class="ranking-table-wrap"><table class="ranking-table">';
+      var html = '<div class="ranking-table-wrap">';
+      if (isDaily) html += '<p style="text-align:center;color:var(--text2);font-size:0.78rem;margin-bottom:10px">Mín. 5 días jugados · Top 100</p>';
+      html += '<table class="ranking-table">';
       html += '<thead><tr>';
       html += '<th>#</th>';
       html += '<th>Jugador</th>';
