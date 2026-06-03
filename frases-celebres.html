@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frases célebres de Aquí No Hay Quien Viva – Las más icónicas</title>
-  <meta name="description" content="Las frases más célebres e icónicas de Aquí No Hay Quien Viva. Desde el 'un poquito de por favor' de Emilio hasta el '¡Yo no pago otra derrama!' de Concha, las citas que pasaron a la historia.">
+  <meta name="description" content="Las frases más célebres e icónicas de Aquí No Hay Quien Viva. 'Un poquito de por favor', '¡Yo no pago otra derrama!', '¡El chalé!', 'Radio Patio informa...' ¿Sabes quién las dijo?">
   <link rel="canonical" href="https://anhqvdle.es/frases-celebres.html">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://anhqvdle.es/frases-celebres.html">
   <meta property="og:title" content="Frases célebres de Aquí No Hay Quien Viva">
-  <meta property="og:description" content="Las frases más icónicas de ANHQV: 'un poquito de por favor', '¡Yo no pago otra derrama!', '¡El chalé, Juan!', 'Radio Patio informa...' y muchas más.">
+  <meta property="og:description" content="Las frases más icónicas de ANHQV: '¿Sabes quién las dijo? Ponlo a prueba en el modo Frases de ANHQVdle.">
   <meta property="og:image" content="https://anhqvdle.es/img/og-image.jpg">
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="ANHQVdle">
@@ -28,7 +28,7 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Frases célebres de Aquí No Hay Quien Viva",
-    "description": "Las frases más icónicas e inolvidables de la serie española Aquí No Hay Quien Viva, con contexto y explicación de cada una.",
+    "description": "Las frases más icónicas e inolvidables de la serie española Aquí No Hay Quien Viva.",
     "inLanguage": "es",
     "url": "https://anhqvdle.es/frases-celebres.html",
     "publisher": { "@type": "Organization", "name": "ANHQVdle", "url": "https://anhqvdle.es" }
@@ -45,7 +45,7 @@
     gtag('config', 'G-9BGR4GH8P7');
   </script>
   <style>
-    .frases-page { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+    .frases-page { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
     .frases-heading {
       font-family: 'Bebas Neue', cursive;
       font-size: clamp(2rem, 5vw, 3.2rem);
@@ -53,45 +53,77 @@
       margin-bottom: 4px; text-align: center;
       text-shadow: 0 0 30px rgba(240,192,32,0.3);
     }
-    .frases-sub { text-align: center; color: var(--text2); font-size: 0.9rem; margin-bottom: 28px; }
+    .frases-sub { text-align: center; color: var(--text2); font-size: 0.9rem; margin-bottom: 10px; }
+
+    .frases-challenge {
+      text-align: center;
+      background: rgba(240,192,32,0.08);
+      border: 1px solid rgba(240,192,32,0.25);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 32px;
+      color: var(--text2);
+      font-size: 0.88rem;
+    }
+    .frases-challenge strong { color: var(--accent); }
+    .frases-challenge a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .frases-challenge a:hover { text-decoration: underline; }
+
     .frases-intro {
       background: rgba(0,0,0,0.5); border: 1px solid rgba(240,192,32,0.15);
       border-radius: 14px; padding: 20px 24px; margin-bottom: 32px;
       color: var(--text2); font-size: 0.9rem; line-height: 1.8;
     }
     .frases-intro strong { color: var(--text); }
-    .char-section { margin-bottom: 40px; }
-    .char-section-header {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 16px; padding-bottom: 10px;
-      border-bottom: 1px solid rgba(240,192,32,0.2);
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 40px;
     }
-    .char-section-photo {
-      width: 52px; height: 52px; border-radius: 50%;
-      object-fit: cover; object-position: 50% 15%;
-      border: 2px solid rgba(240,192,32,0.4); flex-shrink: 0;
-      background: rgba(255,255,255,0.06);
+
+    .quote-card {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid rgba(240,192,32,0.4);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 16px;
+      transition: background 0.15s, border-left-color 0.15s;
     }
-    .char-section-name {
-      font-family: 'Bebas Neue', cursive; font-size: 1.6rem;
-      letter-spacing: 2px; color: var(--accent);
+    .quote-card:hover {
+      background: rgba(240,192,32,0.06);
+      border-left-color: var(--accent);
     }
-    .char-section-actor { font-size: 0.78rem; color: var(--text2); }
-    .quote-list { display: flex; flex-direction: column; gap: 12px; }
-    .quote-item {
-      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08);
-      border-left: 3px solid rgba(240,192,32,0.5);
-      border-radius: 0 12px 12px 0; padding: 14px 18px;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .quote-item:hover { background: rgba(240,192,32,0.05); border-left-color: var(--accent); }
     .quote-text {
-      font-size: 1rem; color: var(--text); font-style: italic;
-      line-height: 1.5; margin-bottom: 6px;
+      font-size: 1rem; color: var(--text);
+      font-style: italic; line-height: 1.5;
+      margin-bottom: 10px;
     }
     .quote-text::before { content: '«'; color: var(--accent); }
     .quote-text::after  { content: '»'; color: var(--accent); }
-    .quote-context { font-size: 0.78rem; color: var(--text2); line-height: 1.6; }
+    .quote-context {
+      font-size: 0.78rem; color: var(--text2); line-height: 1.6;
+    }
+
+    .frases-section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem; letter-spacing: 3px;
+      color: var(--accent); margin: 32px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(240,192,32,0.2);
+    }
+
+    .cta-banner {
+      text-align: center;
+      background: rgba(240,192,32,0.08);
+      border: 1px solid rgba(240,192,32,0.3);
+      border-radius: 14px;
+      padding: 24px 20px;
+      margin-top: 40px;
+    }
+    .cta-banner p { color: var(--text2); font-size: 0.9rem; margin-bottom: 14px; }
+    .cta-banner strong { color: var(--text); }
   </style>
 </head>
 <body>
@@ -118,299 +150,101 @@
       <h1 class="frases-heading">Frases Célebres</h1>
       <p class="frases-sub">Las citas más icónicas del edificio <strong>Desengaño 21</strong></p>
 
+      <div class="frases-challenge">
+        ¿Sabes quién dijo cada una? <strong>Ponlo a prueba</strong> en el <a href="frases.html">Modo Frases</a> — una frase nueva cada día.
+      </div>
+
       <div class="frases-intro">
         Uno de los legados más duraderos de <strong>Aquí No Hay Quien Viva</strong> es la cantidad de expresiones que sus personajes introdujeron en el lenguaje cotidiano español. Frases nacidas de situaciones absurdas, de malentendidos vecinales o del genio de sus actores se convirtieron en referencias culturales que millones de espectadores siguen usando décadas después. Aquí recogemos las más icónicas, con el contexto que las hizo grandes.
       </div>
 
-      <!-- EMILIO DELGADO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/emilio-delgado.webp" alt="Emilio Delgado"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Emilio Delgado</div>
-            <div class="char-section-actor">Fernando Tejero · Portero del edificio</div>
-          </div>
+      <h2 class="frases-section-title">Las más recordadas</h2>
+      <div class="quotes-grid">
+        <div class="quote-card">
+          <p class="quote-text">Un poquito de por favor</p>
+          <p class="quote-context">La frase más famosa de toda la serie. Nació de un error real durante los ensayos —el actor confundió dos expresiones distintas— y los guionistas la adoptaron de inmediato. Se usa cuando el caos del edificio supera cualquier límite de paciencia.</p>
         </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Un poquito de por favor</p>
-            <p class="quote-context">La frase más famosa de toda la serie. Nació de un error real de Fernando Tejero durante los ensayos —confundió «un poco de por favor» y «un poquito de respeto»— y los guionistas la adoptaron de inmediato. Emilio la usa cuando el caos del edificio lo supera y necesita pedir calma sin conseguirla nunca.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Soy un profesional de la información</p>
-            <p class="quote-context">Con esta frase Emilio justifica su cotilleo permanente, su escucha de conversaciones ajenas y su tendencia a interferir en la vida de todos los vecinos. Para él, estar al tanto de todo no es una manía: es una responsabilidad profesional.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Buenos días nos dé Dios</p>
-            <p class="quote-context">El saludo matinal de Emilio a cada vecino que pasa por la portería. Dicho siempre con el mismo tono entre servil y condescendiente, se convirtió en uno de los tics verbales más reconocibles del personaje.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Yo no he dicho nada, yo no sé nada</p>
-            <p class="quote-context">El escudo de Emilio cuando le pillan difundiendo un rumor o revelando un secreto ajeno. Inmediatamente después de haberlo contado todo, niega cualquier responsabilidad con una convicción absoluta.</p>
-          </div>
+        <div class="quote-card">
+          <p class="quote-text">¡Yo no pago otra derrama!</p>
+          <p class="quote-context">El grito de guerra de una de las vecinas ante cualquier gasto comunitario. Sin importar cuál sea la avería, la cuantía o la necesidad, su respuesta es siempre la misma. Se convirtió en el símbolo de la resistencia del propietario contra los gastos de comunidad.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">¡Váyase, señor Cuesta, váyase!</p>
+          <p class="quote-context">La forma perfecta de despachar al presidente de la comunidad. Dicho con un desprecio soberano que no admite réplica, es uno de los momentos más celebrados de la serie por el público.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">¡El chalé, Juan, el chalé!</p>
+          <p class="quote-context">El sueño eterno de ascenso social resumido en cuatro palabras. En cada momento de debilidad del marido, en cada promesa, aparece el chalé. No cualquier chalé: el suyo, con jardín, en una urbanización.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">¡Y punto en boca!</p>
+          <p class="quote-context">La frase que zanja cualquier conversación sin posibilidad de réplica. Dicha con rotundidad definitiva, es también la última frase pronunciada por uno de los personajes más queridos antes de abandonar la serie.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Radio Patio informa...</p>
+          <p class="quote-context">Con estas palabras da comienzo el boletín informativo más escuchado del edificio. La expresión «Radio Patio» pasó al lenguaje coloquial español para referirse a los cotilleos de vecindad.</p>
         </div>
       </div>
 
-      <!-- CONCHA DE LA FUENTE -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/concha-de-la-fuente.webp" alt="Concha de la Fuente"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Concha de la Fuente</div>
-            <div class="char-section-actor">Emma Penella · Propietaria del 3º B</div>
-          </div>
+      <h2 class="frases-section-title">Sabiduría vecinal</h2>
+      <div class="quotes-grid">
+        <div class="quote-card">
+          <p class="quote-text">Tú, ignorante de la vida...</p>
+          <p class="quote-context">El preludio obligatorio antes de compartir cualquier reflexión filosófica. Un recordatorio de que el interlocutor parte siempre desde la ignorancia total, antes de recibir una lección de dudosa utilidad.</p>
         </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">¡Yo no pago otra derrama!</p>
-            <p class="quote-context">El grito de guerra de Concha ante cualquier gasto comunitario. Sin importar cuál sea la avería, la cuantía o la necesidad, su respuesta es siempre la misma. Se convirtió en el símbolo de la resistencia del propietario contra los gastos de comunidad.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Váyase, señor Cuesta, váyase!</p>
-            <p class="quote-context">La forma de Concha de despachar al presidente de la comunidad cada vez que éste intenta mediar, explicar o imponer alguna decisión. Dicho con un desprecio soberano que no admite réplica, es uno de los momentos más celebrados por el público.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Chorizo! ¡Ladrón! ¡Sinvergüenza!</p>
-            <p class="quote-context">El repertorio de insultos de Concha hacia Juan Cuesta. Para ella, el presidente de la comunidad es fundamentalmente un corrupto que usa su cargo para beneficio propio, y no tiene ningún reparo en decirlo en voz muy alta.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Esto es una vergüenza! ¡Una vergüenza nacional!</p>
-            <p class="quote-context">La escala de los problemas vecinales, según Concha, siempre es nacional. Una gotera, una plaza de aparcamiento usurpada o un portal sin barrer merecen la misma indignación que un escándalo de Estado.</p>
-          </div>
+        <div class="quote-card">
+          <p class="quote-text">Soy metrosexual y pensador</p>
+          <p class="quote-context">Una autodescripción que resume perfectamente la brecha entre la imagen que un personaje tiene de sí mismo y la realidad que perciben sus vecinos. Adoptada cuando el término «metrosexual» era completamente nuevo en España.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Queridos convecinos...</p>
+          <p class="quote-context">El inicio ritual de las juntas de vecinos, pronunciado con una solemnidad desproporcionada. Lo que siempre sigue a continuación es, invariablemente, caos absoluto.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Soy un profesional de la información</p>
+          <p class="quote-context">La justificación perfecta para el cotilleo permanente. Estar al tanto de todo lo que ocurre en el edificio no es una manía ni una intromisión: es una responsabilidad profesional.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">¡Qué follón!</p>
+          <p class="quote-context">La reacción habitual ante el caos permanente del edificio. La frase del hombre que siempre llega demasiado tarde para evitar los problemas y justo a tiempo para constatar que ya existen.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Virgencita, virgencita, que me quede como estoy</p>
+          <p class="quote-context">La oración favorita en los momentos de pánico vecinal. Ante cualquier novedad que amenace la tranquilidad del edificio, el inmovilismo siempre es preferible a la incertidumbre del cambio.</p>
         </div>
       </div>
 
-      <!-- JUAN CUESTA -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/juan-cuesta.webp" alt="Juan Cuesta"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Juan Cuesta</div>
-            <div class="char-section-actor">José Luis Gil · Presidente de la comunidad</div>
-          </div>
+      <h2 class="frases-section-title">El lado más humano</h2>
+      <div class="quotes-grid">
+        <div class="quote-card">
+          <p class="quote-text">Voy a acabar sola y amargada</p>
+          <p class="quote-context">El diagnóstico más honesto y más cómico de la serie sobre una vida de precariedad laboral y relaciones fallidas. Dicho sin dramatismo, con la misma naturalidad con la que se comenta el tiempo que hace.</p>
         </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Queridos convecinos...</p>
-            <p class="quote-context">El inicio ritual de todas las juntas de vecinos. Juan pronuncia estas dos palabras con una solemnidad desproporcionada, como si fuera a dirigirse al Parlamento. Lo que sigue a continuación es siempre caos total.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Qué follón!</p>
-            <p class="quote-context">La reacción de Juan ante el caos permanente del edificio. Sintetiza a la perfección su papel en la serie: el hombre que siempre llega tarde para evitar los problemas y solo a tiempo para constatar que ya existen.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">El orden del día contempla los siguientes puntos...</p>
-            <p class="quote-context">El inicio protocolario de las juntas de vecinos. Juan intenta dar a sus reuniones un formato parlamentario que nunca se cumple, porque los vecinos interrumpen, gritan y se van antes de llegar al tercer punto.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Como presidente de esta comunidad, y en nombre de todos los vecinos...</p>
-            <p class="quote-context">El recurso habitual de Juan para dar peso a sus decisiones. Invocar su cargo presidencial es lo único que tiene para hacer valer su autoridad, lo que lo convierte en el blanco favorito de Concha.</p>
-          </div>
+        <div class="quote-card">
+          <p class="quote-text">Me estoy hiperventilando</p>
+          <p class="quote-context">El anuncio ante cualquier situación de estrés mínimo. Una discusión de portal, una factura inesperada o un comentario mal interpretado bastan para desencadenar una crisis respiratoria de bolsa de papel.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Los Cuesta somos gente de posición</p>
+          <p class="quote-context">El delirio de grandeza en una sola frase. Vivir en un piso de segunda planta en Desengaño 21 es perfectamente compatible con pertenecer a la élite social española, siempre y cuando nadie lo contradiga.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">¡Chorizo! ¡Ladrón! ¡Sinvergüenza!</p>
+          <p class="quote-context">El repertorio de insultos vecinales, siempre dirigidos al presidente de la comunidad. Para quien los pronuncia, el cargo presidencial es fundamentalmente un instrumento de corrupción personal.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Mi vida es una mierda</p>
+          <p class="quote-context">La valoración más directa y sincera sobre la propia situación vital. Lo llamativo no es la frase en sí, sino la total ausencia de autocompasión con que se pronuncia.</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Esta planta tiene propiedades energéticas muy especiales</p>
+          <p class="quote-context">La fe inquebrantable en las terapias alternativas aplicada a todos los problemas del edificio. Homeopatía, flores de Bach, feng shui y plantas medicinales como solución universal a cualquier crisis vecinal.</p>
         </div>
       </div>
 
-      <!-- PALOMA HURTADO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/paloma-hurtado.webp" alt="Paloma Hurtado"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Paloma Hurtado</div>
-            <div class="char-section-actor">Loles León · 2º A (T1-T2)</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">¡El chalé, Juan, el chalé!</p>
-            <p class="quote-context">El sueño eterno de Paloma. En cada momento de debilidad de Juan, en cada promesa, en cada ocasión en que ella percibe una oportunidad de ascenso social, aparece el chalé. No cualquier chalé: el suyo, con jardín, en una urbanización.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Y punto en boca!</p>
-            <p class="quote-context">La frase con la que Paloma zanja cualquier conversación en la que ha tenido la última palabra. Dicha con una rotundidad definitiva, no admite réplica. Fue también su última frase en la serie, pronunciada justo antes de caer al patio interior.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Los Cuesta somos gente de posición</p>
-            <p class="quote-context">El deliro de grandeza de Paloma en una sola frase. Para ella, vivir en un piso de segunda planta en Desengaño 21 es compatible con pertenecer a la élite social española, siempre y cuando nadie lo contradiga.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¡Eso es porque tú no tienes clase, Juan!</p>
-            <p class="quote-context">El reproche más frecuente de Paloma a su marido. Para ella, Juan carece del refinamiento necesario para alcanzar la posición social que ella considera que merecen, lo que convierte su matrimonio en una lucha constante entre aspiración y realidad.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- MARIANO DELGADO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/mariano-delgado.webp" alt="Mariano Delgado"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Mariano Delgado</div>
-            <div class="char-section-actor">Eduardo Gómez · Portería</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Tú, ignorante de la vida...</p>
-            <p class="quote-context">El preludio obligatorio de todas las reflexiones filosóficas de Mariano. Antes de compartir cualquier sabiduría —por inverosímil que sea— necesita dejar claro que su interlocutor parte de una posición de ignorancia total.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Soy metrosexual y pensador</p>
-            <p class="quote-context">La autodescripción favorita de Mariano. En los años en que la palabra «metrosexual» era nueva en el vocabulario español, Mariano la adoptó como seña de identidad, combinándola con una vocación filosófica que nadie a su alrededor comparte.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Las enciclopedias son el alimento del alma</p>
-            <p class="quote-context">La justificación que Mariano usa para defender su trabajo como vendedor de enciclopedias, un oficio que nadie en el edificio respeta. Para él, cada enciclopedia vendida es un acto de servicio cultural.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- MARISA BENITO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/marisa-benito.webp" alt="Marisa Benito"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Marisa Benito</div>
-            <div class="char-section-actor">Mariví Bilbao · 1º A</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Radio Patio informa...</p>
-            <p class="quote-context">Con esta frase Marisa da paso a las últimas noticias del edificio, convirtiéndose en la directora de informativos de la red de cotilleos de Desengaño 21. La expresión «Radio Patio» pasó al lenguaje coloquial español para referirse a los rumores de vecindario.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Virgencita, virgencita, que me quede como estoy</p>
-            <p class="quote-context">La oración favorita de Marisa en los momentos de pánico. Ante cualquier novedad que amenace la tranquilidad del edificio, Marisa prefiere el inmovilismo a la incertidumbre del cambio.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">¿Y tú qué sabes, Vicenta?</p>
-            <p class="quote-context">El recurso habitual de Marisa para desautorizar a su hermana. Aunque viven juntas y comparten toda la información del edificio, Marisa siempre encuentra la forma de hacer sentir a Vicenta que su interpretación de los hechos es inferior a la suya.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- BELÉN LÓPEZ -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/belen-lopez.webp" alt="Belén López"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Belén López</div>
-            <div class="char-section-actor">Malena Alterio · 3º B</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Voy a acabar sola y amargada</p>
-            <p class="quote-context">El diagnóstico de Belén sobre su propio futuro. Dicho con una resignación casi cómica, se convirtió en el lema generacional de una joven que encadena trabajos precarios y relaciones fallidas sin perder del todo el sentido del humor.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Mi vida es una mierda</p>
-            <p class="quote-context">La valoración global de Belén sobre su situación vital. Directa, sincera e irrefutable según ella misma. Lo llamativo es que lo dice sin dramatismo, con la misma naturalidad con la que se comenta el tiempo.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Por lo menos tengo trabajo... bueno, de momento</p>
-            <p class="quote-context">La resignación laboral de Belén. A lo largo de la serie acumuló más de veinte empleos distintos —camarera, modelo, empleada de moda, actriz de anuncios, cool-hunter, telefonista…— siempre con la certeza de que el siguiente despido era inminente.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ISABEL RUIZ -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/isabel-ruiz.webp" alt="Isabel Ruiz"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Isabel Ruiz</div>
-            <div class="char-section-actor">Isabel Ordaz · 2º A / 2º B</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Me estoy hiperventilando</p>
-            <p class="quote-context">El anuncio de Isabel ante cualquier situación de estrés mínimo. Una discusión de portal, una factura inesperada o un comentario mal interpretado son suficientes para desencadenar su crisis de hiperventilación, siempre acompañada de bolsa de papel y tés de hierbas.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Esta planta tiene propiedades energéticas muy especiales</p>
-            <p class="quote-context">Isabel aplica la homeopatía, las flores de Bach, el feng shui y cualquier terapia alternativa disponible a todos los problemas del edificio. Su fe en los remedios naturales es inversamente proporcional a su eficacia demostrada.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Necesito hacer un ritual de purificación</p>
-            <p class="quote-context">La respuesta de Isabel a las malas noticias. Antes de enfrentarse a cualquier problema, Isabel necesita limpiar las energías del espacio, lo cual implica velas, incienso y al menos veinte minutos de meditación que nadie a su alrededor puede permitirse.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- MAURI Y FERNANDO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/mauri-hidalgo.webp" alt="Mauri Hidalgo"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Mauri Hidalgo</div>
-            <div class="char-section-actor">Luis Merlo · 1º B</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">¡Fernando! ¡Fernandoooo!</p>
-            <p class="quote-context">El grito más reconocible de Mauri, lanzado siempre desde el portal o desde las escaleras cuando necesita a su pareja con urgencia. El tono entre desesperado y teatral lo convirtió en uno de los momentos más celebrados de la serie.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Tú no me quieres. Nunca me has querido.</p>
-            <p class="quote-context">El detonante habitual de las discusiones de Mauri con Fernando. Ante cualquier malentendido, por pequeño que sea, Mauri interpreta inmediatamente una crisis existencial de pareja que Fernando tiene que desmontar con paciencia infinita.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- VICENTA BENITO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/vicenta-benito.webp" alt="Vicenta Benito"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Vicenta Benito</div>
-            <div class="char-section-actor">Gemma Cuervo · 1º A</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">¿Y eso qué es?</p>
-            <p class="quote-context">La pregunta perpetua de Vicenta ante cualquier novedad tecnológica, cultural o social. Su literalismo extremo la lleva a interpretar todo al pie de la letra, lo que genera malentendidos que sus vecinos tardan varios minutos en resolver.</p>
-          </div>
-          <div class="quote-item">
-            <p class="quote-text">Ay, Señor, qué cosas pasan en este edificio</p>
-            <p class="quote-context">El comentario de Vicenta al final de cada episodio o situación disparatada. Es la voz de la inocencia absoluta en un edificio donde todo el mundo tiene segundas intenciones, lo que la convierte en el personaje más querido del público.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- PACO -->
-      <div class="char-section">
-        <div class="char-section-header">
-          <img class="char-section-photo" src="img/personajes/paco.webp" alt="Paco"
-            onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
-          <div>
-            <div class="char-section-name">Paco</div>
-            <div class="char-section-actor">Adrià Collado · Videoclub / Ático</div>
-          </div>
-        </div>
-        <div class="quote-list">
-          <div class="quote-item">
-            <p class="quote-text">Tengo esa en VHS y en DVD</p>
-            <p class="quote-context">La respuesta de Paco a cualquier conversación sobre cine o televisión. Su enciclopédico conocimiento del videoclub donde trabaja le hace saltar a la mínima referencia cinematográfica, convirtiéndose en el experto no pedido de todas las conversaciones de portal.</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:40px">
-        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:16px">¿Adivinas quién dijo cada frase?</p>
-        <a href="frases.html" class="play-again-btn" style="text-decoration:none;display:inline-block;margin-right:12px">💬 Modo Frases</a>
+      <div class="cta-banner">
+        <p><strong>¿Sabes quién dijo cada frase?</strong> Las frases de la serie rotan diariamente en el modo de juego. Comprueba cuánto sabes de los vecinos de Desengaño 21.</p>
+        <a href="frases.html" class="play-again-btn" style="text-decoration:none;display:inline-block;margin-right:12px">💬 Jugar al Modo Frases</a>
         <a href="personajes.html" class="play-again-btn" style="text-decoration:none;display:inline-block">👥 Ver personajes</a>
       </div>
     </div>
