@@ -2376,6 +2376,7 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 .ranking-table-wrap {
   overflow-x: auto; border-radius: 14px;
   border: 1px solid var(--border); background: rgba(0,0,0,0.4);
+  padding-top: 8px;
 }
 .ranking-table {
   width: 100%; border-collapse: collapse;
