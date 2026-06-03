@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El edificio Desengaño 21 – Quién vivió en cada piso – ANHQVdle</title>
+  <meta name="description" content="Explora el edificio Desengaño 21 de Aquí No Hay Quien Viva. Descubre qué personajes vivieron en cada piso, desde la portería hasta el ático, temporada a temporada.">
+  <link rel="canonical" href="https://anhqvdle.es/edificio.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://anhqvdle.es/edificio.html">
+  <meta property="og:title" content="El edificio Desengaño 21 – Quién vivió en cada piso">
+  <meta property="og:description" content="Explora el edificio Desengaño 21 de Aquí No Hay Quien Viva. Descubre qué personajes vivieron en cada piso, desde la portería hasta el ático.">
+  <meta property="og:image" content="https://anhqvdle.es/img/og-image.jpg">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="ANHQVdle">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="El edificio Desengaño 21 – Quién vivió en cada piso">
+  <meta name="twitter:description" content="Explora el edificio Desengaño 21 y descubre qué personajes vivieron en cada piso de Aquí No Hay Quien Viva.">
+  <meta name="twitter:image" content="https://anhqvdle.es/img/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f0c020">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "El edificio Desengaño 21 de Aquí No Hay Quien Viva",
+    "description": "Guía completa de los pisos del edificio Desengaño 21 y los personajes que vivieron en cada uno a lo largo de las cinco temporadas.",
+    "inLanguage": "es",
+    "url": "https://anhqvdle.es/edificio.html",
+    "publisher": { "@type": "Organization", "name": "ANHQVdle", "url": "https://anhqvdle.es" }
+  }
+  </script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1251819701012590" crossorigin="anonymous"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BGR4GH8P7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9BGR4GH8P7');
+  </script>
+  <style>
+    .edificio-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .edificio-heading {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 4px;
+      text-align: center;
+      text-shadow: 0 0 30px rgba(240,192,32,0.3);
+    }
+
+    .edificio-sub {
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    /* ── Imagen interactiva ── */
+    .edificio-img-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 60px rgba(0,0,0,0.8);
+    }
+
+    .edificio-img-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .apt-zone {
+      position: absolute;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .apt-zone:hover {
+      background: rgba(240, 192, 32, 0.2);
+      border-color: rgba(240, 192, 32, 0.7);
+    }
+
+    .apt-zone.active {
+      background: rgba(240, 192, 32, 0.25);
+      border-color: var(--accent);
+    }
+
+    .apt-zone::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      color: var(--accent);
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      border: 1px solid rgba(240,192,32,0.3);
+    }
+
+    .apt-zone:hover::after { opacity: 1; }
+
+    /* ── Modal popup ── */
+    .edificio-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .edificio-modal-overlay.open { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .edificio-modal {
+      background: #111;
+      border: 1px solid rgba(240,192,32,0.3);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 460px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.25s ease;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.9), 0 0 40px rgba(240,192,32,0.1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .modal-close:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+
+    .modal-floor-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .modal-floor-desc {
+      font-size: 0.83rem;
+      color: var(--text2);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    .modal-chars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-char {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .modal-char:hover { background: rgba(255,255,255,0.08); }
+
+    .modal-char-photo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 15%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .modal-char-info { flex: 1; min-width: 0; }
+
+    .modal-char-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .modal-char-detail {
+      font-size: 0.76rem;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    .modal-char-type {
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .type-Principal  { background: rgba(240,192,32,0.2); color: var(--accent); }
+    .type-Secundario { background: rgba(255,255,255,0.1); color: var(--text2); }
+    .type-Esporádico { background: rgba(150,150,150,0.12); color: rgba(255,255,255,0.3); }
+
+    /* ── Sección de texto por piso ── */
+    .edificio-floors-section {
+      margin-top: 48px;
+    }
+
+    .floors-section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .floor-block {
+      margin-bottom: 28px;
+    }
+
+    .floor-block-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .floor-block p {
+      font-size: 0.87rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .edificio-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" style="text-decoration:none">
+        <div class="logo"><span>ANHQV</span>dle</div>
+      </a>
+      <div class="subtitle">Adivina el personaje de «Aquí No Hay Quien Viva»</div>
+    </div>
+    <nav>
+      <a href="/"                class="nav-btn">🏠 Inicio</a>
+      <a href="clasico.html"     class="nav-btn">🎬 Clásico</a>
+      <a href="frases.html"      class="nav-btn">💬 Frases</a>
+      <a href="quiz.html"        class="nav-btn">🪞 ¿Quién eres?</a>
+      <a href="quien.html"       class="nav-btn">🎭 Quién es Quién</a>
+    </nav>
+    <span class="auth-nav-item"></span>
+    <div class="ranking-nav-fixed"><a href="ranking.html">🏆 Ranking</a></div>
+  </header>
+
+  <main>
+    <div class="edificio-page">
+      <h1 class="edificio-heading">Desengaño 21</h1>
+      <p class="edificio-sub">Haz clic en cualquier piso para ver quién vivió allí</p>
+
+      <div class="edificio-img-wrap">
+        <img src="img/edificio.png" alt="Fachada del edificio Desengaño 21 de Aquí No Hay Quien Viva">
+
+        <!-- ÁTICO -->
+        <div class="apt-zone" data-apt="atico" data-label="Ático"
+          style="top:2%;left:14%;width:72%;height:19%"></div>
+
+        <!-- 3ER PISO -->
+        <div class="apt-zone" data-apt="3a" data-label="3º A"
+          style="top:21%;left:14%;width:36%;height:19%"></div>
+        <div class="apt-zone" data-apt="3b" data-label="3º B"
+          style="top:21%;left:50%;width:36%;height:19%"></div>
+
+        <!-- 2º PISO -->
+        <div class="apt-zone" data-apt="2a" data-label="2º A"
+          style="top:40%;left:14%;width:36%;height:19%"></div>
+        <div class="apt-zone" data-apt="2b" data-label="2º B"
+          style="top:40%;left:50%;width:36%;height:19%"></div>
+
+        <!-- 1ER PISO -->
+        <div class="apt-zone" data-apt="1a" data-label="1º A"
+          style="top:59%;left:14%;width:36%;height:17%"></div>
+        <div class="apt-zone" data-apt="1b" data-label="1º B"
+          style="top:59%;left:50%;width:36%;height:17%"></div>
+
+        <!-- PLANTA BAJA -->
+        <div class="apt-zone" data-apt="porteria" data-label="Portería"
+          style="top:76%;left:30%;width:20%;height:21%"></div>
+        <div class="apt-zone" data-apt="videoclub" data-label="Videoclub"
+          style="top:76%;left:50%;width:36%;height:21%"></div>
+      </div>
+
+      <!-- Modal popup -->
+      <div class="edificio-modal-overlay" id="edificio-overlay">
+        <div class="edificio-modal" id="edificio-modal">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <div id="modal-content"></div>
+        </div>
+      </div>
+
+      <!-- Sección de texto indexable por Google -->
+      <div class="edificio-floors-section">
+        <h2 class="floors-section-title">Los pisos del edificio</h2>
+
+        <div class="floor-block">
+          <div class="floor-block-title">Ático</div>
+          <p>El punto más alto del edificio fue también el más cambiante. En él vivieron los hermanos Guerra —Pablo y Álex—, Andrés Guerra durante sus temporadas en el inmueble, y Paco, el fiel empleado del videoclub. El ático albergó también la consulta veterinaria de Bea Villarejo durante una temporada, aprovechando el espacio más amplio y luminoso de la finca. A lo largo de la serie, el ático funcionó como refugio para los personajes más jóvenes e inconformistas del edificio, alejados de las disputas de las plantas inferiores.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">3º A</div>
+          <p>El piso del arquitecto y las disputas sentimentales. Roberto Alonso ocupó este piso junto a Lucía Álvarez y su padre Rafael, formando uno de los triángulos relacionales más complicados del edificio. La llegada de Carlos de Haro, empresario adinerado y propietario del videoclub, aportó una dimensión económica y de clase al 3º A que lo distinguía del resto de los pisos. Sus enfrentamientos con los vecinos más modestos reflejaban las tensiones de clase que la serie abordaba con humor.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">3º B</div>
+          <p>El piso de las inquilinas variopintas, cuyo rasgo común era la precariedad laboral y el deseo de salir adelante. Belén López fue la inquilina más longeva y el personaje más icónico del 3º B: camarera, modelo, empleada de moda y actriz de anuncios, su vida en ese piso fue un reflejo de la inestabilidad laboral de toda una generación. La compartió con Alicia Sanz durante las primeras temporadas y posteriormente con Ana y María Jesús. Concha de la Fuente también vivió en el 3º B en algún momento. El piso del 3º B fue siempre el más colorido y contradictorio del edificio.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">2º A</div>
+          <p>El corazón del caos organizado: el hogar de los Cuesta. Juan Cuesta presidió este piso con la misma eficacia con la que presidía la comunidad de vecinos, es decir, con ninguna. Su esposa Paloma soñaba con un chalé mientras organizaba la vida del piso con mano de hierro; sus hijos Natalia y José Miguel aportaban enredos generacionales constantes. Tras la marcha de Paloma, Isabel Ruiz «La Hierbas» ocupó su lugar, transformando la dinámica familiar del 2º A con sus terapias alternativas y sus crisis de hiperventilación.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">2º B</div>
+          <p>El piso con más rotación de inquilinos de todo el edificio, reflejo directo de la movilidad social y laboral de la España de principios del siglo XXI. Armando Cortés y su familia fueron los primeros en habitarlo. Tras su marcha, la familia Guerra —Andrés, Isabel, Pablo y Álex— ocupó el piso durante las temporadas dos, tres y cuatro, aportando el mayor caos de la historia del inmueble. En la quinta temporada, los Heredia tomaron el relevo: Higinio, Mamen, Moncho, Candela y Raquel representaron la irrupción de la clase obrera enriquecida en el edificio.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">1º A</div>
+          <p>El cuartel general de «Radio Patio» y el reino de las hermanas Benito. Vicenta y Marisa Benito convirtieron su piso del 1º A en el nodo central de la red de información del edificio. Desde allí monitorizaban cualquier movimiento en el portal, el patio y los pisos superiores. Concha de la Fuente también habitó el 1º A en algún momento. Su presencia en el piso fue tan natural como la de las propias Benito, dado que su relación de amistad y rivalidad con ellas era uno de los motores cómicos más productivos de la serie.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">1º B</div>
+          <p>El piso de Mauri y Fernando, escenario de la primera pareja homosexual protagonista en una serie española de máxima audiencia. El 1º B fue testigo de una de las historias de amor más sólidas y emocionalmente complejas de la televisión española de la época. A su historia se sumó Bea Villarejo, que llegó al piso en la segunda temporada, y Ezequiel Hidalgo, el niño adoptado por la pareja en las últimas temporadas. La Hermana Esperanza también tuvo presencia en este piso, en uno de los arcos argumentales más insólitos de la serie.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">Portería</div>
+          <p>El cuartel general de los Delgado y el eje de todo lo que ocurría en el edificio. Emilio controlaba desde la portería cada entrada, cada paquete, cada conversación y cada secreto del inmueble, con la excusa permanente de ser «un profesional de la información». Su padre Mariano completaba el dúo de la portería con su filosofía del mínimo esfuerzo y sus reflexiones pseudo-intelectuales. La portería fue también el escenario del inicio del romance entre Emilio y Belén López, que culminaría en la boda final de la serie.</p>
+        </div>
+
+        <div class="floor-block">
+          <div class="floor-block-title">Videoclub</div>
+          <p>El local comercial de la planta baja, regentado por Paco y propiedad de Carlos de Haro. El videoclub funcionó como punto de encuentro informal de los vecinos del edificio, especialmente de los más jóvenes. Paco, su empleado más fiel, era el único habitante del edificio capaz de mantener buenas relaciones con absolutamente todo el mundo. El negocio reflejaba también la transición tecnológica de la época: los videoclubs vivían sus últimos años de esplendor mientras el DVD comenzaba a sustituir al VHS.</p>
+        </div>
+
+        <div class="edificio-cta">
+          <a href="personajes.html" class="play-again-btn" style="text-decoration:none">👥 Ver todos los personajes</a>
+          <a href="clasico.html"    class="play-again-btn" style="text-decoration:none">🎬 Jugar al Clásico</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>ANHQVdle · Fan-made con ❤️ · No oficial · <span>Aquí No Hay Quien Viva</span> es de Globomedia / Antena 3</p>
+    <p style="margin-top:8px">
+      <a href="nosotros.html"  style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Nosotros</a>
+      &nbsp;·&nbsp;
+      <a href="privacidad.html" style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">Privacidad</a>
+      &nbsp;·&nbsp;
+      <a href="serie.html"     style="color:var(--text2);font-size:0.8rem;text-decoration:none;letter-spacing:1px">La serie</a>
+    </p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/anhqvdle/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@anhqvdle" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="data/characters.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pwa.js"></script>
+  <script>
+    const FLOOR_INFO = {
+      'atico':     { label: 'Ático',     desc: 'La planta más alta del edificio. Residencia de los hermanos Guerra, de Paco y escenario de la consulta veterinaria de Bea Villarejo durante una temporada. El lugar más tranquilo —y más joven— del edificio.' },
+      '3a':        { label: '3º A',      desc: 'El piso de los Álvarez, Roberto Alonso y Carlos de Haro. Arquitectura, disputas sentimentales y tensiones de clase bajo el mismo techo.' },
+      '3b':        { label: '3º B',      desc: 'El piso de Belén López y sus sucesivas compañeras de piso. Camareras, azafatas, amas de casa y el reflejo más honesto de la precariedad laboral de una generación.' },
+      '2a':        { label: '2º A',      desc: 'El hogar de los Cuesta. El piso más caótico del edificio: juntas de vecinos, crisis familiares, terapias alternativas y una aspiración constante de mudarse a un chalé que nunca llega.' },
+      '2b':        { label: '2º B',      desc: 'El piso con más rotación de inquilinos de todo el edificio. De los Cortés a los Guerra, y de los Guerra a los Heredia: tres familias muy distintas que dejaron su huella en el mismo espacio.' },
+      '1a':        { label: '1º A',      desc: 'El reino de las hermanas Benito y el cuartel general de Radio Patio. Desde aquí se gestiona toda la información del edificio con una eficacia que las agencias de inteligencia envidiarían.' },
+      '1b':        { label: '1º B',      desc: 'El piso de Mauri y Fernando, escenario de una de las historias de amor más sólidas y pioneras de la televisión española. También hogar de Bea Villarejo y, más tarde, del pequeño Ezequiel.' },
+      'porteria':  { label: 'Portería',  desc: 'El cuartel general de los Delgado y el verdadero centro neurálgico del edificio. Emilio lo sabe todo, lo controla todo y no se pierde nada. Escenario del romance que cierra la serie.' },
+      'videoclub': { label: 'Videoclub', desc: 'El local de Paco, el único rincón del edificio donde todo el mundo es bienvenido sin drama. Propiedad de Carlos de Haro y testigo del ocaso del formato VHS.' },
+    };
+
+    const APT_KEY_MAP = {
+      'atico':     ['Ático'],
+      '3a':        ['3º A'],
+      '3b':        ['3º B'],
+      '2a':        ['2º A'],
+      '2b':        ['2º B'],
+      '1a':        ['1º A'],
+      '1b':        ['1º B'],
+      'porteria':  ['Portería'],
+      'videoclub': ['Videoclub'],
+    };
+
+    function makeSlug(name) {
+      return name.toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+
+    function getCharsForApt(aptKey) {
+      const floors = APT_KEY_MAP[aptKey];
+      return CHARACTERS.filter(c => c.floors.some(f => floors.includes(f)));
+    }
+
+    function openModal(aptKey) {
+      const info  = FLOOR_INFO[aptKey];
+      const chars = getCharsForApt(aptKey);
+
+      const charsHtml = chars.map(c => {
+        const slug = makeSlug(c.name);
+        const seas = c.seasons.map(s => 'T' + s).join(', ');
+        return `
+          <a class="modal-char" href="personajes.html">
+            <img class="modal-char-photo"
+              src="img/personajes/${slug}.webp"
+              alt="${c.name}"
+              onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
+            <div class="modal-char-info">
+              <div class="modal-char-name">${c.name}</div>
+              <div class="modal-char-detail">${seas} · ${c.occupations[0]}</div>
+            </div>
+            <span class="modal-char-type type-${c.type}">${c.type}</span>
+          </a>`;
+      }).join('');
+
+      document.getElementById('modal-content').innerHTML = `
+        <div class="modal-floor-title">${info.label}</div>
+        <p class="modal-floor-desc">${info.desc}</p>
+        <div class="modal-chars">${charsHtml || '<p style="color:var(--text2);font-size:0.85rem">No hay personajes registrados en este espacio.</p>'}</div>`;
+
+      document.getElementById('edificio-overlay').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('edificio-overlay').classList.remove('open');
+      document.querySelectorAll('.apt-zone').forEach(z => z.classList.remove('active'));
+    }
+
+    document.querySelectorAll('.apt-zone').forEach(zone => {
+      zone.addEventListener('click', function () {
+        document.querySelectorAll('.apt-zone').forEach(z => z.classList.remove('active'));
+        this.classList.add('active');
+        openModal(this.dataset.apt);
+      });
+    });
+
+    document.getElementById('edificio-overlay').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

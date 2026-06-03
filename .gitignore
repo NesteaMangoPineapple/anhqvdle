@@ -1,5 +1,3 @@
 # Firebase config (contiene claves privadas)
 js/firebase-config.js
 
-# Páginas en desarrollo (no subir hasta estar listas)
-edificio.html

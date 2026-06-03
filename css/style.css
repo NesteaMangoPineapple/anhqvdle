@@ -160,6 +160,7 @@ main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
 }
 .home-sub { color: var(--text2); font-size: 1rem; margin-bottom: 36px; max-width: 500px; margin-inline: auto; }
 .home-seo-text { color: var(--text2); font-size: 0.85rem; line-height: 1.6; max-width: 650px; margin: 28px auto 0; }
+.game-seo-text { color: var(--text2); font-size: 0.82rem; line-height: 1.7; max-width: 640px; margin: 10px auto 0; text-align: center; }
 
 .mode-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 960px; margin: 0 auto; }
 @media (max-width: 720px) { .mode-cards { grid-template-columns: repeat(2, 1fr); } }
@@ -1795,11 +1796,14 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 
 .explore-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 12px;
 }
 
 @media (max-width: 600px) {
+  .explore-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 380px) {
   .explore-cards { grid-template-columns: 1fr; }
 }
 
