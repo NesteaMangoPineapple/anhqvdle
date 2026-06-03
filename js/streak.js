@@ -23,6 +23,68 @@ function getStreakData() {
   return JSON.parse(localStorage.getItem('anhqvdle_streak') || '{"count":0,"lastDate":""}');
 }
 
+function triggerStreakAnimation(count) {
+  if (count !== 1 && count % 10 !== 0) return;
+
+  const isMilestone = count % 10 === 0;
+  const label = count === 1
+    ? '¡RACHA INICIADA!'
+    : `¡HITO: ${count} DÍAS!`;
+
+  setTimeout(() => {
+    if (document.getElementById('streak-anim-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'streak-anim-overlay';
+    overlay.style.cssText = `
+      position:fixed;inset:0;z-index:99999;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);
+      cursor:pointer;
+    `;
+
+    overlay.innerHTML = `
+      <div style="text-align:center;pointer-events:none">
+        <div style="
+          font-size:${isMilestone ? '6rem' : '5rem'};
+          line-height:1;
+          animation: igniteFlame 0.9s cubic-bezier(.36,.07,.19,.97) forwards;
+        ">🔥</div>
+        <div style="
+          font-family:'Bebas Neue',cursive;
+          font-size:${isMilestone ? '6rem' : '5rem'};
+          color:#ff6400;
+          letter-spacing:4px;
+          line-height:1;
+          margin-top:8px;
+          animation: streakNumPop 0.5s ease forwards;
+          animation-delay: 0.6s;
+          opacity:0;
+          text-shadow:0 0 40px rgba(255,100,0,0.8);
+        ">${count}</div>
+        <div style="
+          font-family:'Bebas Neue',cursive;
+          font-size:1.3rem;
+          color:rgba(255,150,0,0.9);
+          letter-spacing:4px;
+          margin-top:10px;
+          animation: streakLabelFade 0.4s ease forwards;
+          animation-delay: 1s;
+          opacity:0;
+        ">${label}</div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', () => overlay.remove());
+
+    setTimeout(() => {
+      overlay.style.animation = 'streakOverlayOut 0.5s ease forwards';
+      setTimeout(() => overlay.remove(), 500);
+    }, 2800);
+  }, 600);
+}
+
 function initStreakHeader() {
   const el = document.getElementById('streak-header-badge');
   if (!el) return;

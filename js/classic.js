@@ -107,7 +107,10 @@ function makeGuess() {
     document.getElementById('search-wrap').style.display = 'none';
     updateStats('classic', classicGuesses.length, true);
     saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: true, won: true, character: classicTarget.name });
-    if (typeof updateStreak === 'function') updateStreak();
+    if (typeof updateStreak === 'function') {
+      const newCount = updateStreak();
+      if (typeof triggerStreakAnimation === 'function') triggerStreakAnimation(newCount);
+    }
     showDoneMessage('classic-result', true, classicTarget.name, classicGuesses.length);
   } else {
     saveDailyState(MODE_KEY, { guesses: classicGuesses, results: classicResults, done: false, won: false, character: classicTarget.name });

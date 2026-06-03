@@ -1738,6 +1738,32 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
   text-transform: uppercase;
 }
 
+/* ══════════════════════════════════════
+   STREAK — animación de hito
+══════════════════════════════════════ */
+@keyframes igniteFlame {
+  0%   { transform: scale(0.1); filter: grayscale(1) brightness(0.2); opacity: 0; }
+  45%  { transform: scale(1.5); filter: grayscale(0) brightness(2) drop-shadow(0 0 30px #ff6400); opacity: 1; }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1.15); filter: grayscale(0) brightness(1.2) drop-shadow(0 0 16px #ff6400); opacity: 1; }
+}
+
+@keyframes streakNumPop {
+  0%   { transform: scale(0) translateY(20px); opacity: 0; }
+  65%  { transform: scale(1.25) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes streakLabelFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes streakOverlayOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 .result-streak {
   display: inline-block;
   background: rgba(255,90,0,0.12);

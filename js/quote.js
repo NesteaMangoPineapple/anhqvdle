@@ -121,7 +121,10 @@ function makeGuessQuote() {
     document.getElementById('search-wrap').style.display = 'none';
     updateStats('quote', quoteGuesses.length, true);
     saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: true, won: true, character: quoteTarget.character });
-    if (typeof updateStreak === 'function') updateStreak();
+    if (typeof updateStreak === 'function') {
+      const newCount = updateStreak();
+      if (typeof triggerStreakAnimation === 'function') triggerStreakAnimation(newCount);
+    }
     showDoneMessageQuote(true, quoteTarget.character, quoteGuesses.length);
   } else {
     saveDailyState(MODE_KEY_Q, { guesses: quoteGuesses, done: false, won: false, character: quoteTarget.character });
