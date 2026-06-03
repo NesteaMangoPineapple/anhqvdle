@@ -238,7 +238,9 @@ function startCountdown(elementId) {
   function tick() {
     const el = document.getElementById(elementId);
     if (!el) return;
-    el.textContent = formatCountdown(msUntilMidnight());
+    const ms = msUntilMidnight();
+    if (ms <= 0) { location.reload(); return; }
+    el.textContent = formatCountdown(ms);
   }
   tick();
   setInterval(tick, 1000);
