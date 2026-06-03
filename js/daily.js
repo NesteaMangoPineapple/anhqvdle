@@ -27,9 +27,9 @@ function getYesterdayIndex(arrayLength) {
  * Útil para mostrar "#X" en los resultados.
  */
 function getDayNumber() {
-  const launch = new Date('2026-03-24T00:00:00Z');
+  const launch = new Date(2026, 2, 24); // 24 mar 2026 medianoche local
   const today  = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
   return Math.max(1, Math.floor((today - launch) / 86400000) + 1);
 }
 
