@@ -149,8 +149,10 @@ function loadStats(mode) {
 
 function updateStats(mode, attempts, won) {
   const stats     = loadStats(mode);
-  const today     = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const _d = new Date();
+  const today     = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
+  const _y = new Date(_d); _y.setDate(_y.getDate() - 1);
+  const yesterday = `${_y.getFullYear()}-${String(_y.getMonth()+1).padStart(2,'0')}-${String(_y.getDate()).padStart(2,'0')}`;
 
   // Evitar doble conteo por si se llama dos veces el mismo día
   if (stats.lastPlayedDate === today) return;
