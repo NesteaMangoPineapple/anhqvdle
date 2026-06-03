@@ -27,10 +27,17 @@ function getYesterdayIndex(arrayLength) {
  * Útil para mostrar "#X" en los resultados.
  */
 function getDayNumber() {
-  const launch = new Date(2026, 2, 24); // 24 mar 2026 medianoche local
-  const today  = new Date();
-  today.setHours(0, 0, 0, 0);
-  return Math.max(1, Math.floor((today - launch) / 86400000) + 1);
+  function _absDay(y, m, d) {
+    const leap = (y%4===0&&y%100!==0)||y%400===0;
+    const dim  = [31,leap?29:28,31,30,31,30,31,31,30,31,30,31];
+    let n = y*365 + Math.floor(y/4) - Math.floor(y/100) + Math.floor(y/400);
+    for (let i = 0; i < m; i++) n += dim[i];
+    return n + d;
+  }
+  const t = new Date();
+  const launchDay = _absDay(2026, 2, 24); // 24 mar 2026
+  const todayDay  = _absDay(t.getFullYear(), t.getMonth(), t.getDate());
+  return Math.max(1, todayDay - launchDay + 1);
 }
 
 /* ══════════════════════════════════════
@@ -51,10 +58,14 @@ function _seededShuffle(arr, seed) {
 }
 
 function _localDayOfYear(date) {
-  const midnight = new Date(date);
-  midnight.setHours(0, 0, 0, 0);
-  const yearStart = new Date(date.getFullYear(), 0, 1);
-  return Math.floor((midnight - yearStart) / 86400000);
+  const y = date.getFullYear();
+  const m = date.getMonth(); // 0-11
+  const d = date.getDate();  // 1-31
+  const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  const dim  = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let total = 0;
+  for (let i = 0; i < m; i++) total += dim[i];
+  return total + d - 1; // 0-indexed desde Jan 1
 }
 
 function getDailyQuote() {
