@@ -100,7 +100,10 @@ window.GlobalStats = (function () {
     if (mode === 'classic') barsHtml += bar('8+', extraCount, false);
     barsHtml += bar('✗', data.dist_X || 0, true);
 
-    var label2 = (mode === 'impostor') ? 'lo encontraron' : 'lo adivinaron';
+    var label2 = mode === 'impostor'   ? 'lo encontraron'
+               : mode === 'pixelada'  ? 'lo reconocieron'
+               : mode === 'conexiones'? 'las completaron'
+               : 'lo adivinaron';
     el.innerHTML =
       '<div class="gs-panel">' +
         '<div class="gs-title">Hoy en la comunidad</div>' +
@@ -108,7 +111,7 @@ window.GlobalStats = (function () {
           '<div class="gs-stat"><span class="gs-num">' + plays + '</span><span class="gs-label">jugaron</span></div>' +
           '<div class="gs-stat"><span class="gs-num">' + pct + '%</span><span class="gs-label">' + label2 + '</span></div>' +
         '</div>' +
-        (mode !== 'impostor' ? '<div class="gs-bars">' + barsHtml + '</div>' : '') +
+        (mode !== 'impostor' && mode !== 'pixelada' && mode !== 'conexiones' ? '<div class="gs-bars">' + barsHtml + '</div>' : '') +
       '</div>';
   }
 
