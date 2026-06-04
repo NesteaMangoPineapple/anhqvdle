@@ -16,6 +16,7 @@ function updateStreak() {
 
   const newCount = prev.lastDate === yesterStr ? prev.count + 1 : 1;
   localStorage.setItem('anhqvdle_streak', JSON.stringify({ count: newCount, lastDate: today }));
+  _syncStreakToFirebase(newCount, today);
   return newCount;
 }
 
@@ -83,6 +84,20 @@ function triggerStreakAnimation(count) {
       setTimeout(() => overlay.remove(), 500);
     }, 2800);
   }, 600);
+}
+
+function _syncStreakToFirebase(count, lastDate) {
+  try {
+    if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) return;
+    const user = firebase.auth ? firebase.auth().currentUser : null;
+    if (!user) return;
+    firebase.database().ref('streaks/' + user.uid).set({
+      count:    count,
+      lastDate: lastDate,
+      name:     user.displayName || 'Vecino',
+      photo:    user.photoURL    || null
+    });
+  } catch(e) {}
 }
 
 function initStreakHeader() {

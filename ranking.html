@@ -57,6 +57,7 @@
       <button class="rtab active" data-mode="classic"   onclick="loadTab(this,'classic')">🎬 Clásico</button>
       <button class="rtab"        data-mode="quote"     onclick="loadTab(this,'quote')">💬 Frases</button>
       <button class="rtab"        data-mode="impostor"  onclick="loadTab(this,'impostor')">🕵️ Impostor</button>
+      <button class="rtab"        data-mode="streak"    onclick="loadTab(this,'streak')">🔥 Racha</button>
     </div>
 
     <div id="ranking-content" class="ranking-content">
@@ -105,7 +106,63 @@
     if (btn) btn.classList.add('active');
     document.getElementById('ranking-content').innerHTML = '<p class="ranking-loading">Cargando…</p>';
     if (!_db) { _initRanking(); return; }
+    if (mode === 'streak') { _fetchStreakLeaderboard(); return; }
     _fetchLeaderboard(mode);
+  }
+
+  function _fetchStreakLeaderboard() {
+    var pad = function(n){ return String(n).padStart(2,'0'); };
+    var now  = new Date();
+    var today = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+    var yest  = new Date(now); yest.setDate(yest.getDate()-1);
+    var yesterStr = yest.getFullYear()+'-'+pad(yest.getMonth()+1)+'-'+pad(yest.getDate());
+
+    _db.ref('streaks').once('value').then(function(snap) {
+      var data = snap.val();
+      if (!data) {
+        document.getElementById('ranking-content').innerHTML =
+          '<p class="ranking-empty">Todavía no hay rachas registradas.<br>¡Juega varios días seguidos para aparecer aquí!</p>';
+        return;
+      }
+      var rows = Object.entries(data).map(function(e){ return Object.assign({uid:e[0]},e[1]); });
+      // Solo rachas activas (jugaron hoy o ayer) y mínimo 3 días
+      rows = rows.filter(function(r){ return (r.count||0)>=3 && (r.lastDate===today||r.lastDate===yesterStr); });
+      rows.sort(function(a,b){ return (b.count||0)-(a.count||0); });
+      rows = rows.slice(0,100);
+
+      var currentUser = window.AuthModule ? AuthModule.getCurrentUser() : null;
+      var myUid = currentUser ? currentUser.uid : null;
+
+      if (rows.length === 0) {
+        document.getElementById('ranking-content').innerHTML =
+          '<p class="ranking-empty">Ninguna racha activa de 3+ días todavía.<br>¡Juega varios días seguidos para aparecer aquí!</p>';
+        return;
+      }
+
+      var html = '<div class="ranking-table-wrap">';
+      html += '<div style="text-align:center;margin-bottom:22px;margin-top:8px"><span style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,90,0,0.1);border:1px solid rgba(255,90,0,0.35);border-radius:30px;padding:6px 20px;font-family:\'Bebas Neue\',cursive;font-size:1rem;letter-spacing:2px;color:#ff6400">🔥 Rachas activas · Mín. 3 días · Top 100</span></div>';
+      html += '<table class="ranking-table"><thead><tr>';
+      html += '<th>#</th><th>Jugador</th><th>Racha actual</th><th>Estado</th>';
+      html += '</tr></thead><tbody>';
+
+      rows.forEach(function(row, i) {
+        var rank   = i + 1;
+        var medal  = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
+        var isSelf = row.uid === myUid;
+        var active = row.lastDate === today;
+        var photo  = row.photo
+          ? '<img src="'+row.photo+'" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
+          : '<span class="rank-av-letter">'+(row.name||'?')[0].toUpperCase()+'</span>';
+        html += '<tr class="'+(isSelf?'rank-row-me':'')+'">';
+        html += '<td class="rank-pos">'+medal+'</td>';
+        html += '<td class="rank-player"><div class="rank-av">'+photo+'</div><span>'+(row.name||'Vecino')+'</span></td>';
+        html += '<td><span style="font-family:\'Bebas Neue\',cursive;font-size:1.3rem;color:#ff6400">🔥 '+row.count+'</span></td>';
+        html += '<td><span style="font-size:0.75rem;padding:2px 8px;border-radius:12px;'+(active?'background:rgba(22,163,74,0.2);color:#4ade80':'background:rgba(255,90,0,0.15);color:#ff6400')+'">'+( active?'✓ Hoy':'⚠ Ayer')+'</span></td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+      document.getElementById('ranking-content').innerHTML = html;
+    });
   }
 
   function _fetchLeaderboard(mode) {
