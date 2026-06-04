@@ -126,21 +126,21 @@
       }
       var rows = Object.entries(data).map(function(e){ return Object.assign({uid:e[0]},e[1]); });
       // Solo rachas activas (jugaron hoy o ayer) y mínimo 3 días
-      rows = rows.filter(function(r){ return (r.count||0)>=3 && (r.lastDate===today||r.lastDate===yesterStr); });
+      rows = rows.filter(function(r){ return (r.count||0)>=1 && (r.lastDate===today||r.lastDate===yesterStr); });
       rows.sort(function(a,b){ return (b.count||0)-(a.count||0); });
-      rows = rows.slice(0,100);
+      rows = rows.slice(0,200);
 
       var currentUser = window.AuthModule ? AuthModule.getCurrentUser() : null;
       var myUid = currentUser ? currentUser.uid : null;
 
       if (rows.length === 0) {
         document.getElementById('ranking-content').innerHTML =
-          '<p class="ranking-empty">Ninguna racha activa de 3+ días todavía.<br>¡Juega varios días seguidos para aparecer aquí!</p>';
+          '<p class="ranking-empty">Ninguna racha activa todavía.<br>¡Completa cualquier modo hoy para aparecer aquí!</p>';
         return;
       }
 
       var html = '<div class="ranking-table-wrap">';
-      html += '<div style="text-align:center;margin-bottom:22px;margin-top:8px"><span style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,90,0,0.1);border:1px solid rgba(255,90,0,0.35);border-radius:30px;padding:6px 20px;font-family:\'Bebas Neue\',cursive;font-size:1rem;letter-spacing:2px;color:#ff6400">🔥 Rachas activas · Mín. 3 días · Top 100</span></div>';
+      html += '<div style="text-align:center;margin-bottom:22px;margin-top:8px"><span style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,90,0,0.1);border:1px solid rgba(255,90,0,0.35);border-radius:30px;padding:6px 20px;font-family:\'Bebas Neue\',cursive;font-size:1rem;letter-spacing:2px;color:#ff6400">🔥 Rachas activas · Top 200</span></div>';
       html += '<table class="ranking-table"><thead><tr>';
       html += '<th>#</th><th>Jugador</th><th>Racha actual</th><th>Estado</th>';
       html += '</tr></thead><tbody>';
