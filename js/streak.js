@@ -194,8 +194,14 @@ if (document.readyState === 'loading') {
   AuthModule.onReady(function(user) {
     if (!user) return;
     const data = getStreakData();
-    if (data.count >= 1 && data.lastDate) {
-      _syncStreakToFirebase(data.count, data.lastDate);
-    }
+    if (data.count < 1 || !data.lastDate) return;
+    _syncStreakToFirebase(data.count, data.lastDate);
+    // If ranking streak tab is already open, reload it after write completes
+    setTimeout(function() {
+      if (typeof _fetchStreakLeaderboard === 'function' &&
+          typeof _currentMode !== 'undefined' && _currentMode === 'streak') {
+        _fetchStreakLeaderboard();
+      }
+    }, 1200);
   });
 }());
