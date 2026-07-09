@@ -45,8 +45,8 @@ window.StatsFirebase = (function () {
       return s;
     }).then(function (res) {
       if (res.committed && res.snapshot.val()) {
-        // Only push to leaderboard for daily modes
-        if (mode === 'classic' || mode === 'quote') {
+        // Push to leaderboard for all daily modes
+        if (mode === 'classic' || mode === 'quote' || mode === 'impostor') {
           _updateLeaderboard(db, user, mode, res.snapshot.val());
         }
       }
