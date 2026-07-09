@@ -50,10 +50,12 @@ function buildDailyGame() {
 let impGame     = null;
 let impSelected = [];
 let impDone     = false;
+let impHintName = null;
 
 function initImpostor() {
   cleanOldStorage();
   impGame = buildDailyGame();
+  impHintName = localStorage.getItem('anhqvdle_imp_hint_' + getDayNumber()) || null;
 
   const saved = loadDailyState(MODE_KEY_IMP);
   if (saved && saved.done) {
@@ -112,6 +114,9 @@ function renderImpostorBoard(revealed) {
       ? (isImp && isSel ? '✓' : !isImp && isSel ? '✗' : isImp ? '!' : '')
       : (isSel ? '✗' : '');
 
+    const isHinted = !revealed && c.name === impHintName;
+    if (isHinted) card.classList.add('hint');
+
     card.innerHTML = `
       <div class="imp-photo-wrap">
         <img src="img/personajes/${slug}.webp" alt="${c.name}"
@@ -119,6 +124,7 @@ function renderImpostorBoard(revealed) {
         <div class="imp-overlay">${overlay}</div>
       </div>
       <span class="imp-name">${c.name}</span>
+      ${isHinted ? '<span class="imp-badge" style="background:rgba(255,165,0,0.3);color:#ffa500;border-color:rgba(255,165,0,0.5)">💡 Pista</span>' : ''}
       ${revealed && isImp ? '<span class="imp-badge">Impostor</span>' : ''}`;
 
     if (!revealed) card.addEventListener('click', () => toggleImpChar(c.name));
@@ -132,7 +138,12 @@ function renderImpostorBoard(revealed) {
     bar.className = 'imp-action-bar';
     bar.innerHTML = `
       <span class="imp-counter" id="imp-counter">0 / ${impGame.puzzle.n} seleccionados</span>
-      <button class="imp-submit-btn" id="imp-submit-btn" onclick="submitImpostor()" disabled>Confirmar</button>`;
+      <div style="display:flex;gap:8px">
+        <button class="imp-hint-btn" id="imp-hint-btn" onclick="revealImpHint()" ${impHintName ? 'disabled' : ''}>
+          💡 ${impHintName ? 'Pista usada' : 'Pista'}
+        </button>
+        <button class="imp-submit-btn" id="imp-submit-btn" onclick="submitImpostor()" disabled>Confirmar</button>
+      </div>`;
     container.appendChild(bar);
   }
 }
@@ -152,6 +163,30 @@ function toggleImpChar(name) {
   const btn     = document.getElementById('imp-submit-btn');
   if (counter) counter.textContent = `${impSelected.length} / ${impGame.puzzle.n} seleccionados`;
   if (btn)     btn.disabled = impSelected.length === 0;
+}
+
+function revealImpHint() {
+  const candidates = impGame.impostors.filter(n => !impSelected.includes(n));
+  impHintName = candidates.length > 0 ? candidates[0] : impGame.impostors[0];
+  localStorage.setItem('anhqvdle_imp_hint_' + getDayNumber(), impHintName);
+  renderImpostorBoard(false);
+  showImpToast(`💡 Pista: ${impHintName} es impostor`);
+}
+
+function showImpToast(msg) {
+  const existing = document.getElementById('imp-toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.id = 'imp-toast';
+  toast.style.cssText = `
+    text-align:center;background:rgba(255,165,0,0.15);
+    border:1px solid rgba(255,165,0,0.4);border-radius:20px;
+    padding:8px 20px;font-size:0.85rem;color:#ffa500;
+    margin-top:8px;animation:fadeIn 0.2s ease;
+  `;
+  toast.textContent = msg;
+  document.getElementById('impostor-board').appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
 }
 
 function submitImpostor() {
@@ -184,9 +219,7 @@ function showResultImpostor(won) {
     : '';
 
   const title   = won ? '¡Impostores encontrados!' : '¡Casi!';
-  const subtext = won
-    ? `Identificaste a los ${impGame.puzzle.n} impostores correctamente`
-    : `Los impostores eran: <strong>${impGame.impostors.join(' y ')}</strong>`;
+  const subtext = `Los impostores eran: <strong>${impGame.impostors.join(' y ')}</strong>`;
 
   el.innerHTML = `
     <div class="result-banner result-banner-quote" style="margin-top:24px">

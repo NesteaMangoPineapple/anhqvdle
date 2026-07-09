@@ -87,6 +87,7 @@ let cnxSelected  = [];
 let cnxFound     = [];   // array of solved group colors
 let cnxMistakes  = 0;
 let cnxDone      = false;
+let cnxHintUsed  = false;
 
 function getCnxPuzzle() {
   return CONEXIONES_PUZZLES[getDayNumber() % CONEXIONES_PUZZLES.length];
@@ -104,7 +105,8 @@ function initConexiones() {
     history.replaceState(null, '', location.pathname);
   }
   cleanOldStorage();
-  cnxPuzzle = getCnxPuzzle();
+  cnxPuzzle  = getCnxPuzzle();
+  cnxHintUsed = !!localStorage.getItem('anhqvdle_cnx_hint_' + getDayNumber());
 
   const saved = loadDailyState(MODE_KEY_CNX);
   if (saved && saved.done) {
@@ -135,7 +137,7 @@ function renderCnxBoard() {
     <div class="cnx-lives" id="cnx-lives">${renderLives()}</div>`;
   container.appendChild(header);
 
-  /* Grupos ya resueltos */
+  /* Grupos resueltos */
   cnxPuzzle.groups.forEach(g => {
     if (!cnxFound.includes(g.color)) return;
     const s = COLOR_STYLES[g.color];
@@ -154,7 +156,29 @@ function renderCnxBoard() {
     container.appendChild(band);
   });
 
-  /* Grid de personajes restantes */
+  /* Si el juego acabó (perdiste): mostrar grupos sin resolver */
+  if (cnxDone) {
+    cnxPuzzle.groups.forEach(g => {
+      if (cnxFound.includes(g.color)) return;
+      const s = COLOR_STYLES[g.color];
+      const band = document.createElement('div');
+      band.className = 'cnx-solved-group';
+      band.style.cssText = `background:${s.bg};border:2px dashed ${s.border};opacity:0.75;`;
+      band.innerHTML = `
+        <div class="cnx-solved-label" style="color:${s.text}">${g.label}</div>
+        <div class="cnx-solved-chars">${g.chars.map(c => `
+          <div class="cnx-solved-char">
+            <img src="img/personajes/${cnxSlug(c)}.webp" alt="${c}"
+              onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
+            <span>${c}</span>
+          </div>`).join('')}
+        </div>`;
+      container.appendChild(band);
+    });
+    return;
+  }
+
+  /* Grid de personajes restantes (solo en partida activa) */
   const day = getDayNumber();
   const allChars = cnxPuzzle.groups.flatMap(g => g.chars);
   const shuffled = seededShuffleCnx(allChars, day * 77317);
@@ -173,22 +197,25 @@ function renderCnxBoard() {
         <img src="img/personajes/${cnxSlug(name)}.webp" alt="${name}"
           onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
         <span>${name}</span>`;
-      if (!cnxDone) card.addEventListener('click', () => toggleCnxCard(name));
+      card.addEventListener('click', () => toggleCnxCard(name));
       grid.appendChild(card);
     });
     container.appendChild(grid);
 
     /* Barra de acción */
-    if (!cnxDone) {
-      const bar = document.createElement('div');
-      bar.className = 'cnx-action-bar';
-      bar.innerHTML = `
-        <span class="cnx-sel-count" id="cnx-sel-count">${cnxSelected.length} / 4 seleccionados</span>
+    const bar = document.createElement('div');
+    bar.className = 'cnx-action-bar';
+    bar.innerHTML = `
+      <span class="cnx-sel-count" id="cnx-sel-count">${cnxSelected.length} / 4 seleccionados</span>
+      <div style="display:flex;gap:8px">
+        <button class="cnx-hint-btn" id="cnx-hint-btn" onclick="revealCnxHint()" ${cnxHintUsed ? 'disabled' : ''}>
+          💡 ${cnxHintUsed ? 'Pista usada' : 'Pista'}
+        </button>
         <button class="imp-submit-btn" id="cnx-submit-btn" onclick="submitCnx()" ${cnxSelected.length !== 4 ? 'disabled' : ''}>
           Comprobar
-        </button>`;
-      container.appendChild(bar);
-    }
+        </button>
+      </div>`;
+    container.appendChild(bar);
   }
 }
 
@@ -269,6 +296,16 @@ function submitCnx() {
     }
     cnxSelected = [];
   }
+}
+
+function revealCnxHint() {
+  const unsolved = cnxPuzzle.groups.find(g => !cnxFound.includes(g.color));
+  if (!unsolved) return;
+  cnxHintUsed = true;
+  localStorage.setItem('anhqvdle_cnx_hint_' + getDayNumber(), '1');
+  const btn = document.getElementById('cnx-hint-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '💡 Pista usada'; }
+  showCnxToast(`💡 Pista: una categoría es "${unsolved.label}"`);
 }
 
 function showCnxToast(msg) {

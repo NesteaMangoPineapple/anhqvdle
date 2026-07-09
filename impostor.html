@@ -23,6 +23,20 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#f0c020">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .imp-hint-btn {
+      background: rgba(255,165,0,0.1);
+      border: 1px solid rgba(255,165,0,0.4);
+      color: #ffa500;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 8px 14px; border-radius: 50px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .imp-hint-btn:hover:not(:disabled) { background: rgba(255,165,0,0.2); }
+    .imp-hint-btn:disabled { opacity: 0.45; cursor: default; }
+    .imp-char.hint { outline: 2px dashed #ffa500; outline-offset: 2px; }
+  </style>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1251819701012590" crossorigin="anonymous"></script>
   <!-- Google Analytics -->
