@@ -643,6 +643,7 @@ footer span { color: var(--accent); }
 
 @media (max-width: 640px) {
   .nav-hamburger { display: inline-flex; }
+  .ranking-nav-fixed { display: none; }
 
   header nav {
     display: none;

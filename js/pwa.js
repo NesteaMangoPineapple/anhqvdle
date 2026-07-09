@@ -194,6 +194,16 @@ window.pwaDenyPush       = pwaDenyPush;
 
     nav.parentNode.insertBefore(btn, nav);
 
+    // Añadir Ranking al menú si no está ya
+    if (!nav.querySelector('a[href*="ranking"]')) {
+      var rankLink = document.createElement('a');
+      rankLink.href = 'ranking.html';
+      rankLink.className = 'nav-btn';
+      rankLink.textContent = '🏆 Ranking';
+      if (window.location.pathname.includes('ranking')) rankLink.classList.add('active');
+      nav.appendChild(rankLink);
+    }
+
     btn.addEventListener('click', function (e) {
       e.stopPropagation(); // evita que llegue al document listener
       var open = nav.classList.toggle('nav-open');
