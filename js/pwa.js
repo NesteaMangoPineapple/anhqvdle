@@ -172,3 +172,49 @@ window.pwaDismiss        = pwaDismiss;
 window.pwaAskPush        = _askPushPermission;
 window.pwaSubscribePush  = pwaSubscribePush;
 window.pwaDenyPush       = pwaDenyPush;
+
+// ── Mobile hamburger nav ─────────────────────────────
+(function () {
+  function initHamburger() {
+    var nav = document.querySelector('header nav');
+    if (!nav) return;
+
+    var btn = document.createElement('button');
+    btn.className = 'nav-hamburger';
+    btn.setAttribute('aria-label', 'Abrir menú');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<span class="nav-hamburger-icon">☰</span><span>Menú</span>';
+
+    nav.parentNode.insertBefore(btn, nav);
+
+    btn.addEventListener('click', function () {
+      var open = nav.classList.toggle('nav-open');
+      btn.setAttribute('aria-expanded', open);
+      btn.innerHTML = open
+        ? '<span class="nav-hamburger-icon">✕</span><span>Cerrar</span>'
+        : '<span class="nav-hamburger-icon">☰</span><span>Menú</span>';
+    });
+
+    nav.querySelectorAll('a.nav-btn').forEach(function (link) {
+      link.addEventListener('click', function () {
+        nav.classList.remove('nav-open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = '<span class="nav-hamburger-icon">☰</span><span>Menú</span>';
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && !btn.contains(e.target)) {
+        nav.classList.remove('nav-open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = '<span class="nav-hamburger-icon">☰</span><span>Menú</span>';
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHamburger);
+  } else {
+    initHamburger();
+  }
+}());

@@ -28,6 +28,160 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#f0c020">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Daily Hub ── */
+    .daily-hub {
+      max-width: 820px;
+      margin: 0 auto 28px;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 12px;
+      padding: 0 8px;
+    }
+
+    .hub-card {
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+    }
+
+    /* Streak card */
+    .hub-streak-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 3.8rem;
+      color: #ff6400;
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(255,100,0,0.5);
+    }
+    .hub-streak-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 600;
+    }
+    .hub-streak-flame {
+      font-size: 3.8rem;
+      line-height: 1;
+    }
+    .hub-streak-pending {
+      font-size: 0.7rem;
+      color: #ff6400;
+      margin-top: 2px;
+    }
+
+    /* Progress card */
+    .hub-progress-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .hub-modes {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hub-mode-pip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .hub-mode-icon {
+      width: 66px; height: 66px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.9rem;
+      border: 2px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      position: relative;
+      transition: all 0.2s;
+    }
+    .hub-mode-icon.done {
+      background: rgba(74,222,128,0.12);
+      border-color: rgba(74,222,128,0.4);
+    }
+    .hub-mode-icon.done::after {
+      content: '✓';
+      position: absolute;
+      bottom: -4px; right: -4px;
+      background: #4ade80;
+      color: #000;
+      font-size: 0.55rem;
+      font-weight: 900;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .hub-mode-icon.lost {
+      background: rgba(248,113,113,0.1);
+      border-color: rgba(248,113,113,0.3);
+    }
+    .hub-mode-name {
+      font-size: 0.58rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .hub-progress-count {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+    .hub-progress-count span { color: rgba(255,255,255,0.25); }
+
+    /* At-risk warning */
+    .streak-risk-banner {
+      max-width: 820px;
+      margin: -12px auto 20px;
+      padding: 0 8px;
+      display: none;
+    }
+    .streak-risk-inner {
+      background: rgba(255,90,0,0.12);
+      border: 1px solid rgba(255,90,0,0.4);
+      border-radius: 12px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #ff6400;
+    }
+    .streak-risk-inner strong { color: #ff9040; }
+
+    @media (max-width: 600px) {
+      .daily-hub {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .hub-card { padding: 14px 10px; }
+      .hub-streak-num { font-size: 2.6rem; }
+      .hub-mode-icon { width: 48px; height: 48px; font-size: 1.3rem; }
+      .hub-mode-name { font-size: 0.52rem; }
+      .hub-modes { gap: 5px; }
+      .hub-progress-count { font-size: 1rem; }
+    }
+    @media (max-width: 400px) {
+      .daily-hub { grid-template-columns: 1fr; }
+      .hub-card:first-child { order: 2; }
+    }
+  </style>
   <!-- JSON-LD -->
   <script type="application/ld+json">
   {
@@ -79,14 +233,56 @@
   <main>
     <div class="home-panel">
       <h1 class="home-title">¡Bienvenido al portal de <span style="color:var(--accent)">Desengaño 21</span>!</h1>
-      <div class="home-sub-row">
-        <p class="home-sub">¿Adivinarás al vecino de hoy?</p>
-        <div class="streak-badge" id="streak-badge" style="display:none">
-          <span class="streak-flame">🔥</span>
-          <div class="streak-info">
-            <span class="streak-num" id="streak-num">0</span>
-            <span class="streak-text" id="streak-text">días seguidos</span>
+      <p class="home-sub">Tus retos diarios de Desengaño 21</p>
+
+      <!-- Daily Hub -->
+      <div class="daily-hub">
+
+        <!-- Racha -->
+        <div class="hub-card" id="hub-streak-card">
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <div class="hub-streak-num" id="hub-streak-num">–</div>
+            <div class="hub-streak-flame">🔥</div>
           </div>
+          <div class="hub-streak-label">Racha actual</div>
+          <div class="hub-streak-pending" id="hub-streak-pending" style="display:none">Juega hoy para mantenerla</div>
+        </div>
+
+        <!-- Progreso del día -->
+        <div class="hub-card">
+          <div class="hub-progress-title">Retos de hoy</div>
+          <div class="hub-modes">
+            <div class="hub-mode-pip">
+              <div class="hub-mode-icon" id="hub-pip-classic">🎬</div>
+              <div class="hub-mode-name">Clásico</div>
+            </div>
+            <div class="hub-mode-pip">
+              <div class="hub-mode-icon" id="hub-pip-quote">💬</div>
+              <div class="hub-mode-name">Frases</div>
+            </div>
+            <div class="hub-mode-pip">
+              <div class="hub-mode-icon" id="hub-pip-impostor">🕵️</div>
+              <div class="hub-mode-name">Impostor</div>
+            </div>
+            <div class="hub-mode-pip">
+              <div class="hub-mode-icon" id="hub-pip-conexiones">🔗</div>
+              <div class="hub-mode-name">Conexiones</div>
+            </div>
+            <div class="hub-mode-pip">
+              <div class="hub-mode-icon" id="hub-pip-pixelada">🖼️</div>
+              <div class="hub-mode-name">Pixelada</div>
+            </div>
+          </div>
+          <div class="hub-progress-count" id="hub-progress-count">0<span>/5</span></div>
+        </div>
+
+      </div>
+
+      <!-- Banner racha en peligro -->
+      <div class="streak-risk-banner" id="streak-risk-banner">
+        <div class="streak-risk-inner">
+          <span>⚠️</span>
+          <span id="streak-risk-text">Tu racha acaba esta noche — ¡no la pierdas!</span>
         </div>
       </div>
 
@@ -197,59 +393,105 @@
     </div>
     <a href="https://ko-fi.com/anhqvdle" target="_blank" rel="noopener" class="footer-kofi">☕ Invita a Marisa a su chínchón</a>
   </footer>
-  <script>
-  // Badge "ya jugaste hoy" en las tarjetas de modo
-  (function() {
-    try {
-      const now = new Date();
-      const d   = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
-      [
-        { mode: 'classic',  href: 'clasico.html'   },
-        { mode: 'quote',    href: 'frases.html'    },
-        { mode: 'impostor', href: 'impostor.html'  }
-      ].forEach(({ mode, href }) => {
-        const raw = localStorage.getItem(`anhqvdle_${mode}_${d}`);
-        if (!raw) return;
-        const state = JSON.parse(raw);
-        const card  = document.querySelector(`a.mode-card[href="${href}"]`);
-        if (!card) return;
-        const badge = document.createElement('div');
-        if (mode === 'impostor') {
-          if (state.done && state.won)  { badge.className = 'mode-card-badge done-won';  badge.textContent = '✓ Encontrado'; }
-          else if (state.done)          { badge.className = 'mode-card-badge done-lost'; badge.textContent = '✗ Fallado'; }
-        } else {
-          const guesses = state.guesses ? state.guesses.length : 0;
-          if (state.done && state.won)  { badge.className = 'mode-card-badge done-won';  badge.textContent = `✓ ${guesses} intento${guesses !== 1 ? 's' : ''}`; }
-          else if (state.done)          { badge.className = 'mode-card-badge done-lost'; badge.textContent = '✗ Sin adivinar'; }
-          else if (guesses > 0)         { badge.className = 'mode-card-badge in-progress'; badge.textContent = `${guesses} intento${guesses !== 1 ? 's' : ''}…`; }
-        }
-        if (badge.className) card.appendChild(badge);
-      });
-    } catch(e) {}
-  })();
-  </script>
   <script src="js/streak.js"></script>
   <script>
   (function() {
     try {
       const pad = n => String(n).padStart(2, '0');
       const now  = new Date();
-      const today = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
-      const yest  = new Date(now); yest.setDate(yest.getDate() - 1);
+      const today     = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+      const yest      = new Date(now); yest.setDate(yest.getDate() - 1);
       const yesterStr = `${yest.getFullYear()}${pad(yest.getMonth()+1)}${pad(yest.getDate())}`;
 
-      const data  = getStreakData();
-      const badge = document.getElementById('streak-badge');
-      const numEl = document.getElementById('streak-num');
-      const txtEl = document.getElementById('streak-text');
-
+      // ── Streak hub card ──
+      const data = getStreakData();
+      const hubNum     = document.getElementById('hub-streak-num');
+      const hubPending = document.getElementById('hub-streak-pending');
       if (data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr)) {
-        numEl.textContent = data.count;
-        txtEl.textContent = data.count === 1 ? 'día seguido' : 'días seguidos';
-        if (data.lastDate === yesterStr) badge.classList.add('pending');
-        badge.style.display = 'inline-flex';
+        hubNum.textContent = data.count;
+        if (data.lastDate === yesterStr) {
+          hubPending.style.display = '';
+          document.getElementById('hub-streak-card').style.opacity = '0.75';
+        }
+      } else {
+        hubNum.textContent = '0';
       }
-    } catch(e) {}
+
+      // ── Progreso del día + badges en tarjetas ──
+      const MODES = [
+        { mode: 'classic',    href: 'clasico.html',    pip: 'hub-pip-classic'    },
+        { mode: 'quote',      href: 'frases.html',     pip: 'hub-pip-quote'      },
+        { mode: 'impostor',   href: 'impostor.html',   pip: 'hub-pip-impostor'   },
+        { mode: 'conexiones', href: 'conexiones.html', pip: 'hub-pip-conexiones' },
+        { mode: 'pixelada',   href: 'pixelada.html',   pip: 'hub-pip-pixelada'   },
+      ];
+      let completed = 0;
+      MODES.forEach(({ mode, href, pip }) => {
+        const raw = localStorage.getItem(`anhqvdle_${mode}_${today}`);
+        const pipEl = document.getElementById(pip);
+        const card  = document.querySelector(`a.mode-card[href="${href}"]`);
+        if (!raw) return;
+        const state = JSON.parse(raw);
+        if (!state.done) return;
+
+        // Hub pip
+        pipEl && pipEl.classList.add(state.won ? 'done' : 'lost');
+
+        // Mode card badge
+        if (card) {
+          const badge = document.createElement('div');
+          if (mode === 'impostor') {
+            badge.className = state.won ? 'mode-card-badge done-won' : 'mode-card-badge done-lost';
+            badge.textContent = state.won ? '✓ Encontrado' : '✗ Fallado';
+          } else if (mode === 'conexiones') {
+            badge.className = state.won ? 'mode-card-badge done-won' : 'mode-card-badge done-lost';
+            badge.textContent = state.won ? '✓ Resuelto' : '✗ Sin resolver';
+          } else if (mode === 'pixelada') {
+            const g = state.guesses ? state.guesses.length : 0;
+            badge.className = state.won ? 'mode-card-badge done-won' : 'mode-card-badge done-lost';
+            badge.textContent = state.won ? `✓ ${g} intento${g !== 1 ? 's' : ''}` : '✗ Sin adivinar';
+          } else {
+            const g = state.guesses ? state.guesses.length : 0;
+            badge.className = state.won ? 'mode-card-badge done-won' : 'mode-card-badge done-lost';
+            badge.textContent = state.won ? `✓ ${g} intento${g !== 1 ? 's' : ''}` : '✗ Sin adivinar';
+          }
+          card.appendChild(badge);
+        }
+
+        if (state.won) completed++;
+      });
+
+      // In-progress badges for non-daily modes (classic/quote only)
+      [
+        { mode: 'classic', href: 'clasico.html' },
+        { mode: 'quote',   href: 'frases.html'  },
+      ].forEach(({ mode, href }) => {
+        const raw = localStorage.getItem(`anhqvdle_${mode}_${today}`);
+        if (!raw) return;
+        const state = JSON.parse(raw);
+        if (state.done) return;
+        const g = state.guesses ? state.guesses.length : 0;
+        if (g === 0) return;
+        const card = document.querySelector(`a.mode-card[href="${href}"]`);
+        if (!card) return;
+        const badge = document.createElement('div');
+        badge.className = 'mode-card-badge in-progress';
+        badge.textContent = `${g} intento${g !== 1 ? 's' : ''}…`;
+        card.appendChild(badge);
+      });
+
+      document.getElementById('hub-progress-count').innerHTML = `${completed}<span>/5</span>`;
+
+      // ── Racha en peligro (después de las 21h si no has jugado hoy y tienes racha) ──
+      const banner = document.getElementById('streak-risk-banner');
+      if (banner && data.count >= 1 && data.lastDate === yesterStr && now.getHours() >= 21) {
+        const hoursLeft = 24 - now.getHours();
+        document.getElementById('streak-risk-text').textContent =
+          `⚠️ Tu racha de ${data.count} día${data.count !== 1 ? 's' : ''} acaba en menos de ${hoursLeft}h — ¡juega antes de medianoche!`;
+        banner.style.display = '';
+      }
+
+    } catch(e) { console.error(e); }
   })();
   </script>
   <!-- Firebase SDK (compat) -->
