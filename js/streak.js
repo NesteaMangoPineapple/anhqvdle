@@ -186,3 +186,16 @@ if (document.readyState === 'loading') {
 } else {
   initStreakHeader();
 }
+
+// Sync streak to Firebase on page load so ranking stays up to date
+// (not just on game completion)
+(function _syncOnLoad() {
+  if (typeof AuthModule === 'undefined') return;
+  AuthModule.onReady(function(user) {
+    if (!user) return;
+    const data = getStreakData();
+    if (data.count >= 1 && data.lastDate) {
+      _syncStreakToFirebase(data.count, data.lastDate);
+    }
+  });
+}());
