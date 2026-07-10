@@ -5,7 +5,7 @@
 window.EmailConsent = (function () {
 
   // URL del Cloudflare Worker de emails (rellenar tras desplegar)
-  var WORKER_URL = 'https://anhqvdle-email.workers.dev';
+  var WORKER_URL = 'https://anhqvdle-email.yeremy8gc.workers.dev';
 
   function init() {
     if (typeof AuthModule === 'undefined') return;
