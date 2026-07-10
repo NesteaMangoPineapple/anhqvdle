@@ -214,6 +214,17 @@ window.pwaDenyPush       = pwaDenyPush;
     el.style.display = 'flex';
     if (!active) el.classList.add('empty');
     else if (data.lastDate === yesterStr) el.classList.add('pending');
+
+    // Añadir click handler si streak.js no lo puso ya
+    if (!el._clickBound) {
+      el._clickBound = true;
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function () {
+        if (typeof showStreakPopup === 'function') {
+          showStreakPopup(active ? data : { count: 0 }, today);
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
