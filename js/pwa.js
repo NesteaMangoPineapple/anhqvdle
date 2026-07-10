@@ -173,6 +173,46 @@ window.pwaAskPush        = _askPushPermission;
 window.pwaSubscribePush  = pwaSubscribePush;
 window.pwaDenyPush       = pwaDenyPush;
 
+// ── Streak header badge (todas las páginas) ──────────
+(function () {
+  function initStreakBadge() {
+    var header = document.querySelector('header');
+    if (!header) return;
+
+    var el = document.getElementById('streak-header-badge');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'streak-header-badge';
+      el.className = 'streak-header-badge';
+      el.style.display = 'none';
+      header.appendChild(el);
+    }
+
+    // Si streak.js ya lo pobló, no hacer nada
+    if (el.textContent.trim()) return;
+
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    var now  = new Date();
+    var today    = '' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate());
+    var yest     = new Date(now); yest.setDate(yest.getDate() - 1);
+    var yesterStr = '' + yest.getFullYear() + pad(yest.getMonth() + 1) + pad(yest.getDate());
+
+    var data   = JSON.parse(localStorage.getItem('anhqvdle_streak') || '{"count":0,"lastDate":""}');
+    var active = data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr);
+
+    el.textContent  = '🔥 ' + (active ? data.count : 0);
+    el.style.display = 'flex';
+    if (!active) el.classList.add('empty');
+    else if (data.lastDate === yesterStr) el.classList.add('pending');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStreakBadge);
+  } else {
+    initStreakBadge();
+  }
+}());
+
 // ── Mobile hamburger nav ─────────────────────────────
 (function () {
   function closeMenu(nav, btn) {
