@@ -173,6 +173,16 @@ window.pwaAskPush        = _askPushPermission;
 window.pwaSubscribePush  = pwaSubscribePush;
 window.pwaDenyPush       = pwaDenyPush;
 
+// ── Email consent (carga en todas las páginas) ───────
+(function () {
+  var s = document.createElement('script');
+  s.src = '/js/email-consent.js';
+  s.onload = function () {
+    if (window.EmailConsent) window.EmailConsent.init();
+  };
+  document.head.appendChild(s);
+}());
+
 // ── Streak header badge (todas las páginas) ──────────
 (function () {
   function initStreakBadge() {

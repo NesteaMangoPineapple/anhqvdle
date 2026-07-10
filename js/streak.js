@@ -91,12 +91,16 @@ function _syncStreakToFirebase(count, lastDate) {
     if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) return;
     const user = firebase.auth ? firebase.auth().currentUser : null;
     if (!user) return;
-    firebase.database().ref('streaks/' + user.uid).set({
+    const db = firebase.database();
+    db.ref('streaks/' + user.uid).set({
       count:    count,
       lastDate: lastDate,
       name:     user.displayName || 'Vecino',
       photo:    user.photoURL    || null
     });
+    // Para recordatorios de email: última vez que jugó y racha actual
+    const today = new Date().toISOString().slice(0, 10);
+    db.ref('users/' + user.uid).update({ lastPlayed: today, streak: count });
   } catch(e) {}
 }
 
