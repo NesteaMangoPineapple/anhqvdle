@@ -212,6 +212,7 @@ function showDoneMessage(containerId, won, charName, attempts) {
       <div class="share-row">
         <button class="share-btn" id="share-btn-classic" onclick="shareResultClassic(${won}, ${attempts})">📋 Texto</button>
         <button class="share-btn" id="share-img-btn-classic" onclick="shareImageClassic(${won}, ${attempts})">📸 Imagen</button>
+        <button class="share-btn" id="share-stories-btn-classic" onclick="shareStoriesClassic(${won}, ${attempts})">📱 Stories</button>
       </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próximo personaje en</p>
@@ -300,6 +301,116 @@ function shareImageClassic(won, attempts) {
       navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-clasico.png'));
     } else {
       _downloadBlob(blob, 'anhqvdle-clasico.png');
+    }
+  }, 'image/png');
+}
+
+function shareStoriesClassic(won, attempts) {
+  const W = 1080, H = 1920;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fondo degradado
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0,   '#0f0c00');
+  grad.addColorStop(0.5, '#0a0a0a');
+  grad.addColorStop(1,   '#000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Borde dorado sutil
+  ctx.strokeStyle = 'rgba(240,192,32,0.25)';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(3, 3, W - 6, H - 6);
+
+  // Línea decorativa superior
+  ctx.fillStyle = '#f0c020';
+  ctx.fillRect(0, 0, W, 8);
+
+  // Logo
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 130px Impact, Arial, sans-serif';
+  ctx.fillStyle = '#f0c020';
+  ctx.fillText('ANHQV', W / 2 - 80, 200);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('dle', W / 2 + 185, 200);
+
+  // Subtítulo
+  ctx.font = '38px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.letterSpacing = '6px';
+  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
+
+  // Modo + día
+  ctx.font = 'bold 52px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.fillText(`🎬 CLÁSICO  ·  #${getDayNumber()}`, W / 2, 360);
+
+  // Separador
+  ctx.strokeStyle = 'rgba(240,192,32,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
+
+  // Resultado
+  ctx.font = 'bold 72px Arial, sans-serif';
+  ctx.fillStyle = won ? '#4ade80' : '#f87171';
+  ctx.fillText(
+    won ? `✓ Adivinado en ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ No lo adiviné',
+    W / 2, 510
+  );
+
+  // Grid
+  const CELL = 100, GAP = 10, COLS = 8;
+  const gridW = COLS * CELL + (COLS - 1) * GAP;
+  const x0 = (W - gridW) / 2;
+  let y = 580;
+  const colors = { '🟩': '#16a34a', '🟨': '#ca8a04', '🟥': '#dc2626' };
+
+  classicResults.forEach(row => {
+    let x = x0;
+    row.forEach(emoji => {
+      // Sombra suave
+      ctx.shadowColor = colors[emoji] || '#333';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = colors[emoji] || '#2a2a2a';
+      ctx.beginPath();
+      ctx.roundRect(x, y, CELL, CELL, 8);
+      ctx.fill();
+      x += CELL + GAP;
+    });
+    y += CELL + GAP;
+  });
+  ctx.shadowBlur = 0;
+
+  // CTA
+  y = Math.max(y + 80, 1480);
+  ctx.font = 'bold 68px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fillText('¿Puedes adivinarlo tú?', W / 2, y);
+
+  // Botón visual
+  const btnY = y + 60;
+  ctx.fillStyle = '#f0c020';
+  ctx.beginPath();
+  ctx.roundRect(W / 2 - 280, btnY, 560, 100, 50);
+  ctx.fill();
+  ctx.font = 'bold 52px Arial, sans-serif';
+  ctx.fillStyle = '#000';
+  ctx.fillText('anhqvdle.es', W / 2, btnY + 66);
+
+  // Footer
+  ctx.font = '34px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
+
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    const file = new File([blob], 'anhqvdle-stories.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-stories.png'));
+    } else {
+      _downloadBlob(blob, 'anhqvdle-stories.png');
     }
   }, 'image/png');
 }

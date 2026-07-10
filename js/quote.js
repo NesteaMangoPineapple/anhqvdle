@@ -181,6 +181,7 @@ function showDoneMessageQuote(won, charName, attempts) {
       <div class="share-row">
         <button class="share-btn" id="share-btn-quote" onclick="shareResultQuote(${won}, ${attempts})">📋 Texto</button>
         <button class="share-btn" id="share-img-btn-quote" onclick="shareImageQuote(${won}, ${attempts})">📸 Imagen</button>
+        <button class="share-btn" id="share-stories-btn-quote" onclick="shareStoriesQuote(${won}, ${attempts})">📱 Stories</button>
       </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próxima frase en</p>
@@ -255,6 +256,120 @@ function shareImageQuote(won, attempts) {
       navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-frases.png'));
     } else {
       _downloadBlob(blob, 'anhqvdle-frases.png');
+    }
+  }, 'image/png');
+}
+
+function shareStoriesQuote(won, attempts) {
+  const W = 1080, H = 1920;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0,   '#0f0c00');
+  grad.addColorStop(0.5, '#0a0a0a');
+  grad.addColorStop(1,   '#000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = 'rgba(240,192,32,0.25)';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(3, 3, W - 6, H - 6);
+
+  ctx.fillStyle = '#f0c020';
+  ctx.fillRect(0, 0, W, 8);
+
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 130px Impact, Arial, sans-serif';
+  ctx.fillStyle = '#f0c020';
+  ctx.fillText('ANHQV', W / 2 - 80, 200);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('dle', W / 2 + 185, 200);
+
+  ctx.font = '38px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
+
+  ctx.font = 'bold 52px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.fillText(`💬 FRASES  ·  #${getDayNumber()}`, W / 2, 360);
+
+  ctx.strokeStyle = 'rgba(240,192,32,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
+
+  ctx.font = 'bold 72px Arial, sans-serif';
+  ctx.fillStyle = won ? '#4ade80' : '#f87171';
+  ctx.fillText(
+    won ? `✓ Adivinado en ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ No lo adiviné',
+    W / 2, 510
+  );
+
+  // Cuadros de intentos (grandes, centrados)
+  const n = quoteGuesses.length;
+  const CELL = 130, GAP = 20;
+  const totalW = n * CELL + (n - 1) * GAP;
+  let x = (W - totalW) / 2;
+  const cellY = 590;
+
+  quoteGuesses.forEach(name => {
+    const correct = name === quoteTarget.character;
+    ctx.shadowColor = correct ? '#16a34a' : '#dc2626';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = correct ? '#16a34a' : '#dc2626';
+    ctx.beginPath();
+    ctx.roundRect(x, cellY, CELL, CELL, 12);
+    ctx.fill();
+    x += CELL + GAP;
+  });
+  ctx.shadowBlur = 0;
+
+  // Frase (si disponible) — truncada
+  if (window.quoteTarget && quoteTarget.quote) {
+    const maxW = W - 160;
+    const q = `"${quoteTarget.quote}"`;
+    ctx.font = 'italic 44px Georgia, serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    // Wrap simple
+    const words = q.split(' ');
+    let line = '', lines = [], testLine;
+    words.forEach(word => {
+      testLine = line + word + ' ';
+      if (ctx.measureText(testLine).width > maxW && line) {
+        lines.push(line.trim());
+        line = word + ' ';
+      } else { line = testLine; }
+    });
+    if (line) lines.push(line.trim());
+    lines = lines.slice(0, 4);
+    lines.forEach((l, i) => ctx.fillText(l, W / 2, 800 + i * 60));
+  }
+
+  const ctaY = 1480;
+  ctx.font = 'bold 68px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fillText('¿Reconoces la frase?', W / 2, ctaY);
+
+  ctx.fillStyle = '#f0c020';
+  ctx.beginPath();
+  ctx.roundRect(W / 2 - 280, ctaY + 60, 560, 100, 50);
+  ctx.fill();
+  ctx.font = 'bold 52px Arial, sans-serif';
+  ctx.fillStyle = '#000';
+  ctx.fillText('anhqvdle.es', W / 2, ctaY + 126);
+
+  ctx.font = '34px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
+
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    const file = new File([blob], 'anhqvdle-stories.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-stories.png'));
+    } else {
+      _downloadBlob(blob, 'anhqvdle-stories.png');
     }
   }, 'image/png');
 }
