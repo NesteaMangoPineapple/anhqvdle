@@ -170,11 +170,24 @@ function showStreakPopup(data, today) {
         </p>
       </div>
 
-      <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;line-height:1.6;margin:0">
+      <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;line-height:1.6;margin:0 0 16px">
         Completa el modo <strong style="color:rgba(255,255,255,0.6)">Clásico</strong> o
         <strong style="color:rgba(255,255,255,0.6)">Frases</strong> cada día para mantener tu racha.
         Si te saltas un día, vuelve a empezar desde 1.
       </p>
+
+      <div id="streak-email-toggle" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="color:rgba(255,255,255,0.5);font-size:0.8rem;text-align:left;line-height:1.4">
+            📧 Avisos por email si olvidas jugar
+          </span>
+          <button id="streak-email-btn" onclick="window._toggleEmailConsent()" style="
+            flex-shrink:0;border:none;border-radius:50px;padding:6px 14px;
+            font-size:0.75rem;font-weight:700;letter-spacing:1px;cursor:pointer;
+            transition:all 0.2s;font-family:'Barlow Condensed',sans-serif;
+          ">cargando…</button>
+        </div>
+      </div>
     </div>
   `;
 
@@ -183,6 +196,9 @@ function showStreakPopup(data, today) {
     if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', esc); }
   });
   document.body.appendChild(overlay);
+
+  // Cargar estado email consent
+  _loadEmailToggleState();
 }
 
 if (document.readyState === 'loading') {
@@ -209,3 +225,45 @@ if (document.readyState === 'loading') {
     }, 1200);
   });
 }());
+
+// ── Email toggle en popup de racha ───────────────────
+function _loadEmailToggleState() {
+  const btn = document.getElementById('streak-email-btn');
+  if (!btn) return;
+  if (typeof AuthModule === 'undefined') { btn.style.display = 'none'; return; }
+  AuthModule.onReady(function(user) {
+    if (!user) { btn.style.display = 'none'; return; }
+    const db = AuthModule.getDb();
+    if (!db) return;
+    db.ref('users/' + user.uid + '/emailConsent').once('value').then(function(snap) {
+      const val = snap.val();
+      const active = val && val.accepted === true;
+      _setEmailToggleUI(btn, active);
+    }).catch(function() { btn.style.display = 'none'; });
+  });
+}
+
+function _setEmailToggleUI(btn, active) {
+  if (active) {
+    btn.textContent = 'Activado ✓';
+    btn.style.cssText += 'background:rgba(255,100,0,0.15);color:#ff6400;border:1px solid rgba(255,100,0,0.3);';
+  } else {
+    btn.textContent = 'Activar';
+    btn.style.cssText += 'background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.12);';
+  }
+  btn.dataset.active = active ? '1' : '0';
+}
+
+window._toggleEmailConsent = function() {
+  const btn = document.getElementById('streak-email-btn');
+  if (!btn || typeof AuthModule === 'undefined') return;
+  AuthModule.onReady(function(user) {
+    if (!user) return;
+    const db = AuthModule.getDb();
+    if (!db) return;
+    const nowActive = btn.dataset.active === '1';
+    const next = !nowActive;
+    if (window.EmailConsent) window.EmailConsent.toggle(user, db, next);
+    _setEmailToggleUI(btn, next);
+  });
+};
