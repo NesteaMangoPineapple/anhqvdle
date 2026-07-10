@@ -339,6 +339,7 @@ function showCnxResult(won) {
       <div class="result-divider"></div>
       <div class="share-row">
         <button class="share-btn" onclick="shareCnx(${won})">📋 Compartir</button>
+        <button class="share-btn" onclick="shareStoriesCnx(${won})">📱 Stories</button>
       </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próximas conexiones en</p>
@@ -360,6 +361,39 @@ function shareCnx(won) {
     btn.textContent = '¡Copiado! ✓'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = '📋 Compartir'; btn.classList.remove('copied'); }, 2000);
   });
+}
+
+function shareStoriesCnx(won) {
+  const W = 1080, H = 1920;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const errText = cnxMistakes === 0 ? 'Sin errores' : `${cnxMistakes} error${cnxMistakes !== 1 ? 'es' : ''}`;
+  _drawStoriesBase(ctx, W, H, '🔗 CONEXIONES',
+    won ? `¡Encontradas! · ${errText}` : 'No completado', won);
+
+  const groupColors = { yellow: '#ca8a04', green: '#16a34a', blue: '#2563eb' };
+  const allGroups = cnxPuzzle.groups.map(g => ({
+    color: groupColors[g.color] || '#444',
+    found: cnxFound.includes(g.color),
+  }));
+
+  const CELL = 200, GAP = 20;
+  const totalW = allGroups.length * CELL + (allGroups.length - 1) * GAP;
+  let x = (W - totalW) / 2;
+  allGroups.forEach(g => {
+    ctx.shadowColor = g.found ? g.color : '#333'; ctx.shadowBlur = g.found ? 20 : 0;
+    ctx.fillStyle = g.found ? g.color : 'rgba(255,255,255,0.1)';
+    ctx.beginPath(); ctx.roundRect(x, 580, CELL, CELL, 14); ctx.fill();
+    ctx.shadowBlur = 0;
+    x += CELL + GAP;
+  });
+
+  ctx.font = 'bold 68px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textAlign = 'center';
+  ctx.fillText('¿Encuentras las conexiones?', W / 2, 1480);
+  _drawStoriesCTA(ctx, W, H);
+  _shareStoriesBlob(canvas, 'anhqvdle-conexiones-stories.png');
 }
 
 initConexiones();

@@ -294,3 +294,75 @@ function shakeInput(inputId) {
   input.style.borderColor = 'var(--accent)';
   setTimeout(() => (input.style.borderColor = ''), 800);
 }
+
+/* ══════════════════════════════════════
+   STORIES — helpers compartidos (9:16)
+══════════════════════════════════════ */
+
+function _drawStoriesBase(ctx, W, H, modeLabel, resultText, won) {
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#0f0c00'); grad.addColorStop(0.5, '#0a0a0a'); grad.addColorStop(1, '#000');
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = 'rgba(240,192,32,0.25)'; ctx.lineWidth = 6;
+  ctx.strokeRect(3, 3, W - 6, H - 6);
+  ctx.fillStyle = '#f0c020'; ctx.fillRect(0, 0, W, 8);
+
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 130px Impact, Arial, sans-serif';
+  ctx.fillStyle = '#f0c020'; ctx.fillText('ANHQV', W / 2 - 80, 200);
+  ctx.fillStyle = '#ffffff'; ctx.fillText('dle', W / 2 + 185, 200);
+
+  ctx.font = '38px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
+
+  ctx.font = 'bold 52px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.fillText(`${modeLabel}  ·  #${getDayNumber()}`, W / 2, 360);
+
+  ctx.strokeStyle = 'rgba(240,192,32,0.3)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
+
+  ctx.font = 'bold 66px Arial'; ctx.fillStyle = won ? '#4ade80' : '#f87171';
+  ctx.fillText(resultText, W / 2, 510);
+}
+
+function _drawStoriesCTA(ctx, W, H) {
+  ctx.fillStyle = '#f0c020';
+  ctx.beginPath(); ctx.roundRect(W / 2 - 280, 1545, 560, 100, 50); ctx.fill();
+  ctx.font = 'bold 52px Arial'; ctx.fillStyle = '#000'; ctx.textAlign = 'center';
+  ctx.fillText('anhqvdle.es', W / 2, 1611);
+
+  ctx.font = '34px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
+}
+
+function _wrapText(ctx, text, cx, y, maxWidth, lineH) {
+  const words = text.split(' '); let line = '';
+  words.forEach(word => {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line.trim(), cx, y); y += lineH; line = word + ' ';
+    } else { line = test; }
+  });
+  if (line) ctx.fillText(line.trim(), cx, y);
+}
+
+function _shareStoriesBlob(canvas, filename) {
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    const file = new File([blob], filename, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'ANHQVdle' })
+        .catch(() => _downloadStoriesBlob(blob, filename));
+    } else {
+      _downloadStoriesBlob(blob, filename);
+    }
+  }, 'image/png');
+}
+
+function _downloadStoriesBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

@@ -214,6 +214,7 @@ function showPixResult(won, charName) {
       <div class="result-divider"></div>
       <div class="share-row">
         <button class="share-btn" onclick="sharePix(${won})">📋 Compartir</button>
+        <button class="share-btn" onclick="shareStoriesPix(${won})">📱 Stories</button>
       </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próxima foto en</p>
@@ -232,6 +233,35 @@ function sharePix(won) {
     btn.textContent = '¡Copiado! ✓'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = '📋 Compartir'; btn.classList.remove('copied'); }, 2000);
   });
+}
+
+function shareStoriesPix(won) {
+  const W = 1080, H = 1920;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  _drawStoriesBase(ctx, W, H, '🖼️ PIXELADA',
+    won ? `Identificado en ${pixGuesses.length} intento${pixGuesses.length !== 1 ? 's' : ''}` : `Era ${charName}`,
+    won);
+
+  const CELL = 120, GAP = 16;
+  const totalW = pixGuesses.length * CELL + (pixGuesses.length - 1) * GAP;
+  let x = (W - totalW) / 2;
+  pixGuesses.forEach((_, i) => {
+    const isLast = i === pixGuesses.length - 1;
+    const color = isLast && won ? '#16a34a' : '#dc2626';
+    ctx.shadowColor = color; ctx.shadowBlur = 16;
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.roundRect(x, 580, CELL, CELL, 12); ctx.fill();
+    ctx.shadowBlur = 0;
+    x += CELL + GAP;
+  });
+
+  ctx.font = 'bold 68px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textAlign = 'center';
+  ctx.fillText('¿Reconoces al personaje?', W / 2, 1480);
+  _drawStoriesCTA(ctx, W, H);
+  _shareStoriesBlob(canvas, 'anhqvdle-pixelada-stories.png');
 }
 
 initPixelada();

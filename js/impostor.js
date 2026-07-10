@@ -230,6 +230,7 @@ function showResultImpostor(won) {
       <div class="result-divider"></div>
       <div class="share-row">
         <button class="share-btn" id="share-btn-imp" onclick="shareImpostor(${won})">📋 Compartir</button>
+        <button class="share-btn" onclick="shareStoriesImpostor(${won})">📱 Stories</button>
       </div>
       <div class="countdown-wrap">
         <p class="countdown-label">Próximo impostor en</p>
@@ -255,6 +256,46 @@ function shareImpostor(won) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = '📋 Compartir'; btn.classList.remove('copied'); }, 2000);
   });
+}
+
+function shareStoriesImpostor(won) {
+  const W = 1080, H = 1920;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  _drawStoriesBase(ctx, W, H, '🕵️ IMPOSTOR', won
+    ? (won ? '¡Impostor encontrado!' : '¡Sin encontrar!')
+    : '¡Sin encontrar!', won);
+
+  // Resultados: ✅ correctos, ❌ erróneos, ⬜ no seleccionados
+  const correct  = impGame.impostors.filter(n =>  impSelected.includes(n));
+  const wrongSel = impSelected.filter(n => !impGame.impostors.includes(n));
+  const missed   = impGame.impostors.filter(n => !impSelected.includes(n));
+
+  const items = [
+    ...correct.map(n => ({ label: n, color: '#16a34a' })),
+    ...wrongSel.map(n => ({ label: n, color: '#dc2626' })),
+    ...missed.map(n => ({ label: n, color: '#444' })),
+  ];
+
+  const CELL = 120, GAP = 16;
+  const totalW = items.length * CELL + (items.length - 1) * GAP;
+  let x = (W - totalW) / 2;
+  items.forEach(item => {
+    ctx.shadowColor = item.color; ctx.shadowBlur = 20;
+    ctx.fillStyle = item.color;
+    ctx.beginPath(); ctx.roundRect(x, 580, CELL, CELL, 12); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.font = 'bold 28px Arial'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+    _wrapText(ctx, item.label, x + CELL / 2, 580 + CELL + 40, CELL + GAP, 30);
+    x += CELL + GAP;
+  });
+
+  ctx.font = 'bold 68px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textAlign = 'center';
+  ctx.fillText('¿Encuentras al impostor?', W / 2, 1480);
+  _drawStoriesCTA(ctx, W, H);
+  _shareStoriesBlob(canvas, 'anhqvdle-impostor-stories.png');
 }
 
 initImpostor();
