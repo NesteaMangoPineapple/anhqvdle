@@ -258,18 +258,18 @@ function shareImageClassic(won, attempts) {
   ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
 
   // Logo
-  ctx.font = 'bold 40px Impact, "Bebas Neue", sans-serif';
+  ctx.font = 'bold 40px "Bebas Neue", Impact, sans-serif';
   ctx.fillStyle = '#f0c020';
   ctx.textAlign = 'center';
   ctx.fillText('ANHQVdle', W / 2, 50);
 
   // Subtítulo
-  ctx.font = '13px Arial, sans-serif';
+  ctx.font = '600 13px "Barlow Condensed", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.5)';
   ctx.fillText(`🎬 Clásico #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}`, W / 2, 74);
 
   // Resultado
-  ctx.font = 'bold 15px Arial, sans-serif';
+  ctx.font = '700 15px "Barlow Condensed", Arial, sans-serif';
   ctx.fillStyle = won ? '#4ade80' : '#f87171';
   ctx.fillText(won ? `✓ ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ Sin adivinar', W / 2, 102);
 
@@ -290,7 +290,7 @@ function shareImageClassic(won, attempts) {
   });
 
   // URL
-  ctx.font = '12px Arial, sans-serif';
+  ctx.font = '400 12px "Barlow", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.3)';
   ctx.fillText('anhqvdle.es', W / 2, H - 14);
 
@@ -306,59 +306,17 @@ function shareImageClassic(won, attempts) {
 }
 
 function shareStoriesClassic(won, attempts) {
+  _withFontsReady(() => _drawStoriesClassic(won, attempts));
+}
+function _drawStoriesClassic(won, attempts) {
   const W = 1080, H = 1920;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // Fondo degradado
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0,   '#0f0c00');
-  grad.addColorStop(0.5, '#0a0a0a');
-  grad.addColorStop(1,   '#000');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  // Borde dorado sutil
-  ctx.strokeStyle = 'rgba(240,192,32,0.25)';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(3, 3, W - 6, H - 6);
-
-  // Línea decorativa superior
-  ctx.fillStyle = '#f0c020';
-  ctx.fillRect(0, 0, W, 8);
-
-  // Logo
-  ctx.textAlign = 'center';
-  ctx.font = 'bold 130px Impact, Arial, sans-serif';
-  ctx.fillStyle = '#f0c020';
-  ctx.fillText('ANHQV', W / 2 - 80, 200);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText('dle', W / 2 + 185, 200);
-
-  // Subtítulo
-  ctx.font = '38px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.letterSpacing = '6px';
-  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
-
-  // Modo + día
-  ctx.font = 'bold 52px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.fillText(`🎬 CLÁSICO  ·  #${getDayNumber()}`, W / 2, 360);
-
-  // Separador
-  ctx.strokeStyle = 'rgba(240,192,32,0.3)';
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
-
-  // Resultado
-  ctx.font = 'bold 72px Arial, sans-serif';
-  ctx.fillStyle = won ? '#4ade80' : '#f87171';
-  ctx.fillText(
+  _drawStoriesBase(ctx, W, H, '🎬 CLÁSICO',
     won ? `✓ Adivinado en ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ No lo adiviné',
-    W / 2, 510
-  );
+    won);
 
   // Grid
   const CELL = 100, GAP = 10, COLS = 8;

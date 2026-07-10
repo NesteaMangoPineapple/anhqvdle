@@ -364,6 +364,9 @@ function shareCnx(won) {
 }
 
 function shareStoriesCnx(won) {
+  _withFontsReady(() => _drawStoriesCnx(won));
+}
+function _drawStoriesCnx(won) {
   const W = 1080, H = 1920;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;

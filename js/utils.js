@@ -309,30 +309,45 @@ function _drawStoriesBase(ctx, W, H, modeLabel, resultText, won) {
   ctx.fillStyle = '#f0c020'; ctx.fillRect(0, 0, W, 8);
 
   ctx.textAlign = 'center';
-  ctx.font = 'bold 130px Impact, Arial, sans-serif';
-  ctx.fillStyle = '#f0c020'; ctx.fillText('ANHQV', W / 2 - 80, 200);
-  ctx.fillStyle = '#ffffff'; ctx.fillText('dle', W / 2 + 185, 200);
+  // Logo: ANHQV en dorado + dle en blanco, misma fuente que el juego
+  ctx.font = '140px "Bebas Neue", Impact, sans-serif';
+  ctx.fillStyle = '#f0c020';
+  const anhqvW = ctx.measureText('ANHQV').width;
+  const dleW   = ctx.measureText('dle').width;
+  const logoX  = (W - anhqvW - dleW) / 2;
+  ctx.textAlign = 'left';
+  ctx.fillText('ANHQV', logoX, 210);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('dle', logoX + anhqvW, 210);
+  ctx.textAlign = 'center';
 
-  ctx.font = '38px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
+  ctx.font = '700 36px "Barlow Condensed", Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.letterSpacing = '6px';
+  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 268);
+  ctx.letterSpacing = '0px';
 
-  ctx.font = 'bold 52px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.fillText(`${modeLabel}  ·  #${getDayNumber()}`, W / 2, 360);
+  ctx.font = '600 54px "Barlow Condensed", Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText(`${modeLabel}  ·  #${getDayNumber()}`, W / 2, 370);
 
   ctx.strokeStyle = 'rgba(240,192,32,0.3)'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(120, 420); ctx.lineTo(W - 120, 420); ctx.stroke();
 
-  ctx.font = 'bold 66px Arial'; ctx.fillStyle = won ? '#4ade80' : '#f87171';
-  ctx.fillText(resultText, W / 2, 510);
+  ctx.font = '700 68px "Barlow Condensed", Arial, sans-serif';
+  ctx.fillStyle = won ? '#4ade80' : '#f87171';
+  ctx.fillText(resultText, W / 2, 520);
 }
 
 function _drawStoriesCTA(ctx, W, H) {
   ctx.fillStyle = '#f0c020';
   ctx.beginPath(); ctx.roundRect(W / 2 - 280, 1545, 560, 100, 50); ctx.fill();
-  ctx.font = 'bold 52px Arial'; ctx.fillStyle = '#000'; ctx.textAlign = 'center';
-  ctx.fillText('anhqvdle.es', W / 2, 1611);
+  ctx.font = '800 54px "Barlow Condensed", Arial, sans-serif';
+  ctx.fillStyle = '#000'; ctx.textAlign = 'center';
+  ctx.fillText('anhqvdle.es', W / 2, 1613);
 
-  ctx.font = '34px Arial'; ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '400 34px "Barlow", Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
   ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
 }
 
@@ -365,4 +380,13 @@ function _downloadStoriesBlob(blob, filename) {
   const a = document.createElement('a');
   a.href = url; a.download = filename; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// Espera a que las Google Fonts estén disponibles antes de dibujar en canvas
+function _withFontsReady(drawFn) {
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(drawFn);
+  } else {
+    setTimeout(drawFn, 300);
+  }
 }

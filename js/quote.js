@@ -261,50 +261,17 @@ function shareImageQuote(won, attempts) {
 }
 
 function shareStoriesQuote(won, attempts) {
+  _withFontsReady(() => _drawStoriesQuote(won, attempts));
+}
+function _drawStoriesQuote(won, attempts) {
   const W = 1080, H = 1920;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0,   '#0f0c00');
-  grad.addColorStop(0.5, '#0a0a0a');
-  grad.addColorStop(1,   '#000');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.strokeStyle = 'rgba(240,192,32,0.25)';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(3, 3, W - 6, H - 6);
-
-  ctx.fillStyle = '#f0c020';
-  ctx.fillRect(0, 0, W, 8);
-
-  ctx.textAlign = 'center';
-  ctx.font = 'bold 130px Impact, Arial, sans-serif';
-  ctx.fillStyle = '#f0c020';
-  ctx.fillText('ANHQV', W / 2 - 80, 200);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText('dle', W / 2 + 185, 200);
-
-  ctx.font = '38px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.fillText('AQUÍ NO HAY QUIEN VIVA', W / 2, 258);
-
-  ctx.font = 'bold 52px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.fillText(`💬 FRASES  ·  #${getDayNumber()}`, W / 2, 360);
-
-  ctx.strokeStyle = 'rgba(240,192,32,0.3)';
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(120, 410); ctx.lineTo(W - 120, 410); ctx.stroke();
-
-  ctx.font = 'bold 72px Arial, sans-serif';
-  ctx.fillStyle = won ? '#4ade80' : '#f87171';
-  ctx.fillText(
+  _drawStoriesBase(ctx, W, H, '💬 FRASES',
     won ? `✓ Adivinado en ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ No lo adiviné',
-    W / 2, 510
-  );
+    won);
 
   // Cuadros de intentos (grandes, centrados)
   const n = quoteGuesses.length;

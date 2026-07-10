@@ -259,14 +259,16 @@ function shareImpostor(won) {
 }
 
 function shareStoriesImpostor(won) {
+  _withFontsReady(() => _drawStoriesImpostor(won));
+}
+function _drawStoriesImpostor(won) {
   const W = 1080, H = 1920;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  _drawStoriesBase(ctx, W, H, '🕵️ IMPOSTOR', won
-    ? (won ? '¡Impostor encontrado!' : '¡Sin encontrar!')
-    : '¡Sin encontrar!', won);
+  _drawStoriesBase(ctx, W, H, '🕵️ IMPOSTOR',
+    won ? '¡Impostor encontrado!' : '¡Sin encontrar!', won);
 
   // Resultados: ✅ correctos, ❌ erróneos, ⬜ no seleccionados
   const correct  = impGame.impostors.filter(n =>  impSelected.includes(n));
