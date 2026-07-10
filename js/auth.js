@@ -1,4 +1,4 @@
-/* ================================================
+﻿/* ================================================
    ANHQVdle — Firebase Auth (Google + Email/Password)
    ================================================ */
 
@@ -221,6 +221,10 @@ window.AuthModule = (function () {
         verBadge,
         '<div id="profile-stats" class="profile-stats"><p class="auth-p">Cargando\u2026</p></div>',
         '<a href="ranking.html" class="profile-ranking-link" onclick="document.getElementById(\'profile-modal\').remove()">🏆 Ver ranking global</a>',
+        '<div id="profile-email-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.07)">',
+          '<span style="color:rgba(255,255,255,0.55);font-size:0.82rem">&#128231; Avisos por email</span>',
+          '<button id="profile-email-btn" onclick="window._toggleProfileEmail()" style="border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:\'Barlow Condensed\',sans-serif">...</button>',
+        '</div>',
         '<button class="auth-signout" onclick="AuthModule.signOut()">Cerrar sesi\u00f3n</button>',
         '<button class="auth-delete-btn" onclick="AuthModule.deleteAccount()">Eliminar cuenta</button>',
       '</div>'
@@ -228,6 +232,7 @@ window.AuthModule = (function () {
     d.addEventListener('click', function (e) { if (e.target === d) d.remove(); });
     document.body.appendChild(d);
     _loadProfileStats(_user.uid);
+    _loadProfileEmailToggle(_user);
   }
 
   function _resendVerification() {
@@ -325,3 +330,45 @@ window.AuthModule = (function () {
     }
   };
 })();
+
+// ── Email toggle en modal de perfil ──────────────────
+function _loadProfileEmailToggle(user) {
+  var btn = document.getElementById('profile-email-btn');
+  if (!btn) return;
+  var db = AuthModule.getDb();
+  if (!db) { btn.style.display = 'none'; return; }
+  db.ref('users/' + user.uid + '/emailConsent').once('value').then(function(snap) {
+    var val = snap.val();
+    var active = val && val.accepted === true;
+    _setProfileEmailBtn(btn, active);
+  }).catch(function() { btn.style.display = 'none'; });
+}
+
+function _setProfileEmailBtn(btn, active) {
+  if (active) {
+    btn.textContent = 'Activado ✓';
+    btn.style.background = 'rgba(255,100,0,0.15)';
+    btn.style.color = '#ff6400';
+    btn.style.border = '1px solid rgba(255,100,0,0.3)';
+  } else {
+    btn.textContent = 'Activar';
+    btn.style.background = 'rgba(255,255,255,0.08)';
+    btn.style.color = 'rgba(255,255,255,0.6)';
+    btn.style.border = '1px solid rgba(255,255,255,0.12)';
+  }
+  btn.dataset.active = active ? '1' : '0';
+}
+
+window._toggleProfileEmail = function() {
+  var btn = document.getElementById('profile-email-btn');
+  if (!btn || typeof AuthModule === 'undefined') return;
+  var user = AuthModule.getCurrentUser();
+  if (!user) return;
+  var db = AuthModule.getDb();
+  if (!db) return;
+  var next = btn.dataset.active !== '1';
+  if (window.EmailConsent) window.EmailConsent.toggle(user, db, next);
+  _setProfileEmailBtn(btn, next);
+};
+
+
