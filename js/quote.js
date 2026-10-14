@@ -39,7 +39,7 @@ function initQuote() {
     quoteGuesses.forEach(name => {
       const correct = name === quoteTarget.character;
       const imgPath = `img/personajes/${toSlug(name)}.webp`;
-      const emoji   = getQuoteEmoji(name);
+      const emoji   = getCharacterEmoji(name);
       const card    = document.createElement('div');
       card.className = 'quote-guess-card ' + (correct ? 'correct' : 'wrong');
       card.innerHTML = `
@@ -100,7 +100,7 @@ function makeGuessQuote() {
 
   const correct = guess.name === quoteTarget.character;
   const imgPath = `img/personajes/${toSlug(guess.name)}.webp`;
-  const emoji   = getQuoteEmoji(guess.name);
+  const emoji   = getCharacterEmoji(guess.name);
 
   const card = document.createElement('div');
   card.className = 'quote-guess-card ' + (correct ? 'correct' : 'wrong');
@@ -253,9 +253,9 @@ function shareImageQuote(won, attempts) {
     if (!blob) return;
     const file = new File([blob], 'anhqvdle-frases.png', { type: 'image/png' });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-frases.png'));
+      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadStoriesBlob(blob, 'anhqvdle-frases.png'));
     } else {
-      _downloadBlob(blob, 'anhqvdle-frases.png');
+      _downloadStoriesBlob(blob, 'anhqvdle-frases.png');
     }
   }, 'image/png');
 }
@@ -293,10 +293,11 @@ function _drawStoriesQuote(won, attempts) {
   ctx.shadowBlur = 0;
 
   // Frase (si disponible) — truncada
-  if (window.quoteTarget && quoteTarget.quote) {
+  if (quoteTarget && quoteTarget.quote) {
     const maxW = W - 160;
     const q = `"${quoteTarget.quote}"`;
     ctx.font = 'italic 44px Georgia, serif';
+    ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,0.45)';
     // Wrap simple
     const words = q.split(' ');
@@ -313,56 +314,13 @@ function _drawStoriesQuote(won, attempts) {
     lines.forEach((l, i) => ctx.fillText(l, W / 2, 800 + i * 60));
   }
 
-  const ctaY = 1480;
-  ctx.font = 'bold 68px Arial, sans-serif';
+  ctx.font = '700 72px "Barlow Condensed", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.85)';
-  ctx.fillText('¿Reconoces la frase?', W / 2, ctaY);
-
-  ctx.fillStyle = '#f0c020';
-  ctx.beginPath();
-  ctx.roundRect(W / 2 - 280, ctaY + 60, 560, 100, 50);
-  ctx.fill();
-  ctx.font = 'bold 52px Arial, sans-serif';
-  ctx.fillStyle = '#000';
-  ctx.fillText('anhqvdle.es', W / 2, ctaY + 126);
-
-  ctx.font = '34px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
-
-  canvas.toBlob(blob => {
-    if (!blob) return;
-    const file = new File([blob], 'anhqvdle-stories.png', { type: 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-stories.png'));
-    } else {
-      _downloadBlob(blob, 'anhqvdle-stories.png');
-    }
-  }, 'image/png');
-}
-
-function _downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a   = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  ctx.textAlign = 'center';
+  ctx.fillText('¿Reconoces la frase?', W / 2, 1480);
+  _drawStoriesCTA(ctx, W, H);
+  _shareStoriesBlob(canvas, 'anhqvdle-frases-stories.png');
 }
 
 initQuote();
 
-function getQuoteEmoji(name) {
-  const map = {
-    "Emilio Delgado":"🧹","Mariano Delgado":"📚","Vicenta Benito":"🌸","Marisa Benito":"🚬",
-    "Concha de la Fuente":"👵","Mauri Hidalgo":"🌈","Fernando Navarro":"⚖️","Bea Villarejo":"📖",
-    "Juan Cuesta":"📋","Paloma Hurtado":"🕊️","Natalia Cuesta":"👩","José Miguel Cuesta":"🎮",
-    "Isabel Ruiz":"🌿","Yago":"🌍","Armando Cortés":"😎","Andrés Guerra":"💼",
-    "Pablo Guerra":"🎸","Álex Guerra":"💪","Higinio Heredia":"🔨","Mamen Heredia":"🛋️",
-    "Candela Heredia":"🍭","Raquel Heredia":"💄","Moncho Heredia":"🛌","Lucía Álvarez":"👜",
-    "Roberto Alonso":"✏️","Carlos de Haro":"💰","Nieves Cuesta":"❄️","Rafael Álvarez":"🦇",
-    "Carmen Villanueva":"📐","Belén López":"💃","Alicia Sanz":"💅","Ana":"🇩🇪",
-    "María Jesús":"🍞","Paco":"📼","Gerardo":"🔧","Padre Miguel":"✝️",
-    "Gregorio":"🗂️","Hermana Esperanza":"📻","Daniel Rubio":"👦","Rebeca":"👧",
-    "Ezequiel Hidalgo":"🍼",
-  };
-  return map[name] || "👤";
-}

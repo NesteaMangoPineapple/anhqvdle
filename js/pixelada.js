@@ -13,24 +13,9 @@ let pixGuesses   = [];
 let pixDone      = false;
 let pixImg       = null;
 
-function seededShufflePix(arr, seed) {
-  const a = [...arr];
-  let s = seed >>> 0;
-  for (let i = a.length - 1; i > 0; i--) {
-    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-    const j = s % (i + 1);
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 function getDailyPixChar() {
   const day = getDayNumber();
-  return seededShufflePix(CHARACTERS, day * 48271)[0];
-}
-
-function pixSlug(name) {
-  return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return _seededShuffle(CHARACTERS, day * 48271)[0];
 }
 
 function initPixelada() {
@@ -43,10 +28,11 @@ function initPixelada() {
   cleanOldStorage();
   pixTarget = getDailyPixChar();
 
-  const saved = loadDailyState(MODE_KEY_PIX);
+  let saved = loadDailyState(MODE_KEY_PIX);
   if (saved && saved.character && saved.character !== pixTarget.name) {
-    /* día distinto */
-  } else if (saved && saved.done) {
+    saved = null; /* día distinto */
+  }
+  if (saved && saved.done) {
     pixGuesses = saved.guesses || [];
     pixDone    = true;
     renderPixBoard();
@@ -55,10 +41,11 @@ function initPixelada() {
     return;
   }
 
-  pixGuesses = [];
+  /* Partida a medias: restaurar intentos para que recargar no dé intentos extra */
+  pixGuesses = (saved && saved.guesses) || [];
   pixDone    = false;
   renderPixBoard();
-  loadAndDraw(0, false);
+  loadAndDraw(Math.min(pixGuesses.length, PIX_BLOCK_SIZES.length - 1), false);
 }
 
 function renderPixBoard() {
@@ -99,7 +86,7 @@ function renderPixBoard() {
 function loadAndDraw(blockIdx, revealed) {
   const canvas = document.getElementById('pix-canvas');
   if (!canvas) return;
-  const slug  = pixSlug(pixTarget.name);
+  const slug  = toSlug(pixTarget.name);
   const img   = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
@@ -179,6 +166,10 @@ function makeGuessPix() {
       pixDone = true;
       updateStats(MODE_KEY_PIX, pixGuesses.length, false);
       saveDailyState(MODE_KEY_PIX, { guesses: pixGuesses, done: true, won: false, character: pixTarget.name });
+      if (typeof updateStreak === 'function') {
+        const n = updateStreak();
+        if (typeof triggerStreakAnimation === 'function') triggerStreakAnimation(n);
+      }
       renderPixBoard();
       loadAndDraw(0, true);
       showPixResult(false, pixTarget.name);

@@ -152,13 +152,14 @@
         var medal  = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
         var isSelf = row.uid === myUid;
         var active = row.lastDate === today;
-        var photo  = row.photo
-          ? '<img src="'+row.photo+'" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
-          : '<span class="rank-av-letter">'+(row.name||'?')[0].toUpperCase()+'</span>';
+        var photoUrl = safePhotoUrl(row.photo);
+        var photo  = photoUrl
+          ? '<img src="'+photoUrl+'" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
+          : '<span class="rank-av-letter">'+escapeHtml((row.name||'?')[0].toUpperCase())+'</span>';
         html += '<tr class="'+(isSelf?'rank-row-me':'')+'">';
         html += '<td class="rank-pos">'+medal+'</td>';
-        html += '<td class="rank-player"><div class="rank-av">'+photo+'</div><span>'+(row.name||'Vecino')+'</span></td>';
-        html += '<td><span style="font-family:\'Bebas Neue\',cursive;font-size:1.3rem;color:#ff6400">🔥 '+row.count+'</span></td>';
+        html += '<td class="rank-player"><div class="rank-av">'+photo+'</div><span>'+escapeHtml(row.name||'Vecino')+'</span></td>';
+        html += '<td><span style="font-family:\'Bebas Neue\',cursive;font-size:1.3rem;color:#ff6400">🔥 '+(parseInt(row.count,10)||0)+'</span></td>';
         html += '<td><span style="font-size:0.75rem;padding:2px 8px;border-radius:12px;'+(active?'background:rgba(22,163,74,0.2);color:#4ade80':'background:rgba(255,90,0,0.15);color:#ff6400')+'">'+( active?'✓ Hoy':'⚠ Ayer')+'</span></td>';
         html += '</tr>';
       });
@@ -241,14 +242,14 @@
 
         html += '<tr class="' + (isSelf ? 'rank-row-me' : '') + '">';
         html += '<td class="rank-pos">' + medal + '</td>';
-        html += '<td class="rank-player"><div class="rank-av">' + photo + '</div><span>' + (row.name || 'Vecino') + '</span></td>';
+        html += '<td class="rank-player"><div class="rank-av">' + photo + '</div><span>' + escapeHtml(row.name || 'Vecino') + '</span></td>';
         if (isDaily) {
           html += '<td class="rank-won">' + avg + '</td>';
-          html += '<td>' + (row.won || 0) + '</td>';
-          html += '<td>' + (row.maxStreak || 0) + '</td>';
+          html += '<td>' + (+row.won || 0) + '</td>';
+          html += '<td>' + (+row.maxStreak || 0) + '</td>';
         } else {
-          html += '<td class="rank-won">' + (row.won || 0) + '</td>';
-          html += '<td>' + (row.played || 0) + '</td>';
+          html += '<td class="rank-won">' + (+row.won || 0) + '</td>';
+          html += '<td>' + (+row.played || 0) + '</td>';
           html += '<td>' + pct + '%</td>';
         }
         html += '</tr>';

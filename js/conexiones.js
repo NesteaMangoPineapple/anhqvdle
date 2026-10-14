@@ -11,7 +11,7 @@ const CONEXIONES_PUZZLES = [
     groups: [
       { label: 'Vivieron en el 1º B',          color: 'yellow', chars: ['Mauri Hidalgo','Fernando Navarro','Bea Villarejo','Ezequiel Hidalgo'] },
       { label: 'Ama de casa',                  color: 'green',  chars: ['Paloma Hurtado','Isabel Ruiz','Mamen Heredia','María Jesús'] },
-      { label: 'Solo 1 temporada en la serie', color: 'blue',   chars: ['Armando Cortés','Rocío','Daniel Rubio','Rebeca'] },
+      { label: 'Solo 1 temporada (T1 o T2)',  color: 'blue',   chars: ['Armando Cortés','Rocío','Daniel Rubio','Rebeca'] },
     ]
   },
   {
@@ -65,17 +65,6 @@ const CONEXIONES_PUZZLES = [
   },
 ];
 
-function seededShuffleCnx(arr, seed) {
-  const a = [...arr];
-  let s = seed >>> 0;
-  for (let i = a.length - 1; i > 0; i--) {
-    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-    const j = s % (i + 1);
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 const COLOR_STYLES = {
   yellow: { bg: 'rgba(240,192,32,0.25)',  border: '#f0c020',  text: '#f0c020'  },
   green:  { bg: 'rgba(74,222,128,0.2)',   border: '#4ade80',  text: '#4ade80'  },
@@ -91,10 +80,6 @@ let cnxHintUsed  = false;
 
 function getCnxPuzzle() {
   return CONEXIONES_PUZZLES[getDayNumber() % CONEXIONES_PUZZLES.length];
-}
-
-function cnxSlug(name) {
-  return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
 
 function initConexiones() {
@@ -118,8 +103,8 @@ function initConexiones() {
     return;
   }
   cnxSelected = [];
-  cnxFound    = [];
-  cnxMistakes = 0;
+  cnxFound    = (saved && saved.found)    || [];
+  cnxMistakes = (saved && saved.mistakes) || 0;
   cnxDone     = false;
   renderCnxBoard();
 }
@@ -148,7 +133,7 @@ function renderCnxBoard() {
       <div class="cnx-solved-label" style="color:${s.text}">${g.label}</div>
       <div class="cnx-solved-chars">${g.chars.map(c => `
         <div class="cnx-solved-char">
-          <img src="img/personajes/${cnxSlug(c)}.webp" alt="${c}"
+          <img src="img/personajes/${toSlug(c)}.webp" alt="${c}"
             onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
           <span>${c}</span>
         </div>`).join('')}
@@ -168,7 +153,7 @@ function renderCnxBoard() {
         <div class="cnx-solved-label" style="color:${s.text}">${g.label}</div>
         <div class="cnx-solved-chars">${g.chars.map(c => `
           <div class="cnx-solved-char">
-            <img src="img/personajes/${cnxSlug(c)}.webp" alt="${c}"
+            <img src="img/personajes/${toSlug(c)}.webp" alt="${c}"
               onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
             <span>${c}</span>
           </div>`).join('')}
@@ -181,7 +166,7 @@ function renderCnxBoard() {
   /* Grid de personajes restantes (solo en partida activa) */
   const day = getDayNumber();
   const allChars = cnxPuzzle.groups.flatMap(g => g.chars);
-  const shuffled = seededShuffleCnx(allChars, day * 77317);
+  const shuffled = _seededShuffle(allChars, day * 77317);
   const remaining = shuffled.filter(c => !cnxPuzzle.groups.some(g => cnxFound.includes(g.color) && g.chars.includes(c)));
 
   if (remaining.length > 0) {
@@ -194,7 +179,7 @@ function renderCnxBoard() {
       card.className = 'cnx-card' + (sel ? ' selected' : '');
       card.dataset.name = name;
       card.innerHTML = `
-        <img src="img/personajes/${cnxSlug(name)}.webp" alt="${name}"
+        <img src="img/personajes/${toSlug(name)}.webp" alt="${name}"
           onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.opacity='0.3'}">
         <span>${name}</span>`;
       card.addEventListener('click', () => toggleCnxCard(name));
@@ -243,6 +228,17 @@ function toggleCnxCard(name) {
   if (btn)   btn.disabled = cnxSelected.length !== 4;
 }
 
+/* Fin de partida: stats, estado y racha (también al perder, como el resto de modos) */
+function finishCnx(won) {
+  cnxDone = true;
+  updateStats('conexiones', cnxMistakes + 1, won);
+  saveDailyState(MODE_KEY_CNX, { found: cnxFound, mistakes: cnxMistakes, done: true, won });
+  if (typeof updateStreak === 'function') {
+    const n = updateStreak();
+    if (typeof triggerStreakAnimation === 'function') triggerStreakAnimation(n);
+  }
+}
+
 function submitCnx() {
   if (cnxSelected.length !== 4 || cnxDone) return;
 
@@ -257,14 +253,8 @@ function submitCnx() {
     cnxFound.push(match.color);
     cnxSelected = [];
     const won = cnxFound.length === cnxPuzzle.groups.length;
-    if (won || cnxMistakes >= MAX_MISTAKES) {
-      cnxDone = true;
-      updateStats('conexiones', cnxMistakes + 1, won);
-      saveDailyState(MODE_KEY_CNX, { found: cnxFound, mistakes: cnxMistakes, done: true, won });
-      if (typeof updateStreak === 'function') {
-        const n = updateStreak();
-        if (typeof triggerStreakAnimation === 'function') triggerStreakAnimation(n);
-      }
+    if (won) {
+      finishCnx(true);
     } else {
       saveDailyState(MODE_KEY_CNX, { found: cnxFound, mistakes: cnxMistakes, done: false, won: false });
     }
@@ -288,9 +278,10 @@ function submitCnx() {
     if (casi) {
       showCnxToast('¡Casi! Hay 1 intruso en tu selección');
     }
+    /* Guardar vidas gastadas para que recargar no las regenere */
+    saveDailyState(MODE_KEY_CNX, { found: cnxFound, mistakes: cnxMistakes, done: false, won: false });
     if (cnxMistakes >= MAX_MISTAKES) {
-      cnxDone = true;
-      saveDailyState(MODE_KEY_CNX, { found: cnxFound, mistakes: cnxMistakes, done: true, won: false });
+      finishCnx(false);
       renderCnxBoard();
       showCnxResult(false);
     }

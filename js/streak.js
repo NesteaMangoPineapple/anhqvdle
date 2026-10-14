@@ -99,7 +99,7 @@ function _syncStreakToFirebase(count, lastDate) {
       photo:    user.photoURL    || null
     });
     // Para recordatorios de email: última vez que jugó y racha actual
-    const today = new Date().toISOString().slice(0, 10);
+    const today = `${lastDate.slice(0,4)}-${lastDate.slice(4,6)}-${lastDate.slice(6,8)}`; // hora local
     db.ref('users/' + user.uid).update({ lastPlayed: today, streak: count });
   } catch(e) {}
 }
@@ -171,8 +171,8 @@ function showStreakPopup(data, today) {
       </div>
 
       <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;line-height:1.6;margin:0 0 16px">
-        Completa el modo <strong style="color:rgba(255,255,255,0.6)">Clásico</strong> o
-        <strong style="color:rgba(255,255,255,0.6)">Frases</strong> cada día para mantener tu racha.
+        Completa <strong style="color:rgba(255,255,255,0.6)">cualquier modo diario</strong>
+        (Clásico, Frases, Impostor, Conexiones o Pixelada) cada día para mantener tu racha.
         Si te saltas un día, vuelve a empezar desde 1.
       </p>
 

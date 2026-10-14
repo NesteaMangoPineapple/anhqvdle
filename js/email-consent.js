@@ -92,15 +92,18 @@ window.EmailConsent = (function () {
       timestamp: new Date().toISOString().slice(0, 10),
     };
     db.ref('users/' + user.uid + '/emailConsent').set(consent).catch(function () {});
-    if (accepted) _syncToBrevo(consent.email, consent.name, 'subscribe');
+    return _syncToBrevo(user, consent.name, accepted ? 'subscribe' : 'unsubscribe');
   }
 
-  function _syncToBrevo(email, name, action) {
-    if (!WORKER_URL || WORKER_URL.includes('TU_WORKER')) return;
-    fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: action, email: email, name: name }),
+  // El worker verifica el idToken de Firebase y saca el email de ahí
+  function _syncToBrevo(user, name, action) {
+    if (!WORKER_URL || !user || !user.getIdToken) return Promise.resolve();
+    return user.getIdToken().then(function (idToken) {
+      return fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: action, idToken: idToken, name: name }),
+      });
     }).catch(function () {});
   }
 
@@ -120,8 +123,13 @@ window.EmailConsent = (function () {
 
   /* API pública: toggle desde perfil */
   function toggle(user, db, accepted) {
-    _saveConsent(user, db, accepted);
+    return _saveConsent(user, db, accepted);
   }
 
-  return { init: init, toggle: toggle };
+  // Baja en Brevo sin tocar Firebase (para borrar la cuenta)
+  function unsubscribe(user) {
+    return _syncToBrevo(user, '', 'unsubscribe');
+  }
+
+  return { init: init, toggle: toggle, unsubscribe: unsubscribe };
 }());

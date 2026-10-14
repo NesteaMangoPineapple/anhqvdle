@@ -9,62 +9,32 @@ Fan-made, no oficial. Nuevo personaje y nueva frase cada día.
 
 ## Modos de juego
 
+**Diarios** (mismo reto para todos, cuentan para la racha 🔥):
 - **🎬 Clásico** — Adivina el personaje del día comparando atributos. Intentos ilimitados.
 - **💬 Frases** — Adivina quién dijo la frase mítica. Pista opcional tras 2 fallos.
-- **🪞 ¿Quién eres?** — 15 preguntas para descubrir qué personaje de Desengaño 21 eres.
-- **🎭 Quién es Quién** — Elige un personaje secreto y adivina el del rival preguntando sí/no. Vs máquina u online.
-- **🔊 Audio** — Próximamente
+- **🕵️ El Impostor** — 9 personajes y una categoría: encuentra a los que no encajan.
+- **🧩 Conexiones** — Agrupa 12 personajes en 3 grupos de 4. 5 vidas.
+- **🖼️ Foto Pixelada** — Reconoce al personaje con la foto pixelada en 5 intentos.
+
+**Libres:**
+- **🪞 ¿Quién eres?** — 15 preguntas para descubrir qué vecino de Desengaño 21 eres.
+- **🎭 Quién es Quién** — Adivina el personaje del rival preguntando sí/no. Contra la máquina u online.
 
 ---
 
 ## Características
 
-- Personaje y frase nuevos cada día (sincronizados para todos los jugadores)
-- Autocompletado con foto y ocupación del personaje
-- Animación de revelación de celdas al adivinar
-- Muestra el personaje/frase de ayer
-- Responsive: funciona en móvil, tablet y escritorio
-- Modo daltónico (toggle 👁️ en panel lateral)
-- Compartir resultado como texto o imagen (Canvas API)
-- **Firebase Auth**: login con Google o email/password, verificación por email
-- **Ranking global** por modo en ranking.html
-- Stats locales (localStorage) + en la nube para usuarios registrados
-- PWA: manifest + theme-color
+- Home tipo dashboard: racha global y modos completados hoy
+- Racha global diaria + ranking (Clásico, Frases, Impostor, Racha)
+- Login con Google o email (Firebase Auth) y stats en la nube
+- "Hoy en la comunidad": stats anónimas en tiempo real
+- Compartir como texto, imagen o **Stories 9:16**
+- PWA instalable con notificaciones push diarias
+- Recordatorios por email (Brevo + Cloudflare Worker), con opt-in
+- Modo daltónico, responsive y menú hamburguesa en móvil
+- Páginas de contenido: personajes, edificio, frases célebres, curiosidades, la serie
 
----
-
-## Estructura del proyecto
-
-```
-anhqvdle/
-├── index.html              ← Página de inicio
-├── clasico.html            ← Modo Clásico
-├── frases.html             ← Modo Frases
-├── quiz.html               ← Quiz ¿Qué personaje eres?
-├── quien.html              ← Modo Quién es Quién
-├── ranking.html            ← Ranking global
-├── serie.html              ← Página editorial SEO
-├── privacidad.html         ← Política de privacidad
-├── nosotros.html           ← About / créditos
-├── css/style.css           ← Todos los estilos
-├── data/
-│   ├── characters.js       ← 46 personajes con atributos
-│   └── quotes.js           ← ~290 frases de la serie
-├── js/
-│   ├── firebase-config.js  ← Config Firebase (API key, etc.)
-│   ├── auth.js             ← Autenticación + perfil de usuario
-│   ├── stats-firebase.js   ← Escritura de stats en Firebase
-│   ├── daily.js            ← Sistema de personaje/frase del día
-│   ├── classic.js          ← Lógica modo clásico
-│   ├── quote.js            ← Lógica modo frases
-│   ├── quiz.js             ← Lógica quiz personalidad
-│   ├── quien.js            ← Lógica Quién es Quién (vs máquina)
-│   ├── quien-online.js     ← Lógica Quién es Quién (online)
-│   └── utils.js            ← Funciones compartidas
-└── img/
-    ├── edificio.png        ← Imagen de fondo
-    └── personajes/         ← Fotos de personajes (.webp/.jpg)
-```
+📘 **Documentación técnica completa en [PROYECTO.md](PROYECTO.md).**
 
 ---
 
@@ -89,7 +59,8 @@ GitHub Pages se actualiza automáticamente en ~1-2 minutos.
 
 ## Cómo añadir personajes
 
-Edita `data/characters.js` y añade un objeto al array `CHARACTERS`:
+Edita `data/characters.js` y añade un objeto al array `CHARACTERS`.
+⚠️ Cambiar la longitud del array cambia el personaje del día del Clásico y de Pixelada para todos (avísalo o hazlo a medianoche).
 
 ```js
 {
@@ -99,7 +70,8 @@ Edita `data/characters.js` y añade un objeto al array `CHARACTERS`:
   nationality: "Española",
   floors: ["2º A"],          // Array de pisos donde vivió
   seasons: [1, 2, 3],        // seasons[0] = temporada de debut
-  occupations: ["Profesión"] // Array de trabajos
+  occupations: ["Profesión"], // Array de trabajos
+  hasChildren: false
 }
 ```
 

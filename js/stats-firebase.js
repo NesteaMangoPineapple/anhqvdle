@@ -6,6 +6,13 @@
 
 window.StatsFirebase = (function () {
 
+  // YYYY-MM-DD en hora local (igual que el reto diario), no en UTC
+  function _localDate(offsetDays) {
+    var d = new Date();
+    d.setDate(d.getDate() + offsetDays);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
   function saveGameResult(mode, attempts, won) {
     if (!window.AuthModule) return;
     AuthModule.onReady(function (user) {
@@ -18,7 +25,7 @@ window.StatsFirebase = (function () {
 
   function _writeStats(db, user, mode, attempts, won) {
     var uid   = user.uid;
-    var today = new Date().toISOString().slice(0, 10);
+    var today = _localDate(0);
     var ref   = db.ref('users/' + uid + '/stats/' + mode);
 
     ref.transaction(function (cur) {
@@ -35,7 +42,7 @@ window.StatsFirebase = (function () {
       if (won) {
         s.won++;
         s.totalAttempts = (s.totalAttempts || 0) + attempts;
-        var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        var yesterday = _localDate(-1);
         s.streak    = (s.lastWonDate === yesterday) ? (s.streak || 0) + 1 : 1;
         s.maxStreak = Math.max(s.maxStreak || 0, s.streak);
         s.lastWonDate = today;

@@ -2,7 +2,7 @@
    ANHQVdle — Service Worker
    ================================================ */
 
-var CACHE_NAME = 'anhqvdle-v3';
+var CACHE_NAME = 'anhqvdle-v4';
 var PRECACHE = [
   '/',
   '/index.html',
@@ -45,17 +45,18 @@ self.addEventListener('activate', function (e) {
 // Fetch: network first, fallback to cache
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
-  // Don't intercept Firebase/external requests
-  if (e.request.url.indexOf('firebaseio.com') !== -1) return;
-  if (e.request.url.indexOf('googleapis.com') !== -1) return;
-  if (e.request.url.indexOf('gstatic.com') !== -1) return;
+  // Solo archivos propios: anuncios, Analytics, Firebase, fuentes… van directos a la red
+  // (antes se cacheaba todo y la caché crecía sin límite)
+  if (new URL(e.request.url).origin !== self.location.origin) return;
 
   e.respondWith(
     fetch(e.request).then(function (res) {
-      var clone = res.clone();
-      caches.open(CACHE_NAME).then(function (cache) {
-        cache.put(e.request, clone);
-      });
+      if (res.ok) {
+        var clone = res.clone();
+        caches.open(CACHE_NAME).then(function (cache) {
+          cache.put(e.request, clone);
+        });
+      }
       return res;
     }).catch(function () {
       return caches.match(e.request);

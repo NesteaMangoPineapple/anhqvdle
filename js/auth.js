@@ -2,6 +2,17 @@
    ANHQVdle — Firebase Auth (Google + Email/Password)
    ================================================ */
 
+/* Escapa texto de usuario antes de meterlo en innerHTML (nombres, fotos…) */
+window.escapeHtml = function (str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+};
+/* Solo acepta URLs de foto http(s); cualquier otra cosa se descarta */
+window.safePhotoUrl = function (url) {
+  return /^https?:\/\//i.test(url || '') ? escapeHtml(url) : '';
+};
+
 window.AuthModule = (function () {
   var _auth  = null;
   var _db    = null;
@@ -55,7 +66,7 @@ window.AuthModule = (function () {
           '<button class="nav-btn auth-user-btn" onclick="AuthModule.showProfile()">' +
           (ph
             ? '<img src="' + ph + '" class="auth-av-img" alt="">'
-            : '<span class="auth-av-letter">' + nm[0].toUpperCase() + '</span>') +
+            : '<span class="auth-av-letter">' + escapeHtml(nm[0].toUpperCase()) + '</span>') +
           '<span class="auth-uname">' + short + '</span></button>';
       } else {
         el.innerHTML =
@@ -192,9 +203,9 @@ window.AuthModule = (function () {
     if (!_user) { showLogin(); return; }
     if (document.getElementById('profile-modal')) return;
 
-    var nm = _user.displayName || _user.email.split('@')[0];
-    var em = _user.email || '';
-    var ph = _user.photoURL;
+    var nm = escapeHtml(_user.displayName || _user.email.split('@')[0]);
+    var em = escapeHtml(_user.email || '');
+    var ph = safePhotoUrl(_user.photoURL);
     var verified = _user.emailVerified;
     var isGoogle = (_user.providerData || []).some(function (p) { return p.providerId === 'google.com'; });
 
@@ -251,8 +262,11 @@ window.AuthModule = (function () {
       var s = snap.val() || {};
       var modes = [
         { k: 'classic', lbl: '🎬 Cl\u00e1sico', daily: true },
-        { k: 'quote',   lbl: '💬 Frases',   daily: true }
-      ];
+        { k: 'quote',   lbl: '💬 Frases',   daily: true },
+        { k: 'impostor',   lbl: '🕵️ Impostor',   daily: true, optional: true },
+        { k: 'conexiones', lbl: '🧩 Conexiones', daily: true, optional: true },
+        { k: 'pixelada',   lbl: '🖼️ Pixelada',   daily: true, optional: true }
+      ].filter(function (m) { return !m.optional || (s[m.k] && s[m.k].played); });
       el.innerHTML = modes.map(function (m) {
         var data = s[m.k] || {};
         var p    = data.played || 0;
@@ -281,13 +295,31 @@ window.AuthModule = (function () {
     );
     if (!confirmed) return;
 
-    var uid = _user.uid;
-    var modes = ['classic', 'quote', 'quien_machine', 'quien_online'];
+    var uid  = _user.uid;
+    var user = _user;
+    var modes = ['classic', 'quote', 'impostor', 'quien_machine', 'quien_online'];
 
-    // Delete DB data first
-    var deletes = [_db.ref('users/' + uid).remove()].concat(
+    // 1) Baja en Brevo (necesita el usuario aún vivo para el idToken)
+    var unsub = (window.EmailConsent && window.EmailConsent.unsubscribe)
+      ? window.EmailConsent.unsubscribe(user) : Promise.resolve();
+
+    // 2) Borrar todos los datos del usuario en la DB
+    var deletes = [
+      _db.ref('users/' + uid).remove(),
+      _db.ref('streaks/' + uid).remove()
+    ].concat(
       modes.map(function (m) { return _db.ref('leaderboard/' + m + '/' + uid).remove(); })
     );
+    // Suscripciones push ligadas a este uid (si las reglas no permiten la consulta, se ignora)
+    deletes.push(
+      _db.ref('push_subscriptions').orderByChild('uid').equalTo(uid).once('value')
+        .then(function (snap) {
+          var rm = [];
+          snap.forEach(function (c) { rm.push(c.ref.remove()); });
+          return Promise.all(rm);
+        }).catch(function () {})
+    );
+    deletes.push(unsub);
 
     Promise.all(deletes).then(function () {
       return _user.delete();

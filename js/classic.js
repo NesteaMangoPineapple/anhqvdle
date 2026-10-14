@@ -298,9 +298,9 @@ function shareImageClassic(won, attempts) {
     if (!blob) return;
     const file = new File([blob], 'anhqvdle-clasico.png', { type: 'image/png' });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-clasico.png'));
+      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadStoriesBlob(blob, 'anhqvdle-clasico.png'));
     } else {
-      _downloadBlob(blob, 'anhqvdle-clasico.png');
+      _downloadStoriesBlob(blob, 'anhqvdle-clasico.png');
     }
   }, 'image/png');
 }
@@ -318,14 +318,24 @@ function _drawStoriesClassic(won, attempts) {
     won ? `✓ Adivinado en ${attempts} intento${attempts !== 1 ? 's' : ''}` : '✗ No lo adiviné',
     won);
 
-  // Grid
+  // Grid (máx. 7 filas: las últimas, que acaban en el acierto; si no, pisaría el CTA)
+  const MAX_ROWS = 7;
   const CELL = 100, GAP = 10, COLS = 8;
   const gridW = COLS * CELL + (COLS - 1) * GAP;
   const x0 = (W - gridW) / 2;
   let y = 580;
   const colors = { '🟩': '#16a34a', '🟨': '#ca8a04', '🟥': '#dc2626' };
+  const hidden = Math.max(0, classicResults.length - MAX_ROWS);
 
-  classicResults.forEach(row => {
+  if (hidden > 0) {
+    ctx.font = '600 40px "Barlow Condensed", Arial, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.textAlign = 'center';
+    ctx.fillText(`+${hidden} intento${hidden !== 1 ? 's' : ''} más`, W / 2, y + 10);
+    y += 40;
+  }
+
+  classicResults.slice(-MAX_ROWS).forEach(row => {
     let x = x0;
     row.forEach(emoji => {
       // Sombra suave
@@ -342,42 +352,12 @@ function _drawStoriesClassic(won, attempts) {
   ctx.shadowBlur = 0;
 
   // CTA
-  y = Math.max(y + 80, 1480);
-  ctx.font = 'bold 68px Arial, sans-serif';
+  ctx.font = '700 72px "Barlow Condensed", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.85)';
-  ctx.fillText('¿Puedes adivinarlo tú?', W / 2, y);
-
-  // Botón visual
-  const btnY = y + 60;
-  ctx.fillStyle = '#f0c020';
-  ctx.beginPath();
-  ctx.roundRect(W / 2 - 280, btnY, 560, 100, 50);
-  ctx.fill();
-  ctx.font = 'bold 52px Arial, sans-serif';
-  ctx.fillStyle = '#000';
-  ctx.fillText('anhqvdle.es', W / 2, btnY + 66);
-
-  // Footer
-  ctx.font = '34px Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.fillText('Fan-made · No oficial', W / 2, H - 60);
-
-  canvas.toBlob(blob => {
-    if (!blob) return;
-    const file = new File([blob], 'anhqvdle-stories.png', { type: 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: 'ANHQVdle' }).catch(() => _downloadBlob(blob, 'anhqvdle-stories.png'));
-    } else {
-      _downloadBlob(blob, 'anhqvdle-stories.png');
-    }
-  }, 'image/png');
-}
-
-function _downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a   = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  ctx.textAlign = 'center';
+  ctx.fillText('¿Puedes adivinarlo tú?', W / 2, 1480);
+  _drawStoriesCTA(ctx, W, H);
+  _shareStoriesBlob(canvas, 'anhqvdle-clasico-stories.png');
 }
 
 /* ══════════════════════════════════════
@@ -389,23 +369,6 @@ function _downloadBlob(blob, filename) {
 // en este modo (intentos ilimitados), así que la pérdida solo se registra
 // si el usuario abandona (no hay acción de "rendirse" implementada todavía).
 // Los stats de victoria se registran siempre en won=true arriba.
-
-function getCharacterEmoji(name) {
-  const map = {
-    "Emilio Delgado":"🧹","Mariano Delgado":"📚","Vicenta Benito":"🌸","Marisa Benito":"🚬",
-    "Concha de la Fuente":"👵","Mauri Hidalgo":"🌈","Fernando Navarro":"⚖️","Bea Villarejo":"📖",
-    "Juan Cuesta":"📋","Paloma Hurtado":"🕊️","Natalia Cuesta":"👩","José Miguel Cuesta":"🎮",
-    "Isabel Ruiz":"🌿","Yago":"🌍","Armando Cortés":"😎","Andrés Guerra":"💼",
-    "Pablo Guerra":"🎸","Álex Guerra":"💪","Higinio Heredia":"🔨","Mamen Heredia":"🛋️",
-    "Candela Heredia":"🍭","Raquel Heredia":"💄","Moncho Heredia":"🛌","Lucía Álvarez":"👜",
-    "Roberto Alonso":"✏️","Carlos de Haro":"💰","Nieves Cuesta":"❄️","Rafael Álvarez":"🦇",
-    "Carmen Villanueva":"📐","Belén López":"💃","Alicia Sanz":"💅","Ana":"🇩🇪",
-    "María Jesús":"🍞","Paco":"📼","Gerardo":"🔧","Padre Miguel":"✝️",
-    "Gregorio":"🗂️","Hermana Esperanza":"📻","Daniel Rubio":"👦","Rebeca":"👧",
-    "Ezequiel Hidalgo":"🍼",
-  };
-  return map[name] || "👤";
-}
 
 // Arrancar al cargar la página
 initClassic();

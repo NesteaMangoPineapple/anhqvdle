@@ -8,12 +8,19 @@
    - FIREBASE_SECRET    = (configurar en Cloudflare Worker Settings → Secrets)
    - CRON_SECRET        = (configurar en Cloudflare Worker Settings → Secrets)
 
-   Trigger: Cron diario a las 00:05 (hora España = UTC+2, so 22:05 UTC)
+   Triggers (Settings → Triggers) — DOS crons para cubrir el cambio de hora:
+   - 5 22 * * *   (00:05 en España en horario de verano)
+   - 5 23 * * *   (00:05 en España en horario de invierno)
+   Solo envía en el que coincide con las 00:xx de Madrid.
    ================================================ */
 
 export default {
   // Cron trigger: se ejecuta automáticamente cada día
   async scheduled(event, env, ctx) {
+    const madridHour = parseInt(new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Madrid', hour: '2-digit', hour12: false
+    }).format(new Date(event.scheduledTime)), 10);
+    if (madridHour !== 0) return; // el otro cron (ya es/aún no es medianoche en España)
     ctx.waitUntil(sendDailyPush(env));
   },
 

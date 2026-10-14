@@ -27,23 +27,12 @@ const PUZZLES = [
   { text: 'Personajes que vivieron en varios pisos', fit: c => c.floors.filter(f => f !== 'Visita').length > 1,                     n: 2 },
 ];
 
-function seededShuffle(arr, seed) {
-  const a = [...arr];
-  let s = seed >>> 0;
-  for (let i = a.length - 1; i > 0; i--) {
-    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-    const j = s % (i + 1);
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 function buildDailyGame() {
   const day    = getDayNumber();
   const puzzle = PUZZLES[day % PUZZLES.length];
-  const fits   = seededShuffle(CHARACTERS.filter(c =>  puzzle.fit(c)), day * 31337);
-  const noFits = seededShuffle(CHARACTERS.filter(c => !puzzle.fit(c)), day * 7919);
-  const chars  = seededShuffle([...fits.slice(0, 9 - puzzle.n), ...noFits.slice(0, puzzle.n)], day * 131071);
+  const fits   = _seededShuffle(CHARACTERS.filter(c =>  puzzle.fit(c)), day * 31337);
+  const noFits = _seededShuffle(CHARACTERS.filter(c => !puzzle.fit(c)), day * 7919);
+  const chars  = _seededShuffle([...fits.slice(0, 9 - puzzle.n), ...noFits.slice(0, puzzle.n)], day * 131071);
   return { puzzle, chars, impostors: noFits.slice(0, puzzle.n).map(c => c.name) };
 }
 
@@ -69,10 +58,6 @@ function initImpostor() {
   impSelected = [];
   impDone     = false;
   renderImpostorBoard(false);
-}
-
-function impSlug(name) {
-  return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
 
 function renderImpostorBoard(revealed) {
@@ -109,7 +94,7 @@ function renderImpostorBoard(revealed) {
     card.className = 'imp-char' + (state ? ' ' + state : '');
     card.dataset.name = c.name;
 
-    const slug    = impSlug(c.name);
+    const slug    = toSlug(c.name);
     const overlay = revealed
       ? (isImp && isSel ? '✓' : !isImp && isSel ? '✗' : isImp ? '!' : '')
       : (isSel ? '✗' : '');
