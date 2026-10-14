@@ -25,7 +25,7 @@ anhqvdle/
 ├── pixelada.html         ← 🖼️ Foto Pixelada (diario)
 ├── quiz.html             ← 🪞 ¿Qué personaje eres? (test, no diario)
 ├── quien.html            ← 🎭 Quién es Quién (vs máquina / online)
-├── ranking.html          ← 🏆 Ranking global (Clásico, Frases, Impostor, Racha)
+├── ranking.html          ← 🏆 Ranking global (Clásico, Frases, Impostor, Racha) — noindex, sin anuncios
 ├── personajes.html       ← Contenido SEO: ficha de los vecinos
 ├── edificio.html         ← Contenido SEO: quién vivió en cada piso de Desengaño 21
 ├── frases-celebres.html  ← Contenido SEO: frases icónicas
@@ -39,7 +39,8 @@ anhqvdle/
 ├── css/style.css         ← TODOS los estilos (~2.600 líneas)
 ├── data/
 │   ├── characters.js     ← 46 personajes (const CHARACTERS)
-│   └── quotes.js         ← 236 frases (const QUOTES)
+│   ├── quotes.js         ← 236 frases (const QUOTES)
+│   └── descriptions.js   ← Descripción larga de cada personaje (para personajes.html)
 ├── js/
 │   ├── daily.js          ← Semillas diarias, _seededShuffle (común a todos los modos), nº de día, localStorage, countdown
 │   ├── utils.js          ← escapeHtml está en auth.js · aquí: toSlug, getCharacterEmoji, autocomplete, stats locales, modal stats, daltonismo, Ko-fi, helpers Stories
@@ -55,6 +56,8 @@ anhqvdle/
 │   ├── pwa.js            ← SW, banner instalar, push, carga email-consent, badge racha, menú hamburguesa
 │   ├── firebase-config.js← Config web de Firebase (es pública por diseño; la seguridad está en las reglas)
 │   └── tutorial.js       ← Modal "cómo jugar" la primera vez
+├── tools/
+│   └── build-personajes.js ← Genera las fichas estáticas de personajes.html (ejecutar tras tocar characters/descriptions)
 ├── cloudflare-worker/
 │   ├── push-worker.js    ← Envía la notificación push diaria
 │   └── email-worker.js   ← Brevo: alta/baja de contactos + emails (recordatorio y matutino)
@@ -198,6 +201,15 @@ rooms/{id}                        ← partidas online de Quién es Quién
 - Login (`.auth-nav-item`) fijo arriba a la derecha.
 
 ## SEO / Monetización
+
+### ⚠️ AdSense rechazado por "contenido de poco valor" (octubre 2026)
+Google lee el HTML que manda el servidor. Los juegos se pintan con JS, así que para Google las páginas parecían vacías (pixelada: 16 palabras; personajes: 26, porque las fichas estaban dentro de un `<script>`). Cambios del 15/10/2026:
+- **Guía estática** bajo el juego en index, clásico, frases, impostor, conexiones, pixelada, quiz y quien (`<section class="mode-guide">`, de 300 a 600 palabras: cómo se juega, estrategia y FAQ).
+- **personajes.html** con las 46 fichas en HTML estático (2.900 palabras), generadas con `node tools/build-personajes.js`. Se corrigieron las descripciones de Bea, Mauri, Fernando, Ezequiel y la Hermana Esperanza.
+- **ranking.html**: `noindex`, sin anuncios y fuera del sitemap. **privacidad.html**: sin anuncios.
+- **Nosotros** ampliado (qué hay, cómo se hace el contenido, historia del proyecto) y enlaces a las páginas de contenido en el pie de todas las páginas.
+- **Regla para el futuro:** toda página indexable con anuncios necesita texto propio en el HTML (no generado por JS). Las páginas sin contenido van con `noindex` y sin el script de AdSense.
+
 - Canonical, OG/Twitter Card y H1 en las páginas indexables; JSON-LD (WebApplication / Article).
 - `sitemap.xml` con 15 URLs (sin privacidad ni 404).
 - GA4 `G-9BGR4GH8P7` · Search Console verificado por TXT.
