@@ -2721,3 +2721,7 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 a.yesterday-play { text-decoration: none; color: var(--text); cursor: pointer; }
 a.yesterday-play strong { color: var(--accent); }
 a.yesterday-play:hover { border-color: var(--accent); }
+
+/* Guías y wiki: el texto ocupa todo el panel (about-text limita a 520px para Nosotros) */
+.mode-guide .about-text,
+.pj-page .about-text { max-width: none; }
