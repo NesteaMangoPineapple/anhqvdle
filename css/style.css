@@ -2617,3 +2617,29 @@ body.cb { --correct: #2563eb; --wrong: #d97706; }
 }
 #pwa-notif-btn .pwa-notif-icon { font-size: 1rem; }
 @media (max-width: 640px) { #pwa-notif-btn { bottom: 70px; right: 12px; } }
+
+/* ══════════════════════════════════════
+   GUÍAS DE CADA MODO (contenido estático bajo el juego)
+══════════════════════════════════════ */
+.mode-guide {
+  max-width: 760px;
+  margin: 56px auto 24px;
+  padding: 32px 24px 36px;
+  text-align: left;
+  align-items: stretch;
+}
+.mode-guide .mode-guide-title { text-align: center; font-size: clamp(1.6rem, 5vw, 2.2rem); }
+.mode-guide .about-section-title { margin-top: 22px; text-align: left; }
+.mode-guide .about-text { text-align: left; }
+.mode-guide a { color: var(--accent); }
+.mode-guide .guide-list { padding-left: 20px; margin: 0 0 12px; }
+.mode-guide .guide-list li { margin-bottom: 8px; }
+.mode-guide .guide-links {
+  margin-top: 22px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.85rem; text-align: center;
+}
+@media (max-width: 480px) {
+  .mode-guide { margin-top: 40px; padding: 24px 16px 28px; border-radius: 0; }
+}
+.mode-guide .about-section-title { font-size: 1.45rem; }
