@@ -11,15 +11,8 @@ let classicDone    = false;
 
 function renderYesterdayClassic() {
   const yChar = CHARACTERS[getYesterdayIndex(CHARACTERS.length)];
-  const el = document.getElementById('classic-yesterday');
-  if (!el) return;
-  const imgPath = `img/personajes/${toSlug(yChar.name)}.webp`;
-  el.innerHTML = `
-    <div class="yesterday-pill">
-      <img src="${imgPath}" alt="${yChar.name}"
-        onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-      <span>El personaje de ayer fue <strong>${yChar.name}</strong></span>
-    </div>`;
+  renderYesterdayPill('classic-yesterday', MODE_KEY, yChar.name,
+    `El personaje de ayer fue <strong>${yChar.name}</strong>`);
 }
 
 function initClassic() {

@@ -10,15 +10,8 @@ let quoteDone    = false;
 
 function renderYesterdayQuote() {
   const yQuote = getYesterdayQuote();
-  const el     = document.getElementById('quote-yesterday');
-  if (!el) return;
-  const imgPath = `img/personajes/${toSlug(yQuote.character)}.webp`;
-  el.innerHTML = `
-    <div class="yesterday-pill">
-      <img src="${imgPath}" alt="${yQuote.character}"
-        onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-      <span>La frase de ayer era de <strong>${yQuote.character}</strong></span>
-    </div>`;
+  renderYesterdayPill('quote-yesterday', MODE_KEY_Q, yQuote.character,
+    `La frase de ayer era de <strong>${yQuote.character}</strong>`);
 }
 
 function initQuote() {

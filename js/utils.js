@@ -414,6 +414,38 @@ function _withFontsReady(drawFn) {
 }
 
 /* ══════════════════════════════════════
+   RETO DE AYER
+   Como ayer se puede jugar en modo práctica, la solución solo se enseña
+   si ya lo jugaste; si no, se invita a jugarlo. En práctica no se muestra.
+══════════════════════════════════════ */
+
+function renderYesterdayPill(elId, mode, charName, revealHtml) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (typeof isPracticeMode === 'function' && isPracticeMode()) { el.innerHTML = ''; return; }
+
+  const d = new Date(); d.setDate(d.getDate() - 1);
+  const key = `anhqvdle_${mode}_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  let played = false;
+  try { played = !!(JSON.parse(localStorage.getItem(key) || 'null') || {}).done; } catch (e) {}
+
+  if (played) {
+    const imgPath = `img/personajes/${toSlug(charName)}.webp`;
+    el.innerHTML = `
+    <div class="yesterday-pill">
+      <img src="${imgPath}" alt="${charName}"
+        onerror="if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else if(this.src.endsWith('.jpg')){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+      <span>${revealHtml}</span>
+    </div>`;
+  } else {
+    el.innerHTML = `
+    <a class="yesterday-pill yesterday-play" href="${location.pathname.split('/').pop()}?dia=${getDayNumber() - 1}">
+      <span>🕹️ ¿Te perdiste el reto de ayer? <strong>Juégalo →</strong></span>
+    </a>`;
+  }
+}
+
+/* ══════════════════════════════════════
    DÍAS ANTERIORES (modo práctica)
    Tira con los últimos PAST_DAYS_PLAYABLE retos y aviso cuando se juega uno.
 ══════════════════════════════════════ */
@@ -462,10 +494,12 @@ function initPastDays() {
     items.push(`<a class="past-day ${state}${n === playing ? ' current' : ''}" href="${href}" title="Reto #${n}">
         <span class="past-day-label">${label}</span><span class="past-day-num">#${n} ${icon}</span></a>`);
   }
-  const strip = document.createElement('nav');
+  const strip = document.createElement('div'); // <nav> no: hereda los estilos del menú
   strip.className = 'past-days';
+  strip.setAttribute('role', 'navigation');
   strip.setAttribute('aria-label', 'Retos de días anteriores');
-  strip.innerHTML = `<p class="past-days-title">📅 Días anteriores <small>· práctica, no cuentan para la racha</small></p>
+  strip.innerHTML = `<p class="past-days-title">📅 Días anteriores</p>
+    <p class="past-days-sub">Juega los retos que te perdiste. Son de práctica: no cuentan para la racha ni el ranking.</p>
     <div class="past-days-row">${items.join('')}</div>`;
   const guide = main.querySelector('.mode-guide');
   main.insertBefore(strip, guide || null);

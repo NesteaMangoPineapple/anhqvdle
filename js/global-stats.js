@@ -108,7 +108,7 @@ window.GlobalStats = (function () {
                : 'lo adivinaron';
     el.innerHTML =
       '<div class="gs-panel">' +
-        '<div class="gs-title">Hoy en la comunidad</div>' +
+        '<div class="gs-title">' + ((typeof isPracticeMode === 'function' && isPracticeMode()) ? 'El #' + getDayNumber() + ' en la comunidad' : 'Hoy en la comunidad') + '</div>' +
         '<div class="gs-summary">' +
           '<div class="gs-stat"><span class="gs-num">' + plays + '</span><span class="gs-label">jugaron</span></div>' +
           '<div class="gs-stat"><span class="gs-num">' + pct + '%</span><span class="gs-label">' + label2 + '</span></div>' +
