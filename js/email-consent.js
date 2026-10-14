@@ -102,7 +102,8 @@ window.EmailConsent = (function () {
       return fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: action, idToken: idToken, name: name }),
+        // email: solo para compatibilidad con el worker antiguo; el nuevo usa el del idToken
+        body: JSON.stringify({ action: action, idToken: idToken, email: user.email || '', name: name }),
       });
     }).catch(function () {});
   }
