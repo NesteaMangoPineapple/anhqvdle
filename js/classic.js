@@ -10,7 +10,8 @@ let classicResults = [];
 let classicDone    = false;
 
 function renderYesterdayClassic() {
-  const yChar = CHARACTERS[getYesterdayIndex(CHARACTERS.length)];
+  const yPool = dailyCharacters(-1);
+  const yChar = yPool[getYesterdayIndex(yPool.length)];
   renderYesterdayPill('classic-yesterday', MODE_KEY, yChar.name,
     `El personaje de ayer fue <strong>${yChar.name}</strong>`);
 }
@@ -19,8 +20,8 @@ function initClassic() {
   cleanOldStorage();
   initColorblind();
 
-  const idx    = getDailyIndex(CHARACTERS.length);
-  classicTarget = CHARACTERS[idx];
+  const pool   = dailyCharacters();
+  classicTarget = pool[getDailyIndex(pool.length)];
   renderYesterdayClassic();
 
   let saved = loadDailyState(MODE_KEY);

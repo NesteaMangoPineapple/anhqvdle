@@ -15,7 +15,7 @@ let pixImg       = null;
 
 function getDailyPixChar() {
   const day = getDayNumber();
-  return _seededShuffle(CHARACTERS, day * 48271)[0];
+  return _seededShuffle(dailyCharacters(), day * 48271)[0];
 }
 
 function initPixelada() {

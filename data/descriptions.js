@@ -50,6 +50,7 @@ const CHAR_DESC = {
   "José María": "Personaje esporádico de la quinta temporada con una vida sin empleo estable. Sus apariciones en el edificio solían estar relacionadas con alguna trama secundaria de los últimos capítulos.",
   "Abel": "Canguro que trabajó cuidando a los niños del edificio durante las temporadas tres y cuatro. Su relación con las familias del inmueble le llevó a involucrarse en más de un enredo vecinal.",
   "Marta «La Pantumaca»": "Presidenta de comunidad de vecinos de otro edificio que acabó cruzando su camino con los vecinos de Desengaño 21. Su manera de gestionar —o más bien de no gestionar— los conflictos comunitarios la convirtió en un personaje memorable pese a su carácter esporádico.",
+  "La Paqui": "Asistenta de la comunidad de Desengaño 21, encargada de la limpieza y el mantenimiento del portal. Llega en la tercera temporada para sustituir a Rosana, la asistenta anterior, después de que Nieves Cuesta la empujara por las escaleras. Aparece en los episodios 3×26 y 3×27 («Érase una tragaperras»): se marcha de vacaciones y ya no vuelve al edificio, sin que llegue a aclararse si la despidieron o se fue por su cuenta.",
 };
 
 /* Nombre completo y apodo (si se conocen) */

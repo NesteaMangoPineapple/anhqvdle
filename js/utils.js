@@ -25,7 +25,7 @@ function getCharacterEmoji(name) {
     "Carmen Villanueva":"📐","Belén López":"💃","Alicia Sanz":"💅","Ana":"🇩🇪",
     "María Jesús":"🍞","Paco":"📼","Gerardo":"🔧","Padre Miguel":"✝️",
     "Gregorio":"🗂️","Hermana Esperanza":"📻","Daniel Rubio":"👦","Rebeca":"👧",
-    "Ezequiel Hidalgo":"🍼","Rocío":"✉️","José María":"🎒","Abel":"🧸",
+    "Ezequiel Hidalgo":"🍼","La Paqui":"🧽","Rocío":"✉️","José María":"🎒","Abel":"🧸",
     "Marta «La Pantumaca»":"🍅",
   };
   return map[name] || "👤";

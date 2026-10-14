@@ -40,7 +40,7 @@ anhqvdle/
 ├── manifest.json (iconos 32/180/192/512 + maskable), CNAME, ads.txt, robots.txt, sitemap.xml, LICENSE (All Rights Reserved)
 ├── css/style.css         ← TODOS los estilos (~2.600 líneas)
 ├── data/
-│   ├── characters.js     ← 46 personajes (const CHARACTERS)
+│   ├── characters.js     ← 47 personajes (const CHARACTERS); los nuevos llevan `since`
 │   ├── quotes.js         ← 236 frases (const QUOTES)
 │   └── descriptions.js   ← Descripción larga de cada personaje (para personajes.html)
 ├── js/
@@ -93,7 +93,14 @@ Cada modo elige su reto de forma determinista, así que todos ven lo mismo el mi
 - Al llegar el countdown a 0 la página se recarga sola.
 - `?reset` en la URL borra el estado del día (Conexiones y Pixelada).
 
-**Cambiar cualquier semilla o el orden de `CHARACTERS`/`QUOTES`/puzzles cambia el reto del día para todos.** Añadir personajes al final de `CHARACTERS` también cambia el Clásico (cambia el módulo).
+**Cambiar cualquier semilla o el orden de `CHARACTERS`/`QUOTES`/puzzles cambia el reto del día para todos.**
+
+### Añadir un personaje sin cambiar el reto del día
+Clásico, Pixelada e Impostor sortean con `dailyCharacters()` (daily.js), que solo incluye los personajes cuyo `since` (AAAA-MM-DD) ya ha llegado en la fecha del reto. Para añadir uno:
+1. Añádelo **al final** de `CHARACTERS` con `since: "<mañana>"` (nunca hoy ni una fecha pasada).
+2. Foto en `img/personajes/<slug>.webp|jpg`, descripción en `data/descriptions.js` y emoji en `getCharacterEmoji` (utils.js).
+3. `node tools/build-personajes.js && node tools/build-wiki.js`, y actualiza los recuentos escritos a mano en las guías ("los 47 personajes", "22 de 47 son mujeres"…).
+Así hoy y los 5 días jugables no cambian (verificado al añadir a La Paqui el 15/10/2026). En el autocompletado aparece desde el primer momento.
 
 ---
 

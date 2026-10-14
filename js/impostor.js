@@ -30,8 +30,9 @@ const PUZZLES = [
 function buildDailyGame() {
   const day    = getDayNumber();
   const puzzle = PUZZLES[day % PUZZLES.length];
-  const fits   = _seededShuffle(CHARACTERS.filter(c =>  puzzle.fit(c)), day * 31337);
-  const noFits = _seededShuffle(CHARACTERS.filter(c => !puzzle.fit(c)), day * 7919);
+  const pool   = dailyCharacters();
+  const fits   = _seededShuffle(pool.filter(c =>  puzzle.fit(c)), day * 31337);
+  const noFits = _seededShuffle(pool.filter(c => !puzzle.fit(c)), day * 7919);
   const chars  = _seededShuffle([...fits.slice(0, 9 - puzzle.n), ...noFits.slice(0, puzzle.n)], day * 131071);
   return { puzzle, chars, impostors: noFits.slice(0, puzzle.n).map(c => c.name) };
 }

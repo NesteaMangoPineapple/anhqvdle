@@ -35,6 +35,19 @@ function isPracticeMode() {
 }
 
 /**
+ * Personajes que entran en el sorteo de un día.
+ * Un personaje con `since: 'AAAA-MM-DD'` solo cuenta a partir de esa fecha, así
+ * añadir personajes no cambia el reto de hoy ni el de días pasados.
+ * offsetDays: 0 = día del juego, -1 = el anterior.
+ */
+function dailyCharacters(offsetDays = 0) {
+  const d = gameDate();
+  d.setDate(d.getDate() + offsetDays);
+  const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return CHARACTERS.filter(c => !c.since || c.since <= iso);
+}
+
+/**
  * Genera un índice determinista a partir de la fecha del juego.
  */
 function getDailyIndex(arrayLength) {
