@@ -12,6 +12,7 @@ const { ROOT, esc, toSlug, loadData, photoFor, page, updateSitemap } = require('
 
 const CHARACTERS = loadData('data/characters.js', 'CHARACTERS');
 const QUOTES     = loadData('data/quotes.js', 'QUOTES');
+const CHAR_INFO  = loadData('data/descriptions.js', 'CHAR_INFO');
 
 const link = c => `<a href="/personajes/${toSlug(c.name)}.html">${esc(c.name)}</a>`;
 const quoteCount = name => QUOTES.filter(q => q.character === name).length;
@@ -43,7 +44,12 @@ const allFive = CHARACTERS.filter(c => c.seasons.length === 5);
 const topQuotes = [...CHARACTERS].sort((a, b) => quoteCount(b.name) - quoteCount(a.name)).slice(0, 5);
 
 // Índice para el buscador (nombre → url), embebido como JSON
-const searchIndex = CHARACTERS.map(c => ({ n: c.name, u: `/personajes/${toSlug(c.name)}.html`, t: c.type }))
+// Se busca también por nombre completo y apodo ("La Chunga", "Josemi"…)
+const searchIndex = CHARACTERS.map(c => {
+  const info = CHAR_INFO[c.name] || {};
+  return { n: c.name, u: `/personajes/${toSlug(c.name)}.html`, t: info.nick ? `«${info.nick}»` : c.type,
+           k: [info.full, info.nick].filter(Boolean).join(' ') };
+})
   .concat([
     { n: 'El edificio Desengaño 21', u: '/edificio.html', t: 'Sección' },
     { n: 'Frases célebres', u: '/frases-celebres.html', t: 'Sección' },
@@ -113,7 +119,7 @@ ${seasonRows}
       q.addEventListener('input', function () {
         var v = norm(q.value.trim());
         if (!v) { box.hidden = true; return; }
-        var hits = INDEX.filter(function (i) { return norm(i.n).indexOf(v) !== -1; }).slice(0, 8);
+        var hits = INDEX.filter(function (i) { return norm(i.n + ' ' + (i.k || '')).indexOf(v) !== -1; }).slice(0, 8);
         box.innerHTML = hits.length
           ? hits.map(function (i) { return '<a href="' + i.u + '">' + esc(i.n) + ' <small>' + esc(i.t) + '</small></a>'; }).join('')
           : '<a href="/personajes.html">Sin resultados · ver todos los personajes <small>→</small></a>';

@@ -18,6 +18,7 @@ const { ROOT, esc, toSlug, loadData, photoFor, page, updateSitemap } = require('
 
 const CHARACTERS = loadData('data/characters.js', 'CHARACTERS');
 const CHAR_DESC  = loadData('data/descriptions.js', 'CHAR_DESC');
+const CHAR_INFO  = loadData('data/descriptions.js', 'CHAR_INFO');
 const QUOTES     = loadData('data/quotes.js', 'QUOTES');
 
 // Por debajo de este número de palabras la página se marca noindex (contenido escaso)
@@ -43,6 +44,7 @@ const cards = CHARACTERS.map(c => {
             <img class="char-photo" src="${photoFor(slug).slice(1)}" alt="Foto de ${esc(c.name)}" loading="lazy" width="80" height="80">
             <div class="char-card-info">
               <h2 class="char-name"><a href="personajes/${slug}.html">${esc(c.name)}</a></h2>
+              ${(CHAR_INFO[c.name] || {}).nick ? `<div class="char-nick">«${esc(CHAR_INFO[c.name].nick)}»</div>` : ''}
               <span class="char-type-badge badge-${esc(c.type)}">${esc(c.type)}</span>
               <div class="char-meta">
                 <span>🏠 ${esc(c.floors.join(', '))}</span><br>
@@ -109,6 +111,8 @@ CHARACTERS.forEach((c, i) => {
 
       <h2 class="about-section-title">Ficha</h2>
       <table class="pj-ficha">
+        ${(CHAR_INFO[c.name] || {}).full ? `<tr><th>Nombre completo</th><td>${esc(CHAR_INFO[c.name].full)}</td></tr>` : ''}
+        ${(CHAR_INFO[c.name] || {}).nick ? `<tr><th>Apodo</th><td>«${esc(CHAR_INFO[c.name].nick)}»</td></tr>` : ''}
         <tr><th>Tipo</th><td>${esc(c.type)}</td></tr>
         <tr><th>Género</th><td>${esc(c.gender)}</td></tr>
         <tr><th>Nacionalidad</th><td>${esc(c.nationality)}</td></tr>

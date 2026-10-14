@@ -11,7 +11,7 @@ const CONEXIONES_PUZZLES = [
     groups: [
       { label: 'Vivieron en el 1º B',          color: 'yellow', chars: ['Mauri Hidalgo','Fernando Navarro','Bea Villarejo','Ezequiel Hidalgo'] },
       { label: 'Ama de casa',                  color: 'green',  chars: ['Paloma Hurtado','Isabel Ruiz','Mamen Heredia','María Jesús'] },
-      { label: 'Solo 1 temporada (T1 o T2)',  color: 'blue',   chars: ['Armando Cortés','Rocío','Daniel Rubio','Rebeca'] },
+      { label: 'Solo 1 temporada (T1 o T2)',  color: 'blue',   chars: ['Armando Rubio','Rocío','Daniel Rubio','Rebeca'] },
     ]
   },
   {
@@ -53,7 +53,7 @@ const CONEXIONES_PUZZLES = [
     groups: [
       { label: 'Pareja oficial del edificio',  color: 'yellow', chars: ['Mauri Hidalgo','Fernando Navarro','Emilio Delgado','Belén López'] },
       { label: 'Esporádicos de varias temporadas', color: 'green', chars: ['Gerardo','Padre Miguel','Gregorio','Hermana Esperanza'] },
-      { label: 'Sin empleo fijo o en paro',    color: 'blue',   chars: ['Armando Cortés','Alicia Sanz','Raquel Heredia','Diego Álvarez'] },
+      { label: 'Sin empleo fijo o en paro',    color: 'blue',   chars: ['Armando Rubio','Alicia Sanz','Raquel Heredia','Diego Álvarez'] },
     ]
   },
   {

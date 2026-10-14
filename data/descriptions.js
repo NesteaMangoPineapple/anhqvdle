@@ -1,6 +1,6 @@
 /* ================================================
-   ANHQVdle — Descripciones de personajes (personajes.html)
-   Tras editar, regenerar la página: node tools/build-personajes.js
+   ANHQVdle — Descripciones de personajes (wiki)
+   Tras editar, regenerar: node tools/build-personajes.js && node tools/build-wiki.js
    ================================================ */
 
 const CHAR_DESC = {
@@ -10,36 +10,36 @@ const CHAR_DESC = {
   "Marisa Benito": "Hermana de Vicenta y directora de informativos de «Radio Patio», la red de cotilleos del edificio. Fumadora empedernida, cínica y directa, es la contraparte perfecta de la inocencia de Vicenta. Su capacidad para obtener y difundir información comprometida de todos sus vecinos es legendaria, y su sentido del humor negro nunca falla.",
   "Concha de la Fuente": "Propietaria del 3º B y la vecina más combativa del edificio. Su grito de guerra «¡Yo no pago otra derrama!» y su desprecio sistemático hacia el presidente Cuesta —al que llama habitualmente «chorizo»— la convirtieron en uno de los personajes más queridos de la serie. Enérgica, escandalosa y con una opinión muy clara sobre todo, es la voz del sentido común del edificio, aunque expresada siempre a gritos.",
   "Mauri Hidalgo": "Periodista neurótico del 1º B, forma pareja con Fernando Navarro en la primera representación normalizada de una pareja homosexual protagonista en una serie española de máxima audiencia. Celoso, inseguro y con tendencia a dramatizar cualquier situación, su amor por Fernando es el hilo emocional más sólido de toda la serie. Su personaje evolucionó hasta convertirse en padre de Ezequiel, el hijo que tuvo con su amiga Bea Villarejo.",
-  "Fernando Navarro": "Abogado del 1º B y pareja de Mauri. Guapo, tranquilo y con una carrera profesional en ascenso, representa el polo opuesto a la neurosis de Mauri. Viajó a Londres durante varias temporadas para desarrollar su carrera, lo que puso a prueba su relación.",
+  "Fernando Navarro": "Abogado del 1º B y pareja de Mauri. Guapo, tranquilo y con una carrera profesional en ascenso, representa el polo opuesto a la neurosis de Mauri. Tras salir del armario pierde su empleo y, después de la primera temporada, se traslada a Londres por trabajo, dejando a Mauri; vuelve a España en la tercera temporada y recupera a su pareja. Juntos montan el bufete «Navarro e Hidalgo Asociados».",
   "Bea Villarejo": "Veterinaria que llegó al edificio en la segunda temporada. Práctica, directa y con los pies en el suelo, se convirtió en la amiga inseparable de Mauri, con quien decidió tener un hijo: Mauri fue el donante y Bea la madre de Ezequiel. A lo largo de la serie vivió en el 1º B, el 2º B y el 3º B, y su relación con todos los vecinos fue siempre de confianza y cercanía.",
   "Juan Cuesta": "Presidente de la comunidad de vecinos y maestro de primaria. Sus juntas de vecinos, siempre inauguradas con un solemne «Queridos convecinos», terminan invariablemente en caos absoluto. Paradigma de la clase media española cuya única fuente de poder real es su cargo vecinal, vive atrapado entre sus aspiraciones de autoridad y su incapacidad total para ejercerla. Tras la marcha de Paloma, rehízo su vida con Isabel Ruiz.",
   "Paloma Hurtado": "Esposa de Juan y la verdadera fuerza detrás del trono durante las dos primeras temporadas. Manipuladora, ambiciosa y con un delirio de grandeza desproporcionado para una vecina del segundo piso, su sueño eterno era abandonar el piso de propiedad y mudarse a un chalé. Su sentencia «¡Y punto en boca!» fue la última frase que pronunció antes de caer accidentalmente al patio interior.",
   "Natalia Cuesta": "Hija mayor de Juan y Paloma, estudiante de psicología con una vida amorosa especialmente turbulenta. Su arco argumental más memorable fue el de madre de alquiler, que generó uno de los debates más intensos del edificio. Impulsiva y con criterio propio, representa a la generación más joven de la familia Cuesta.",
   "José Miguel Cuesta": "Hijo de Juan y Paloma, adolescente cuya mayor preocupación en la vida es no tener que madurar nunca. Adicto a los videojuegos y con una capacidad extraordinaria para evitar cualquier responsabilidad, es el catalizador involuntario de muchos enredos. Su relación con su padre Juan es una fuente constante de situaciones cómicas.",
   "Isabel Ruiz": "Conocida en el edificio como «La Hierbas» por su obsesión con las plantas medicinales y las terapias alternativas. Hipocondríaca empedernida, su protocolo ante cualquier situación de estrés pasa siempre por anunciar que «se está hiperventilando». Llegó al edificio como esposa de Andrés Guerra y acabó siendo la segunda pareja de Juan Cuesta, aportando una nueva dinámica familiar al 2º A.",
-  "Yago": "Ecologista cubano apodado «El Sabroso» que irrumpió en el ático en la cuarta temporada con una personalidad exuberante y una filosofía de vida tan contagiosa como impráctica. Su llegada aportó una energía nueva al edificio y sus debates con los vecinos sobre sostenibilidad y medio ambiente contrastaban de forma hilarante con la cotidianeidad del inmueble.",
+  "Yago": "Ecologista cubano apodado «El Sabrosón». Conoce a Lucía Álvarez durante unas vacaciones, cuando ella todavía está comprometida con Carlos de Haro, y Lucía llega a adoptar sus principios ecologistas para congeniar con él. La relación se rompe entre celos y enredos con Carlos y con Roberto. Tras la marcha de Lucía se instala en el ático y empieza una relación con Natalia Cuesta, con la que acaba viviendo en el 2º A y teniendo una hija, Yamiley.",
   "Andrés Guerra": "Empresario y estafador que llegó al 2º B en la segunda temporada con su familia y sacudió el equilibrio del edificio. Sus negocios turbios y su tendencia a enredar a sus vecinos en sus tramas le convirtieron en uno de los antagonistas más entretenidos de la serie. Padre de Pablo y Álex.",
   "Pablo Guerra": "Hijo mayor de Andrés, estudiante con aspiraciones artísticas y una actitud más reflexiva que la del resto de su familia. Su transición desde el 2º B hasta el ático reflejó su búsqueda de independencia. Mantuvo relaciones con varias vecinas del edificio a lo largo de las temporadas.",
   "Álex Guerra": "Hijo menor de Andrés y el más rebelde de la familia Guerra. Conocido por sus travesuras, su actitud desafiante y su capacidad para meterse en líos sin aparente esfuerzo. Su presencia en el edificio fue breve pero intensa, y dejó huella en varios vecinos.",
   "Higinio Heredia": "Carpintero que lidera la familia Heredia, los nuevos inquilinos del 2º B en la quinta temporada. Su llegada, junto a su numerosa familia, representó la irrupción de la clase obrera enriquecida en el edificio y generó un choque cultural intenso, especialmente con Juan Cuesta.",
   "Mamen Heredia": "Esposa de Higinio y matriarca de la familia Heredia. Su llegada al edificio en la quinta temporada junto al resto de la familia aportó una nueva dinámica de clase al inmueble, contrastando con los valores más conservadores de los vecinos establecidos.",
-  "Candela Heredia": "Hija de los Heredia, estudiante y la más adaptable de la familia al entorno del edificio Desengaño 21. Su juventud y carácter abierto le permitieron integrarse con relativa facilidad entre los demás jóvenes del inmueble.",
-  "Raquel Heredia": "Hija de los Heredia, con una actitud más despreocupada e independiente que su hermana Candela. Su falta de empleo fijo y su forma de afrontar la vida generaron situaciones cómicas con los vecinos más convencionales del edificio.",
-  "Moncho Heredia": "Hermano de Higinio y el parásito oficial de la familia Heredia. Sin empleo fijo y con vocación de vividor, se instaló en el 2º B aprovechando la generosidad de su hermano. Sus fracasos empresariales y su talento para no hacer nada son su principal aportación cómica.",
+  "Candela Heredia": "Hija de los Heredia, apodada «Candy-Candy», estudiante y la más adaptable de la familia al entorno del edificio Desengaño 21. Su juventud y carácter abierto le permitieron integrarse con relativa facilidad entre los demás jóvenes del inmueble.",
+  "Raquel Heredia": "Hermana de Mamen Heredia, llega al 2º B con la familia en la quinta temporada. Raquel es una mujer transexual —en su DNI todavía figura como Raúl— y durante una temporada corta sale con Emilio, que no llega a aceptar que sea transexual. Su desparpajo y su independencia chocan con los vecinos más conservadores del edificio.",
+  "Moncho Heredia": "Alfonso Heredia, «Moncho», es el hijo de Higinio y Mamen. Con unos treinta años, vuelve a casa de sus padres en el 2º B después de que quiebre el negocio con el que intentó independizarse. Sin trabajo fijo, de vez en cuando echa una mano a su padre y cada noche sale de casa asegurando que va a buscar empleo. Aparece en la última temporada.",
   "Lucía Álvarez": "Vecina del 3º A y empleada en una empresa constructora propiedad de su padre Rafael. Independiente y con carácter, mantuvo una relación central con Roberto Alonso a lo largo de varias temporadas. Su partida a Somalia en misión humanitaria en la cuarta temporada marcó el final de su arco argumental en la serie.",
   "Roberto Alonso": "Arquitecto del 3º A con una vocación paralela de dibujante de cómics y caricaturista que nunca terminaba de despegar. Enamorado de Lucía Álvarez, fue uno de los personajes que más pisos habitó en el edificio, pasando por el 3º A, el 2º B y el ático. Su relación con el arte y su imposibilidad de decidirse entre la arquitectura y el cómic definieron su arco.",
-  "Carlos de Haro": "Empresario adinerado, propietario del videoclub del edificio y del piso del 3º A durante varias temporadas. Excéntrico y con una relación intermitente con Lucía Álvarez, su vida sentimental y empresarial fue siempre fuente de tramas. Su ingreso en una clínica psiquiátrica en la cuarta temporada marcó su salida de la serie.",
+  "Carlos de Haro": "Empresario adinerado que vive del dinero de su familia. Amigo de Lucía Álvarez desde la infancia y enamorado de ella durante años, llegó a estar comprometido con ella, y más tarde tuvo una breve relación con Belén, que acabó dejándole por Emilio. Celoso, obsesivo y sensible, quiso hacerse con el poder del barrio: el videoclub y hasta la presidencia de la comunidad. Su ingreso en una clínica psiquiátrica en la cuarta temporada marcó su salida de la serie.",
   "Nieves Cuesta": "Hermana de Juan Cuesta, apodada «La Chunga» por sus vecinos. Llegó al edificio en la tercera temporada y su carácter agresivo y poco diplomático contrastaba con el de su hermano, generando un tipo de caos diferente pero igual de efectivo.",
   "Rafael Álvarez": "Padre de Lucía y empresario de la construcción. Sus apariciones en el edificio solían estar relacionadas con los asuntos sentimentales o laborales de su hija, y su relación con los demás vecinos nunca fue especialmente cómoda.",
   "Carmen Villanueva": "Profesora universitaria apodada «La Rottenmeier» por su carácter estricto, perfeccionista y su tendencia a corregir a todo el mundo. Llegó al edificio en la tercera temporada y sus interacciones con los vecinos menos cultivados fueron siempre una fuente de humor basado en el choque de clases.",
   "Belén López": "Inquilina del 3º B y el avatar de la precariedad laboral de toda una generación. Encadena trabajos sin futuro —camarera, modelo, empleada de moda, actriz de anuncios— y relaciones fallidas con una resignación que ella misma resume con «voy a acabar sola y amargada». Sin embargo, su cinismo esconde una vitalidad y un humor que la convierten en el personaje más cercano de la serie. Protagonizó el final feliz al casarse con Emilio.",
   "Alicia Sanz": "Vecina del 3º B y compañera de piso de Belén durante las primeras temporadas. Sin empleo fijo y con una vida amorosa accidentada, su marcha a Nueva York al final de la tercera temporada dejó a Belén sola en el piso y abrió el camino para los nuevos inquilinos.",
-  "Ana": "Azafata de vuelo que vivió en el 3º B durante las temporadas tres, cuatro y cinco. Su trabajo le obligaba a estar frecuentemente fuera, lo que hacía que sus apariciones en el edificio fueran siempre bienvenidas por los vecinos.",
-  "María Jesús": "Ama de casa del 3º B con una vida doméstica que contrasta con el caos habitual del piso. Su estabilidad y sencillez aportaban un contrapunto a las tramas más disparatadas de sus compañeras de planta.",
+  "Ana": "Ana Inga, azafata de vuelo que vivió en el 3º B durante las temporadas tres, cuatro y cinco. Su trabajo le obligaba a estar frecuentemente fuera, lo que hacía que sus apariciones en el edificio fueran siempre bienvenidas por los vecinos.",
+  "María Jesús": "María Jesús Vázquez, conocida como «La Torrijas», es la madre de Belén López. Ama de casa, su llegada al 3º B aporta una vida doméstica que contrasta con el caos habitual del piso, y su relación con Belén —siempre entre el cariño y el reproche— da pie a muchas de las tramas de la planta.",
   "Paco": "Empleado del videoclub de la planta baja y uno de los personajes más queridos de la serie. Tranquilo, bondadoso y ajeno a los conflictos, es el único vecino del edificio que nunca genera enemigos. Vive en el ático y su amistad con todos los vecinos le convierte en el nexo de unión del inmueble.",
   "Diego Álvarez": "Hermano de Lucía que llegó al edificio en la tercera temporada. Su presencia aportó una perspectiva externa a las dinámicas del edificio, aunque su paso por Desengaño 21 fue relativamente breve.",
-  "Armando Cortés": "Primer inquilino del 2º B junto a su familia en la primera temporada. Su paso por el edificio fue corto pero sirvió para establecer las dinámicas de ese piso antes de la llegada de los Guerra.",
-  "Gerardo": "El hombre para todo, siempre disponible para cualquier trabajo en el edificio: instalar alarmas, exterminar plagas, arreglar averías, montar duchas, trabajar en seguridad… Cada vez que aparece, lo hace con un nombre y un trabajo distintos, aunque su incompetencia es siempre la misma.",
+  "Armando Rubio": "Hijo divorciado de Concha de la Fuente, con quien vive en el 2º B durante la primera temporada. Ligón y aficionado al fútbol, es el primero del edificio en descubrir que Mauri y Fernando, los vecinos del 1º B, son pareja. Acaba marchándose a vivir con su nueva novia a un chalé en las afueras e intenta ingresar a su madre en una residencia, pero Concha termina instalándose con sus vecinas Vicenta y Marisa en el 1º A.",
+  "Gerardo": "Conocido por los fans como «el calvo que habla rápido», es el hombre para todo, siempre disponible para cualquier trabajo en el edificio: instalar alarmas, exterminar plagas, arreglar averías, montar duchas, trabajar en seguridad… Cada vez que aparece, lo hace con un nombre y un trabajo distintos, aunque su incompetencia es siempre la misma.",
   "Padre Miguel": "El cura del barrio y confesor habitual de los vecinos más devotos del edificio. Su paciencia con los pecados de los vecinos de Desengaño 21 es prácticamente ilimitada, aunque su afición secreta al canto de cantautor le ha generado algún que otro apuro.",
   "Gregorio": "Administrador de fincas que gestionó el edificio Desengaño 21 durante las temporadas tres y cuatro. Sus apariciones solían coincidir con conflictos sobre gastos comunitarios, derramas o problemas legales del inmueble.",
   "Hermana Esperanza": "Monja con una trayectoria vital sorprendentemente variada: cuidadora, locutora de radio… Su carácter fuerte la hizo muy popular entre los fans.",
@@ -52,4 +52,33 @@ const CHAR_DESC = {
   "Marta «La Pantumaca»": "Presidenta de comunidad de vecinos de otro edificio que acabó cruzando su camino con los vecinos de Desengaño 21. Su manera de gestionar —o más bien de no gestionar— los conflictos comunitarios la convirtió en un personaje memorable pese a su carácter esporádico.",
 };
 
-if (typeof module !== "undefined") module.exports = CHAR_DESC;
+/* Nombre completo y apodo (si se conocen) */
+const CHAR_INFO = {
+  "Emilio Delgado": {"full":"Emilio Delgado Martín"},
+  "Marisa Benito": {"full":"María Luisa Benito"},
+  "Concha de la Fuente": {"full":"Concepción de la Fuente","nick":"Doña Concha"},
+  "Mauri Hidalgo": {"full":"Mauricio Hidalgo Torres"},
+  "Fernando Navarro": {"full":"Fernando Navarro Sánchez"},
+  "Bea Villarejo": {"full":"Beatriz Villarejo"},
+  "José Miguel Cuesta": {"full":"José Miguel Cuesta Hurtado","nick":"Josemi"},
+  "Nieves Cuesta": {"nick":"La Chunga"},
+  "Isabel Ruiz": {"nick":"La Hierbas"},
+  "Yago": {"nick":"El Sabrosón"},
+  "Armando Rubio": {"full":"Armando Rubio de la Fuente"},
+  "Pablo Guerra": {"full":"Pablo Guerra Ruiz"},
+  "Álex Guerra": {"full":"Álex Guerra Ruiz"},
+  "Moncho Heredia": {"full":"Alfonso Heredia","nick":"Moncho"},
+  "Candela Heredia": {"nick":"Candy-Candy"},
+  "Lucía Álvarez": {"full":"Lucía Álvarez Muñoz"},
+  "Roberto Alonso": {"full":"Roberto Alonso Castillo"},
+  "Carlos de Haro": {"full":"Carlos de Haro Cabanillas"},
+  "Belén López": {"full":"Belén López Vázquez"},
+  "Ana": {"full":"Ana Inga"},
+  "María Jesús": {"full":"María Jesús Vázquez Fuentes","nick":"La Torrijas"},
+  "Gerardo": {"nick":"El calvo que habla rápido"},
+  "Gregorio": {"full":"Gregorio Navarro","nick":"El Administrador"},
+  "Rocío": {"nick":"La Cartera"},
+  "Marta «La Pantumaca»": {"full":"Marta Puig Llorenç","nick":"La Pantumaca"},
+};
+
+if (typeof module !== "undefined") module.exports = { CHAR_DESC, CHAR_INFO };

@@ -202,9 +202,9 @@ const QUOTES = [
   { quote: "El sabor de la vida está en las cosas sencillas", character: "Yago", hint: "La filosofía del ecologista caribeño del edificio..." },
 
   // ARMANDO CORTÉS
-  { quote: "Mamá, que ya soy mayor para estas cosas", character: "Armando Cortés", hint: "El hijo de la propietaria del 2º B resistiéndose a su madre..." },
-  { quote: "Soy un hombre libre, eso es todo", character: "Armando Cortés", hint: "El soltero del 2º B explicando su filosofía de vida..." },
-  { quote: "Las mujeres siempre complican todo", character: "Armando Cortés", hint: "El womanizer del 2º B con su particular visión del amor..." },
+  { quote: "Mamá, que ya soy mayor para estas cosas", character: "Armando Rubio", hint: "El hijo de la propietaria del 2º B resistiéndose a su madre..." },
+  { quote: "Soy un hombre libre, eso es todo", character: "Armando Rubio", hint: "El soltero del 2º B explicando su filosofía de vida..." },
+  { quote: "Las mujeres siempre complican todo", character: "Armando Rubio", hint: "El womanizer del 2º B con su particular visión del amor..." },
 
   // ANDRÉS GUERRA
   { quote: "Los negocios son los negocios, no lo mezcles con sentimientos", character: "Andrés Guerra", hint: "El empresario del 2º B con su filosofía del mundo..." },
