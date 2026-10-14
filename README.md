@@ -32,7 +32,8 @@ Fan-made, no oficial. Nuevo personaje y nueva frase cada día.
 - PWA instalable con notificaciones push diarias
 - Recordatorios por email (Brevo + Cloudflare Worker), con opt-in
 - Modo daltónico, responsive y menú hamburguesa en móvil
-- Páginas de contenido: personajes, edificio, frases célebres, curiosidades, la serie
+- 📖 Wiki de la serie: una página por personaje (ficha, frases, vecinos), edificio, temporadas, frases célebres, curiosidades
+- Últimos 5 días jugables en modo práctica (no cuentan para racha ni ranking)
 
 📘 **Documentación técnica completa en [PROYECTO.md](PROYECTO.md).**
 

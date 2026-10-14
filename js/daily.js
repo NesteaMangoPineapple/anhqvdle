@@ -3,11 +3,42 @@
    Misma semilla por fecha = mismo resultado para todos
    ================================================ */
 
+/* ══════════════════════════════════════
+   FECHA DEL JUEGO + MODO PRÁCTICA
+   ?dia=N permite jugar uno de los últimos PAST_DAYS_PLAYABLE retos.
+   Esos días son práctica: no cuentan para stats, racha ni ranking.
+══════════════════════════════════════ */
+
+const PAST_DAYS_PLAYABLE = 5;
+let _gameDateOffset = 0; // 0 = hoy, -1 = ayer… (solo -PAST_DAYS_PLAYABLE..-1)
+
+(function _readPracticeDay() {
+  try {
+    const m = location.search.match(/[?&]dia=(\d+)/);
+    if (!m) return;
+    const offset = parseInt(m[1], 10) - getDayNumber(); // getDayNumber aún usa hoy
+    if (offset < 0 && offset >= -PAST_DAYS_PLAYABLE) _gameDateOffset = offset;
+    else history.replaceState(null, '', location.pathname); // día no permitido → reto de hoy
+  } catch (e) {}
+})();
+
+/** Fecha del reto que se está jugando (hoy, o el día pasado elegido). Siempre un objeto nuevo. */
+function gameDate() {
+  const d = new Date();
+  if (_gameDateOffset) d.setDate(d.getDate() + _gameDateOffset);
+  return d;
+}
+
+/** true si se está jugando un día pasado (modo práctica) */
+function isPracticeMode() {
+  return _gameDateOffset !== 0;
+}
+
 /**
- * Genera un índice determinista a partir de la fecha de hoy.
+ * Genera un índice determinista a partir de la fecha del juego.
  */
 function getDailyIndex(arrayLength) {
-  const now  = new Date();
+  const now  = gameDate();
   const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
   return (Math.imul(seed, 2654435761) >>> 0) % arrayLength;
 }
@@ -16,7 +47,7 @@ function getDailyIndex(arrayLength) {
  * Igual que getDailyIndex pero para ayer.
  */
 function getYesterdayIndex(arrayLength) {
-  const d    = new Date();
+  const d    = gameDate();
   d.setDate(d.getDate() - 1);
   const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
   return (Math.imul(seed, 2654435761) >>> 0) % arrayLength;
@@ -34,7 +65,7 @@ function getDayNumber() {
     for (let i = 0; i < m; i++) n += dim[i];
     return n + d;
   }
-  const t = new Date();
+  const t = (typeof _gameDateOffset !== 'undefined') ? gameDate() : new Date();
   const launchDay = _absDay(2026, 2, 24); // 24 mar 2026
   const todayDay  = _absDay(t.getFullYear(), t.getMonth(), t.getDate());
   return Math.max(1, todayDay - launchDay + 1);
@@ -69,13 +100,13 @@ function _localDayOfYear(date) {
 }
 
 function getDailyQuote() {
-  const now     = new Date();
+  const now     = gameDate();
   const shuffled = _seededShuffle(QUOTES, now.getFullYear() * 31337);
   return shuffled[_localDayOfYear(now) % shuffled.length];
 }
 
 function getYesterdayQuote() {
-  const d = new Date();
+  const d = gameDate();
   d.setDate(d.getDate() - 1);
   const shuffled = _seededShuffle(QUOTES, d.getFullYear() * 31337);
   return shuffled[_localDayOfYear(d) % shuffled.length];
@@ -86,7 +117,7 @@ function getYesterdayQuote() {
 ══════════════════════════════════════ */
 
 function getTodayKey(mode) {
-  const now = new Date();
+  const now = gameDate();
   const d   = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
   return `anhqvdle_${mode}_${d}`;
 }

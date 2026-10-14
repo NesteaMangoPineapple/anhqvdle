@@ -226,7 +226,7 @@ function showResultImpostor(won) {
 }
 
 function shareImpostor(won) {
-  const dateStr  = new Date().toLocaleDateString('es-ES');
+  const dateStr  = gameDate().toLocaleDateString('es-ES');
   const correct  = impGame.impostors.filter(n =>  impSelected.includes(n)).map(() => '✅');
   const wrongSel = impSelected.filter(n => !impGame.impostors.includes(n)).map(() => '❌');
   const missed   = impGame.impostors.filter(n => !impSelected.includes(n)).map(() => '⬜');

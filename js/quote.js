@@ -192,8 +192,7 @@ function showDoneMessageQuote(won, charName, attempts) {
 }
 
 function shareResultQuote(won, attempts) {
-  const today   = new Date();
-  const dateStr = today.toLocaleDateString('es-ES');
+  const dateStr = gameDate().toLocaleDateString('es-ES');
   const emojis  = quoteGuesses.map(name => name === quoteTarget.character ? '✅' : '❌').join('');
   const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
   const text    = `ANHQVdle 💬 #${getDayNumber()} · ${dateStr}\n${status}\n${emojis}\nanhqvdle.es`;
@@ -231,7 +230,7 @@ function shareImageQuote(won, attempts) {
 
   ctx.font = '13px Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.fillText(`💬 Frases #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}`, W / 2, 72);
+  ctx.fillText(`💬 Frases #${getDayNumber()} · ${gameDate().toLocaleDateString('es-ES')}`, W / 2, 72);
 
   ctx.font = 'bold 15px Arial, sans-serif';
   ctx.fillStyle = won ? '#4ade80' : '#f87171';

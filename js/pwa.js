@@ -18,13 +18,41 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// ── Control de ventanas emergentes ────────────────
+// Notificaciones, email e instalar solo salen si el visitante ya ha jugado
+// alguna partida, nunca a la vez que otra ventana y como mucho una por página.
+// (El popup de Ko-fi va aparte, en utils.js.)
+window.AnhqPopups = (function () {
+  var claimed = false;
+  function hasPlayed() {
+    try {
+      var s = JSON.parse(localStorage.getItem('anhqvdle_streak') || '{}');
+      if (s.count >= 1) return true;
+      return Object.keys(localStorage).some(function (k) {
+        if (k.indexOf('anhqvdle_stats_') !== 0) return false;
+        try { return (JSON.parse(localStorage.getItem(k)) || {}).played > 0; } catch (e) { return false; }
+      });
+    } catch (e) { return false; }
+  }
+  function otherOpen() {
+    return !!document.querySelector('#kofi-popup, #streak-anim-overlay, #streak-popup-overlay, #ec-overlay, #push-prompt, #pwa-install-banner, #stats-modal, #profile-modal, #auth-modal, #tutorial-modal.active');
+  }
+  // true si se puede mostrar ahora; reserva el hueco de esta página
+  function claim() {
+    if (claimed || !hasPlayed() || otherOpen()) return false;
+    claimed = true;
+    return true;
+  }
+  return { hasPlayed: hasPlayed, claim: claim };
+}());
+
 // ── Install Banner (A2HS) ────────────────────────
 var _deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
   _deferredPrompt = e;
-  _showInstallBanner();
+  setTimeout(_showInstallBanner, 30000);
 });
 
 window.addEventListener('appinstalled', function () {
@@ -34,8 +62,10 @@ window.addEventListener('appinstalled', function () {
 });
 
 function _showInstallBanner() {
+  if (!_deferredPrompt) return;
   if (localStorage.getItem('anhqvdle_install_dismissed')) return;
   if (document.getElementById('pwa-install-banner')) return;
+  if (!AnhqPopups.claim()) return;
 
   var banner = document.createElement('div');
   banner.id = 'pwa-install-banner';
@@ -156,14 +186,15 @@ function _savePushSubscription(sub) {
 function _maybeShowPushPopup() {
   if (!('PushManager' in window)) return;
   if (!('serviceWorker' in navigator)) return;
-  if (Notification.permission === 'granted') return;
+  if (Notification.permission !== 'default') return; // ya aceptado o bloqueado
   if (localStorage.getItem('anhqvdle_push_asked')) return;
+  if (!AnhqPopups.claim()) return;
   _showPushPrompt();
 }
 
-// Mostrar popup 5 segundos después de cargar
+// Mostrar el aviso 20 s después de cargar (solo a quien ya ha jugado)
 window.addEventListener('load', function () {
-  setTimeout(_maybeShowPushPopup, 5000);
+  setTimeout(_maybeShowPushPopup, 20000);
 });
 
 // Exponer globalmente

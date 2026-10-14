@@ -26,7 +26,9 @@ anhqvdle/
 ├── quiz.html             ← 🪞 ¿Qué personaje eres? (test, no diario)
 ├── quien.html            ← 🎭 Quién es Quién (vs máquina / online)
 ├── ranking.html          ← 🏆 Ranking global (Clásico, Frases, Impostor, Racha) — noindex, sin anuncios
-├── personajes.html       ← Contenido SEO: ficha de los vecinos
+├── wiki.html             ← 📖 Portada de la wiki (GENERADA: tools/build-wiki.js): buscador, secciones, temporadas
+├── personajes.html       ← Wiki: listado de fichas (las fichas se generan con tools/build-personajes.js)
+├── personajes/<slug>.html← Wiki: una página por personaje (GENERADAS; 7 esporádicos cortos van con noindex)
 ├── edificio.html         ← Contenido SEO: quién vivió en cada piso de Desengaño 21
 ├── frases-celebres.html  ← Contenido SEO: frases icónicas
 ├── curiosidades.html     ← Contenido SEO: trivia
@@ -57,7 +59,9 @@ anhqvdle/
 │   ├── firebase-config.js← Config web de Firebase (es pública por diseño; la seguridad está en las reglas)
 │   └── tutorial.js       ← Modal "cómo jugar" la primera vez
 ├── tools/
-│   └── build-personajes.js ← Genera las fichas estáticas de personajes.html (ejecutar tras tocar characters/descriptions)
+│   ├── lib/layout.js       ← Plantilla común (cabecera/pie copiados de personajes.html, rutas absolutas)
+│   ├── build-personajes.js ← Fichas de personajes.html + personajes/*.html + sitemap
+│   └── build-wiki.js       ← wiki.html + sitemap
 ├── cloudflare-worker/
 │   ├── push-worker.js    ← Envía la notificación push diaria
 │   └── email-worker.js   ← Brevo: alta/baja de contactos + emails (recordatorio y matutino)
@@ -138,6 +142,16 @@ Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores q
 
 ---
 
+## Días anteriores — modo práctica
+- Cada modo diario acepta `?dia=N`, pero solo para los **últimos 5 días** (`PAST_DAYS_PLAYABLE` en `daily.js`). Cualquier otro valor se ignora.
+- `gameDate()` en `daily.js` devuelve la fecha del reto que se juega. Todas las semillas la usan, así que los 5 modos funcionan sin tocar su lógica. `isPracticeMode()` indica si es un día pasado.
+- En práctica: `updateStats` y `updateStreak` no hacen nada (ni stats locales, ni Firebase, ni ranking, ni comunidad). El estado se guarda con la clave de ese día.
+- `initPastDays()` (utils.js) pinta el aviso azul de práctica y la tira "📅 Días anteriores" encima de la guía.
+- **No hay archivo público de soluciones**, a propósito: el contenido se repite (Conexiones cada 8 días, frases cada año) y destriparía retos futuros.
+
+## Ventanas emergentes
+`AnhqPopups` (pwa.js): las ventanas de notificaciones (20 s), email (25 s) e instalar (30 s) solo salen si el visitante **ya ha jugado** alguna partida, nunca con otra ventana abierta y como mucho una por página. El tutorial y el Ko-fi siguen igual.
+
 ## Racha (`streak.js`)
 - **Una sola racha global**: sube al completar **cualquier** modo diario (`anhqvdle_streak` = `{count, lastDate: YYYYMMDD}`).
 - Badge 🔥 en la cabecera de todas las páginas (`.empty` = 0, `.pending` = jugó ayer y aún no hoy). Al pulsarlo se abre un popup con el estado y el toggle de emails.
@@ -208,6 +222,7 @@ Google lee el HTML que manda el servidor. Los juegos se pintan con JS, así que 
 - **personajes.html** con las 46 fichas en HTML estático (2.900 palabras), generadas con `node tools/build-personajes.js`. Se corrigieron las descripciones de Bea, Mauri, Fernando, Ezequiel y la Hermana Esperanza.
 - **ranking.html**: `noindex`, sin anuncios y fuera del sitemap. **privacidad.html**: sin anuncios.
 - **Nosotros** ampliado (qué hay, cómo se hace el contenido, historia del proyecto) y enlaces a las páginas de contenido en el pie de todas las páginas.
+- **Wiki** (15/10/2026): portada `wiki.html` con buscador, 46 páginas de personaje con ficha, descripción, todas sus frases y vecinos de piso, y botón 📖 Wiki en el menú. Se reescribieron los párrafos de serie.html que repetían las fichas.
 - **Regla para el futuro:** toda página indexable con anuncios necesita texto propio en el HTML (no generado por JS). Las páginas sin contenido van con `noindex` y sin el script de AdSense.
 
 - Canonical, OG/Twitter Card y H1 en las páginas indexables; JSON-LD (WebApplication / Article).
@@ -226,10 +241,14 @@ TXT   anhqvdle.es  google-site-verification=...             DNS only
 ```
 
 ## Deploy
+Si tocas `data/characters.js`, `data/descriptions.js`, `data/quotes.js` o el menú/pie de `personajes.html`, regenera la wiki:
+```bash
+node tools/build-personajes.js && node tools/build-wiki.js
+```
 ```bash
 git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 1-2 min
 ```
-- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v4`; solo cachea archivos propios con respuesta OK).
+- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v5`; solo cachea archivos propios con respuesta OK).
 - Los workers se despliegan a mano en Cloudflare (copiar y pegar o wrangler). No hay `wrangler.toml` en el repo.
 
 ---

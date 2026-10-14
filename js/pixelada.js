@@ -20,8 +20,7 @@ function getDailyPixChar() {
 
 function initPixelada() {
   if (location.search.includes('reset')) {
-    const d = new Date();
-    const key = `anhqvdle_${MODE_KEY_PIX}_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    const key = getTodayKey(MODE_KEY_PIX);
     localStorage.removeItem(key);
     history.replaceState(null, '', location.pathname);
   }
@@ -217,7 +216,7 @@ function showPixResult(won, charName) {
 
 function sharePix(won) {
   const emojis = pixGuesses.map((_, i) => i === pixGuesses.length - 1 && won ? '🟩' : '🟥').join('');
-  const text   = `ANHQVdle 🖼️ #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}\n${won ? `${pixGuesses.length} intento${pixGuesses.length !== 1 ? 's' : ''}` : 'Sin adivinar'}\n${emojis}\nanhqvdle.es`;
+  const text   = `ANHQVdle 🖼️ #${getDayNumber()} · ${gameDate().toLocaleDateString('es-ES')}\n${won ? `${pixGuesses.length} intento${pixGuesses.length !== 1 ? 's' : ''}` : 'Sin adivinar'}\n${emojis}\nanhqvdle.es`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('#pix-result .share-btn');
     if (!btn) return;

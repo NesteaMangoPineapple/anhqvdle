@@ -20,7 +20,11 @@ window.EmailConsent = (function () {
     if (!db) return;
     db.ref('users/' + user.uid + '/emailConsent').once('value').then(function (snap) {
       if (snap.val() !== null) return; // ya respondió antes
-      setTimeout(function () { _showModal(user, db); }, 4000);
+      // 25 s y solo si no hay otra ventana abierta (ver AnhqPopups en pwa.js)
+      setTimeout(function () {
+        if (window.AnhqPopups && !window.AnhqPopups.claim()) return;
+        _showModal(user, db);
+      }, 25000);
     }).catch(function () {});
   }
 

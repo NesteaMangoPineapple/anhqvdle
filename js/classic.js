@@ -223,8 +223,7 @@ function showDoneMessage(containerId, won, charName, attempts) {
 }
 
 function shareResultClassic(won, attempts) {
-  const today   = new Date();
-  const dateStr = today.toLocaleDateString('es-ES');
+  const dateStr = gameDate().toLocaleDateString('es-ES');
   const grid    = classicResults.map(row => row.join('')).join('\n');
   const status  = won ? `${attempts} intento${attempts !== 1 ? 's' : ''}` : 'Sin adivinar';
   const text    = `ANHQVdle 🎬 #${getDayNumber()} · ${dateStr}\n${status}\n${grid}\nanhqvdle.es`;
@@ -266,7 +265,7 @@ function shareImageClassic(won, attempts) {
   // Subtítulo
   ctx.font = '600 13px "Barlow Condensed", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.fillText(`🎬 Clásico #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}`, W / 2, 74);
+  ctx.fillText(`🎬 Clásico #${getDayNumber()} · ${gameDate().toLocaleDateString('es-ES')}`, W / 2, 74);
 
   // Resultado
   ctx.font = '700 15px "Barlow Condensed", Arial, sans-serif';

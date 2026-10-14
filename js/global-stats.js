@@ -13,7 +13,7 @@ window.GlobalStats = (function () {
 
   // Fecha local (igual que el reto diario); en UTC las partidas de 00:00-02:00 caían en el día anterior
   function _today() {
-    var d = new Date();
+    var d = (typeof gameDate === 'function') ? gameDate() : new Date();
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 

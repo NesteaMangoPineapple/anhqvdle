@@ -84,8 +84,7 @@ function getCnxPuzzle() {
 
 function initConexiones() {
   if (location.search.includes('reset')) {
-    const d = new Date();
-    const key = `anhqvdle_${MODE_KEY_CNX}_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    const key = getTodayKey(MODE_KEY_CNX);
     localStorage.removeItem(key);
     history.replaceState(null, '', location.pathname);
   }
@@ -345,7 +344,7 @@ function shareCnx(won) {
   const found  = cnxFound.map(c => colors[c]).join('');
   const missed = cnxPuzzle.groups.filter(g => !cnxFound.includes(g.color)).map(() => '⬜').join('');
   const errors = cnxMistakes > 0 ? ` · ${cnxMistakes} error${cnxMistakes !== 1 ? 'es' : ''}` : ' · Sin errores';
-  const text   = `ANHQVdle 🔗 #${getDayNumber()} · ${new Date().toLocaleDateString('es-ES')}\n${won ? '¡Encontradas!' : 'Sin completar'}${errors}\n${found}${missed}\nanhqvdle.es`;
+  const text   = `ANHQVdle 🔗 #${getDayNumber()} · ${gameDate().toLocaleDateString('es-ES')}\n${won ? '¡Encontradas!' : 'Sin completar'}${errors}\n${found}${missed}\nanhqvdle.es`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('#cnx-result .share-btn');
     if (!btn) return;

@@ -167,6 +167,9 @@ function loadStats(mode) {
 }
 
 function updateStats(mode, attempts, won) {
+  // Días pasados (modo práctica): no cuentan para nada
+  if (typeof isPracticeMode === 'function' && isPracticeMode()) return;
+
   const stats     = loadStats(mode);
   const _d = new Date();
   const today     = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
@@ -409,3 +412,64 @@ function _withFontsReady(drawFn) {
     setTimeout(drawFn, 300);
   }
 }
+
+/* ══════════════════════════════════════
+   DÍAS ANTERIORES (modo práctica)
+   Tira con los últimos PAST_DAYS_PLAYABLE retos y aviso cuando se juega uno.
+══════════════════════════════════════ */
+
+const _PAST_DAYS_MODES = {
+  'clasico.html': 'classic', 'frases.html': 'quote', 'impostor.html': 'impostor',
+  'conexiones.html': 'conexiones', 'pixelada.html': 'pixelada',
+};
+
+function initPastDays() {
+  const page = location.pathname.split('/').pop() || '';
+  const mode = _PAST_DAYS_MODES[page];
+  const main = document.querySelector('main');
+  if (!mode || !main || typeof gameDate !== 'function') return;
+
+  const DAYS   = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+  const pad    = n => String(n).padStart(2, '0');
+  const ymd    = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+  const todayN = getDayNumber() - (isPracticeMode() ? _gameDateOffset : 0);
+  const playing = getDayNumber();
+
+  // Aviso de modo práctica
+  if (isPracticeMode()) {
+    const d = gameDate();
+    const banner = document.createElement('div');
+    banner.className = 'practice-banner';
+    banner.innerHTML = `🕹️ Estás jugando el reto <strong>#${playing}</strong> (${DAYS[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}).
+      Es <strong>modo práctica</strong>: no cuenta para tu racha ni para el ranking.
+      <a href="${page}">Ir al reto de hoy →</a>`;
+    main.insertBefore(banner, main.firstChild);
+  }
+
+  // Tira de días
+  const items = [];
+  for (let i = PAST_DAYS_PLAYABLE; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const n = todayN - i;
+    let state = '';
+    try {
+      const saved = JSON.parse(localStorage.getItem(`anhqvdle_${mode}_${ymd(d)}`) || 'null');
+      if (saved && saved.done) state = saved.won ? 'won' : 'lost';
+    } catch (e) {}
+    const icon  = state === 'won' ? '✓' : state === 'lost' ? '✗' : '';
+    const label = i === 0 ? 'Hoy' : `${DAYS[d.getDay()]} ${d.getDate()}`;
+    const href  = i === 0 ? page : `${page}?dia=${n}`;
+    items.push(`<a class="past-day ${state}${n === playing ? ' current' : ''}" href="${href}" title="Reto #${n}">
+        <span class="past-day-label">${label}</span><span class="past-day-num">#${n} ${icon}</span></a>`);
+  }
+  const strip = document.createElement('nav');
+  strip.className = 'past-days';
+  strip.setAttribute('aria-label', 'Retos de días anteriores');
+  strip.innerHTML = `<p class="past-days-title">📅 Días anteriores <small>· práctica, no cuentan para la racha</small></p>
+    <div class="past-days-row">${items.join('')}</div>`;
+  const guide = main.querySelector('.mode-guide');
+  main.insertBefore(strip, guide || null);
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPastDays);
+else initPastDays();
