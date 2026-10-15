@@ -90,22 +90,89 @@ function triggerStreakAnimation(count) {
   }, 600);
 }
 
+/* ══════════════════════════════════════
+   SINCRONIZACIÓN ENTRE DISPOSITIVOS
+   La racha vive en localStorage y en Firebase (streaks/{uid}). Nunca se
+   sobrescribe a ciegas: se combinan las dos y gana la racha más larga.
+══════════════════════════════════════ */
+
+// 'YYYYMMDD' → nº de día (para restar fechas sin líos de zona horaria)
+function _streakDayNum(ymd) {
+  return Math.round(Date.UTC(+ymd.slice(0, 4), +ymd.slice(4, 6) - 1, +ymd.slice(6, 8)) / 86400000);
+}
+
+/**
+ * Combina dos rachas {count, lastDate}. Cada una cubre los días
+ * [lastDate - count + 1, lastDate]; si los tramos se tocan o se solapan son
+ * la misma racha jugada en dos dispositivos y se unen. Si no, gana la más reciente.
+ * Ej.: Firebase 30 días hasta ayer + móvil nuevo 1 día hoy → 31 hasta hoy.
+ */
+function _mergeStreaks(a, b) {
+  const ok = s => s && s.lastDate && /^\d{8}$/.test(s.lastDate) && s.count >= 1;
+  if (!ok(a)) return ok(b) ? { count: b.count, lastDate: b.lastDate } : { count: 0, lastDate: '' };
+  if (!ok(b)) return { count: a.count, lastDate: a.lastDate };
+  const newer = a.lastDate >= b.lastDate ? a : b;
+  const older = newer === a ? b : a;
+  const newerEnd = _streakDayNum(newer.lastDate), olderEnd = _streakDayNum(older.lastDate);
+  const newerStart = newerEnd - newer.count + 1, olderStart = olderEnd - older.count + 1;
+  if (olderEnd >= newerStart - 1) {
+    return { count: newerEnd - Math.min(newerStart, olderStart) + 1, lastDate: newer.lastDate };
+  }
+  return { count: newer.count, lastDate: newer.lastDate };
+}
+
 function _syncStreakToFirebase(count, lastDate) {
   try {
     if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) return;
     const user = firebase.auth ? firebase.auth().currentUser : null;
     if (!user) return;
     const db = firebase.database();
-    db.ref('streaks/' + user.uid).set({
-      count:    count,
-      lastDate: lastDate,
-      name:     user.displayName || 'Vecino',
-      photo:    user.photoURL    || null
-    });
-    // Para recordatorios de email: última vez que jugó y racha actual
-    const today = `${lastDate.slice(0,4)}-${lastDate.slice(4,6)}-${lastDate.slice(6,8)}`; // hora local
-    db.ref('users/' + user.uid).update({ lastPlayed: today, streak: count });
+    const local = { count: count, lastDate: lastDate };
+
+    db.ref('streaks/' + user.uid).transaction(function (cur) {
+      const merged = _mergeStreaks(local, cur);
+      if (!merged.count) return; // nada que guardar en ningún lado → abortar
+      return {
+        count:    merged.count,
+        lastDate: merged.lastDate,
+        name:     user.displayName || 'Vecino',
+        photo:    user.photoURL    || null
+      };
+    }).then(function (res) {
+      const saved = res.committed && res.snapshot.val();
+      if (!saved) return;
+      // Llevar a este dispositivo la racha combinada
+      const cur = getStreakData();
+      if (cur.count !== saved.count || cur.lastDate !== saved.lastDate) {
+        localStorage.setItem('anhqvdle_streak', JSON.stringify({ count: saved.count, lastDate: saved.lastDate }));
+        _refreshStreakBadge();
+      }
+      // Para recordatorios de email: última vez que jugó y racha actual (hora local)
+      const ld = saved.lastDate;
+      db.ref('users/' + user.uid).update({ lastPlayed: `${ld.slice(0,4)}-${ld.slice(4,6)}-${ld.slice(6,8)}`, streak: saved.count });
+    }).catch(function () {});
   } catch(e) {}
+}
+
+// Actualiza el número del badge 🔥 sin volver a enganchar eventos
+function _refreshStreakBadge() {
+  const el = document.getElementById('streak-header-badge');
+  if (!el) return;
+  const pad = n => String(n).padStart(2, '0');
+  const now = new Date();
+  const today = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+  const yest  = new Date(now); yest.setDate(yest.getDate() - 1);
+  const yesterStr = `${yest.getFullYear()}${pad(yest.getMonth()+1)}${pad(yest.getDate())}`;
+  const data  = getStreakData();
+  const active = data.count >= 1 && (data.lastDate === today || data.lastDate === yesterStr);
+  el.textContent = `🔥 ${active ? data.count : 0}`;
+  el.classList.toggle('empty', !active);
+  el.classList.toggle('pending', active && data.lastDate === yesterStr);
+  // Banner de resultado ya pintado ("🔥 N días seguidos")
+  document.querySelectorAll('.result-streak').forEach(function (r) {
+    if (!active) return;
+    r.innerHTML = `🔥 <strong>${data.count}</strong> día${data.count !== 1 ? 's' : ''} seguido${data.count !== 1 ? 's' : ''}`;
+  });
 }
 
 function initStreakHeader() {
@@ -217,9 +284,9 @@ if (document.readyState === 'loading') {
   if (typeof AuthModule === 'undefined') return;
   AuthModule.onReady(function(user) {
     if (!user) return;
+    // Siempre: aunque este dispositivo no tenga racha, así recupera la de Firebase
     const data = getStreakData();
-    if (data.count < 1 || !data.lastDate) return;
-    _syncStreakToFirebase(data.count, data.lastDate);
+    _syncStreakToFirebase(data.count || 0, data.lastDate || '');
     // If ranking streak tab is already open, reload it after write completes
     setTimeout(function() {
       if (typeof _fetchStreakLeaderboard === 'function' &&

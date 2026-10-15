@@ -5,7 +5,11 @@
 const MODE_KEY_CNX = 'conexiones';
 const MAX_MISTAKES  = 5;
 
-/* ── Puzzles diarios (3 grupos × 4 personajes = 12) ── */
+/* ── Puzzles diarios (3 grupos × 4 personajes = 12) ──
+   Desde CNX_V2_START se usan los de data/conexiones.js (generados, sin ambigüedad).
+   Estos 8 escritos a mano solo se usan para días anteriores, para no cambiar
+   retos ya jugados (algunos eran ambiguos: varios personajes encajaban en dos grupos). */
+const CNX_V2_START = '2026-10-16';
 const CONEXIONES_PUZZLES = [
   {
     groups: [
@@ -79,6 +83,11 @@ let cnxDone      = false;
 let cnxHintUsed  = false;
 
 function getCnxPuzzle() {
+  const d   = gameDate();
+  const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  if (iso >= CNX_V2_START && typeof CONEXIONES_V2 !== 'undefined') {
+    return CONEXIONES_V2[getDayNumber() % CONEXIONES_V2.length];
+  }
   return CONEXIONES_PUZZLES[getDayNumber() % CONEXIONES_PUZZLES.length];
 }
 

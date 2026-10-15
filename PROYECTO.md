@@ -85,7 +85,7 @@ Cada modo elige su reto de forma determinista, así que todos ven lo mismo el mi
 | Clásico | `getDailyIndex(46)` — hash de la fecha YYYYMMDD | aleatorio con repetición |
 | Frases | `getDailyQuote()` — barajado con semilla anual (`año*31337`) + día del año | 236 días |
 | Impostor | `PUZZLES[getDayNumber() % 20]` + barajado de personajes con semilla del día | 20 categorías |
-| Conexiones | `CONEXIONES_PUZZLES[getDayNumber() % 8]` | **8 puzzles → se repite cada 8 días** |
+| Conexiones | Desde el 16/10/2026: `CONEXIONES_V2[getDayNumber() % 120]` (data/conexiones.js, generado). Antes: los 8 a mano | 120 días |
 | Pixelada | `seededShuffle(CHARACTERS, día*48271)[0]` | aleatorio |
 
 - `getDayNumber()`: días desde el 24/03/2026 (aritmética de calendario, no de timestamps → a prueba de zonas horarias).
@@ -125,7 +125,11 @@ Intentos ilimitados. Botón "💡 Revelar pista" tras 2 fallos (opcional, se gua
 Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores que no la cumplen. Una sola confirmación. 1 pista por día (`anhqvdle_imp_hint_<día>`). Tiene ranking.
 
 ### 🧩 Conexiones (`conexiones.js`)
-12 personajes → 3 grupos de 4 (amarillo/verde/azul), 5 vidas, aviso de "¡Casi!" con 3 de 4. 1 pista por día. **Solo 8 puzzles escritos a mano.**
+12 personajes → 3 grupos de 4 (amarillo/verde/azul), 5 vidas, aviso de "¡Casi!" con 3 de 4. 1 pista por día.
+- **Puzzles generados** con `node tools/build-conexiones.js` → `data/conexiones.js` (120 puzzles, semilla fija). Cada categoría es una regla comprobable con las fichas (piso, temporada, tipo, oficio, hijos, familia por apellido) y **cada personaje encaja en un solo grupo**. Así se resolvió la queja de un seguidor (15/10/2026): en un puzzle escrito a mano, 7 personajes encajaban en "Vivieron en el 3º B".
+- Los personajes con datos dudosos no salen en puzzles que usen ese dato (`DOUBTFUL` en el generador).
+- Los 8 puzzles antiguos (`CONEXIONES_PUZZLES`) solo se usan para fechas anteriores a `CNX_V2_START`, para no cambiar retos ya jugados.
+- Si cambias las fichas y regeneras, cambian los puzzles de días futuros: revisa el diff y no publiques a mitad del día si cambia el de hoy.
 
 ### 🖼️ Foto Pixelada (`pixelada.js`)
 5 intentos; bloques de píxel `[20, 13, 7, 3, 1]` que se van afinando con cada fallo.
@@ -163,7 +167,8 @@ Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores q
 - **Una sola racha global**: sube al completar **cualquier** modo diario (`anhqvdle_streak` = `{count, lastDate: YYYYMMDD}`).
 - Badge 🔥 en la cabecera de todas las páginas (`.empty` = 0, `.pending` = jugó ayer y aún no hoy). Al pulsarlo se abre un popup con el estado y el toggle de emails.
 - Animación a pantalla completa al empezar la racha y cada 10 días.
-- Sincroniza con Firebase: `streaks/{uid}` (ranking de racha) y `users/{uid}.lastPlayed/streak` (para los emails).
+- **Sincronización entre dispositivos** (desde el 15/10/2026): al cargar la página con sesión iniciada y al terminar una partida se hace una *transacción* sobre `streaks/{uid}` que **combina** la racha local con la remota (`_mergeStreaks`: si los tramos de días se tocan o solapan se unen; si no, gana la más reciente). El resultado se escribe en los dos lados. Antes la racha local se escribía a ciegas en Firebase: al cambiar de móvil, una racha de 1 día machacaba la buena (queja de un seguidor).
+- También actualiza `users/{uid}.lastPlayed/streak` para los emails.
 - Aparte, cada modo tiene sus stats locales `anhqvdle_stats_<modo>` (jugadas, % victorias, racha del modo, máxima y distribución con X = perdidas).
 
 ---
