@@ -1,0 +1,83 @@
+{
+  "rules": {
+    "leaderboard": {
+      ".read": true,
+      "$mode": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.hasChildren(['name','played','won','streak','maxStreak','totalAttempts','updated'])",
+          "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "photo": { ".validate": "newData.isString() && (newData.val() === '' || (newData.val().matches(/^https:\\/\\//) && newData.val().length <= 600))" },
+          "played": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" },
+          "won": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= newData.parent().child('played').val()" },
+          "streak": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" },
+          "maxStreak": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" },
+          "totalAttempts": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000000" },
+          "updated": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "streaks": {
+      ".read": true,
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['count','lastDate'])",
+        "count": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3650" },
+        "lastDate": { ".validate": "newData.isString() && newData.val().matches(/^[0-9]{8}$/)" },
+        "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "photo": { ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\//) && newData.val().length <= 600" },
+        "$other": { ".validate": false }
+      }
+    },
+    "league": {
+      ".read": true,
+      "$week": {
+        ".validate": "$week.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.hasChildren(['name','points','games','updated'])",
+          "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "photo": { ".validate": "newData.isString() && (newData.val() === '' || (newData.val().matches(/^https:\\/\\//) && newData.val().length <= 600))" },
+          "games": { ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1 && newData.val() <= 35" },
+          "points": { ".validate": "newData.isNumber() && newData.val() >= (data.exists() ? data.val() : 0) + 1 && newData.val() <= (data.exists() ? data.val() : 0) + 10" },
+          "updated": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "global_stats": {
+      ".read": true,
+      "$date": {
+        ".validate": "$date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+        "$mode": {
+          "$key": {
+            ".write": "newData.exists()",
+            ".validate": "$key.matches(/^(plays|wins|dist_[0-9]{1,2}p?|dist_X)$/) && newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
+          }
+        }
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "push_subscriptions": {
+      ".indexOn": ["uid"],
+      ".read": "auth != null && query.orderByChild === 'uid' && query.equalTo === auth.uid",
+      "$id": {
+        ".write": "newData.exists() ? (!data.exists() || data.child('uid').val().beginsWith('anon_') || (auth != null && data.child('uid').val() === auth.uid)) : (data.exists() && auth != null && data.child('uid').val() === auth.uid)",
+        ".validate": "newData.hasChildren(['uid','subscription','savedAt']) && newData.child('subscription').isString() && newData.child('subscription').val().length <= 2000"
+      }
+    },
+    "rooms": {
+      "$room": {
+        ".read": true,
+        ".write": true,
+        ".validate": "$room.matches(/^[A-Z0-9]{8}$/)"
+      }
+    }
+  }
+}

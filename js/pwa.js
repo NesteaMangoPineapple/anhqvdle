@@ -11,6 +11,7 @@ if ('serviceWorker' in navigator) {
       .then(function (reg) {
         // Guardar registro para usar en suscripción
         window._swReg = reg;
+        _resavePushSubscription(reg);
       })
       .catch(function (err) {
         console.warn('[PWA] Service worker error:', err);
@@ -174,12 +175,28 @@ function _savePushSubscription(sub) {
     if (!db) return;
     // Guardar con uid si está logado, o con un ID anónimo si no
     var uid = user ? user.uid : ('anon_' + Math.random().toString(36).slice(2));
-    db.ref('push_subscriptions/' + btoa(sub.endpoint).slice(0, 40)).set({
+    // Clave = FINAL del endpoint: el principio (https://fcm.googleapis.com/…) es igual
+    // para todos los de un mismo navegador y se pisaban entre sí. Sin + / = (no valen en claves de Firebase).
+    var key = btoa(sub.endpoint).replace(/[+/=]/g, '').slice(-40);
+    db.ref('push_subscriptions/' + key).set({
       uid:          uid,
       subscription: JSON.stringify(sub),
       savedAt:      Date.now()
     }).catch(function () {});
   });
+}
+
+// Quien ya aceptó las notificaciones no vuelve a ver el aviso: si su suscripción se
+// perdió (bug de la clave repetida, oct 2026), se vuelve a guardar. Una vez al día.
+function _resavePushSubscription(reg) {
+  if (!reg.pushManager || !('Notification' in window) || Notification.permission !== 'granted') return;
+  var today = new Date().toDateString();
+  try { if (localStorage.getItem('anhqvdle_push_resaved') === today) return; } catch (e) {}
+  reg.pushManager.getSubscription().then(function (sub) {
+    if (!sub) return;
+    _savePushSubscription(sub);
+    try { localStorage.setItem('anhqvdle_push_resaved', today); } catch (e) {}
+  }).catch(function () {});
 }
 
 // ── Popup automático de notificaciones ───────────────
@@ -212,6 +229,115 @@ window.pwaDenyPush       = pwaDenyPush;
     if (window.EmailConsent) window.EmailConsent.init();
   };
   document.head.appendChild(s);
+}());
+
+// ── Logros (todas las páginas) ───────────────────────
+(function () {
+  var s = document.createElement('script');
+  s.src = '/js/logros.js';
+  document.head.appendChild(s);
+}());
+
+// ── Racha en peligro (todas las páginas) ─────────────
+// De 21:00 a medianoche, si jugaste ayer y aún no hoy: el badge 🔥 late y sale
+// una franja bajo la cabecera con la cuenta atrás. Desaparece al completar un reto.
+(function () {
+  var DAILY_PAGES = ['clasico.html', 'frases.html', 'impostor.html', 'conexiones.html', 'pixelada.html'];
+  var timer = null;
+
+  function ymd(offset) {
+    var d = new Date(); d.setDate(d.getDate() + offset);
+    return '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  }
+  function atRisk() {
+    if (new Date().getHours() < 21) return null;
+    try {
+      var s = JSON.parse(localStorage.getItem('anhqvdle_streak') || '{}');
+      return (s.count >= 1 && s.lastDate === ymd(-1)) ? s : null;
+    } catch (e) { return null; }
+  }
+  function timeLeft() {
+    var now = new Date(), end = new Date(now);
+    end.setHours(24, 0, 0, 0);
+    var min = Math.max(1, Math.ceil((end - now) / 60000));
+    var h = Math.floor(min / 60), m = min % 60;
+    return h ? h + ' h ' + m + ' min' : m + ' min';
+  }
+  function clear() {
+    if (timer) { clearInterval(timer); timer = null; }
+    var bar = document.getElementById('streak-risk-bar');
+    if (bar) bar.remove();
+    var badge = document.getElementById('streak-header-badge');
+    if (badge) badge.classList.remove('at-risk');
+  }
+  function render() {
+    var s = atRisk();
+    if (!s) { clear(); return; }
+    var badge = document.getElementById('streak-header-badge');
+    if (badge) badge.classList.add('at-risk');
+
+    var closed = false;
+    try { closed = sessionStorage.getItem('anhqvdle_risk_closed') === ymd(0); } catch (e) {}
+    var header = document.querySelector('header');
+    if (closed || !header) return;
+
+    var page = location.pathname.split('/').pop();
+    var onDaily = DAILY_PAGES.indexOf(page) !== -1 && location.search.indexOf('dia=') === -1;
+    var days = s.count + ' día' + (s.count !== 1 ? 's' : '');
+    var html = '<span>🔥 Tu racha de <strong>' + days + '</strong> se apaga en <strong>' + timeLeft() + '</strong>' +
+      (onDaily ? ': completa este reto para salvarla.</span>' : '.</span><a href="clasico.html">Jugar ahora</a>') +
+      '<button class="streak-risk-close" aria-label="Cerrar aviso">✕</button>';
+
+    var bar = document.getElementById('streak-risk-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'streak-risk-bar';
+      bar.className = 'streak-risk-bar';
+      bar.setAttribute('role', 'status');
+      bar.innerHTML = '<div class="streak-risk-bar-inner"></div>';
+      header.insertAdjacentElement('afterend', bar);
+    }
+    bar.firstChild.innerHTML = html;
+    bar.querySelector('.streak-risk-close').onclick = function () {
+      try { sessionStorage.setItem('anhqvdle_risk_closed', ymd(0)); } catch (e) {}
+      bar.remove();
+    };
+    if (!timer) timer = setInterval(render, 30000);
+  }
+
+  // streak.js avisa cuando la racha cambia (partida terminada o sync con la nube)
+  window.addEventListener('anhqvdle:streak', render);
+  // setTimeout: después de que se cree el badge 🔥 (más abajo en este archivo)
+  function boot() { setTimeout(render, 0); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+}());
+
+// ── Barra de carga al cambiar de página ──────────────
+(function () {
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    var url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname && url.search === location.search) return; // anclas (#) y misma página
+    var bar = document.querySelector('.nav-progress');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'nav-progress';
+      document.body.appendChild(bar);
+    }
+    bar.classList.remove('go');
+    void bar.offsetWidth; // reinicia la transición
+    bar.classList.add('go');
+  });
+  // Volver atrás con la caché del navegador: quitar la barra que se quedó puesta
+  window.addEventListener('pageshow', function () {
+    var bar = document.querySelector('.nav-progress');
+    if (bar) bar.remove();
+  });
 }());
 
 // ── Streak header badge (todas las páginas) ──────────

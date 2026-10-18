@@ -167,8 +167,15 @@ function loadStats(mode) {
 }
 
 function updateStats(mode, attempts, won) {
+  // Se llama solo al terminar una partida (nunca al recargar), así que es el
+  // sitio para celebrar. También en modo práctica: ganar siempre sienta bien.
+  if (won) celebrateWin();
+
   // Días pasados (modo práctica): no cuentan para nada
   if (typeof isPracticeMode === 'function' && isPracticeMode()) return;
+
+  // Antes de tocar nada: ¿la racha estaba pendiente de hoy? (para el logro "Salvado por la campana")
+  const streakBefore = (typeof getStreakData === 'function') ? getStreakData() : null;
 
   const stats     = loadStats(mode);
   const _d = new Date();
@@ -204,6 +211,87 @@ function updateStats(mode, attempts, won) {
   if (typeof GlobalStats !== 'undefined') {
     GlobalStats.update(mode, attempts, won);
   }
+  // Logros (logros.js lo inyecta pwa.js en todas las páginas)
+  if (window.Logros) {
+    Logros.onGame({ mode: mode, attempts: attempts, won: won, streakBefore: streakBefore });
+  }
+}
+
+/* ══════════════════════════════════════
+   CELEBRACIÓN AL GANAR
+   Confeti con los colores de la web y algún objeto de la serie cayendo.
+   Canvas propio, sin librerías; se borra solo al terminar.
+══════════════════════════════════════ */
+
+function celebrateWin() {
+  // El banner de resultado se pinta justo después: lo hacemos brillar
+  setTimeout(() => {
+    const banner = document.querySelector('.result-banner');
+    if (banner) banner.classList.add('celebrate');
+  }, 0);
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (document.querySelector('.confetti-canvas')) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.className = 'confetti-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = window.innerWidth, H = window.innerHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+
+  const COLORS = ['#f0c020', '#ffd54a', '#ff6400', '#4ade80', '#ffffff', '#60a5fa'];
+  const EMOJIS = ['🧹', '🔑', '🏠', '⭐'];
+  const pieces = [];
+  const n = W < 600 ? 90 : 150;
+  for (let i = 0; i < n; i++) {
+    // Dos cañones desde las esquinas de abajo, apuntando hacia el centro
+    const left = i % 2 === 0;
+    const angle = (left ? -60 : -120) + (Math.random() * 30 - 15);
+    const speed = 9 + Math.random() * 9;
+    pieces.push({
+      x: left ? 0 : W, y: H * 0.85,
+      vx: Math.cos(angle * Math.PI / 180) * speed,
+      vy: Math.sin(angle * Math.PI / 180) * speed * 1.35,
+      w: 6 + Math.random() * 6, h: 8 + Math.random() * 8,
+      rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.3,
+      color: COLORS[i % COLORS.length],
+      emoji: i % 18 === 0 ? EMOJIS[(i / 18) % EMOJIS.length] : null,
+    });
+  }
+
+  const start = performance.now();
+  const DURATION = 3200;
+  function frame(t) {
+    const elapsed = t - start;
+    ctx.clearRect(0, 0, W, H);
+    const fade = elapsed > DURATION - 700 ? Math.max(0, (DURATION - elapsed) / 700) : 1;
+    ctx.globalAlpha = fade;
+    pieces.forEach(p => {
+      p.vy += 0.32;          // gravedad
+      p.vx *= 0.985;         // rozamiento del aire
+      p.vy *= 0.985;
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      if (p.emoji) {
+        ctx.font = '22px serif';
+        ctx.fillText(p.emoji, -11, 8);
+      } else {
+        ctx.fillStyle = p.color;
+        // Sensación de giro: el papel se "estrecha" al rotar
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.rot * 2)));
+      }
+      ctx.restore();
+    });
+    if (elapsed < DURATION) requestAnimationFrame(frame);
+    else canvas.remove();
+  }
+  requestAnimationFrame(frame);
 }
 
 function showStatsModal(mode) {

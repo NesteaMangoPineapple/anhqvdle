@@ -20,7 +20,14 @@ function updateStreak() {
   const newCount = prev.lastDate === yesterStr ? prev.count + 1 : 1;
   localStorage.setItem('anhqvdle_streak', JSON.stringify({ count: newCount, lastDate: today }));
   _syncStreakToFirebase(newCount, today);
+  _refreshStreakBadge(); // antes el badge seguía "pendiente" hasta recargar
+  _notifyStreakChange();
   return newCount;
+}
+
+// Avisa a quien le interese (aviso de racha en peligro en pwa.js) de que la racha cambió
+function _notifyStreakChange() {
+  try { window.dispatchEvent(new Event('anhqvdle:streak')); } catch (e) {}
 }
 
 function getStreakData() {
@@ -146,6 +153,7 @@ function _syncStreakToFirebase(count, lastDate) {
       if (cur.count !== saved.count || cur.lastDate !== saved.lastDate) {
         localStorage.setItem('anhqvdle_streak', JSON.stringify({ count: saved.count, lastDate: saved.lastDate }));
         _refreshStreakBadge();
+        _notifyStreakChange();
       }
       // Para recordatorios de email: última vez que jugó y racha actual (hora local)
       const ld = saved.lastDate;
@@ -246,6 +254,12 @@ function showStreakPopup(data, today) {
         (Clásico, Frases, Impostor, Conexiones o Pixelada) cada día para mantener tu racha.
         Si te saltas un día, vuelve a empezar desde 1.
       </p>
+
+      ${window.Logros ? `<div style="margin:0 0 16px">
+        <button class="logros-open-btn" onclick="document.getElementById('streak-popup-overlay').remove();Logros.show()">
+          🏅 Mis logros · ${Logros.count()}/${Logros.total()}
+        </button>
+      </div>` : ''}
 
       <div id="streak-email-toggle" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">

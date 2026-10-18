@@ -54,7 +54,8 @@
     <p class="game-desc">Los mejores jugadores de Desengaño 21 en cada modo de juego.</p>
 
     <div class="ranking-tabs">
-      <button class="rtab active" data-mode="classic"   onclick="loadTab(this,'classic')">🎬 Clásico</button>
+      <button class="rtab active" data-mode="league"    onclick="loadTab(this,'league')">📅 Liga semanal</button>
+      <button class="rtab"        data-mode="classic"   onclick="loadTab(this,'classic')">🎬 Clásico</button>
       <button class="rtab"        data-mode="quote"     onclick="loadTab(this,'quote')">💬 Frases</button>
       <button class="rtab"        data-mode="impostor"  onclick="loadTab(this,'impostor')">🕵️ Impostor</button>
       <button class="rtab"        data-mode="streak"    onclick="loadTab(this,'streak')">🔥 Racha</button>
@@ -95,7 +96,7 @@
   <script src="js/pwa.js"></script>
 
   <script>
-  var _currentMode = 'classic';
+  var _currentMode = 'league';
   var _db = null;
 
   function _initRanking() {
@@ -106,7 +107,8 @@
     }
     if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
     _db = firebase.database();
-    loadTab(document.querySelector('.rtab.active'), 'classic');
+    var active = document.querySelector('.rtab.active');
+    loadTab(active, active ? active.dataset.mode : 'league');
   }
 
   function loadTab(btn, mode) {
@@ -116,7 +118,112 @@
     document.getElementById('ranking-content').innerHTML = '<p class="ranking-loading">Cargando…</p>';
     if (!_db) { _initRanking(); return; }
     if (mode === 'streak') { _fetchStreakLeaderboard(); return; }
+    if (mode === 'league') { _fetchLeague(); return; }
     _fetchLeaderboard(mode);
+  }
+
+  /* ── Liga semanal ─────────────────────────────────
+     league/{lunes}/{uid}: puntos de esta semana. Se reinicia cada lunes. */
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+  function _rankPhoto(row) {
+    var url = safePhotoUrl(row.photo);
+    return url
+      ? '<img src="' + url + '" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
+      : '<span class="rank-av-letter">' + escapeHtml((row.name || '?')[0].toUpperCase()) + '</span>';
+  }
+
+  function _leagueRows(data) {
+    var rows = Object.entries(data || {}).map(function (e) { return Object.assign({ uid: e[0] }, e[1]); });
+    rows = rows.filter(function (r) { return (+r.points || 0) > 0; });
+    // Más puntos; a igualdad, con menos retos jugados; luego quien llegó antes
+    rows.sort(function (a, b) {
+      return (+b.points || 0) - (+a.points || 0) || (+a.games || 0) - (+b.games || 0) || (+a.updated || 0) - (+b.updated || 0);
+    });
+    return rows;
+  }
+
+  function _fetchLeague() {
+    var thisWeek = leagueWeekId(0), lastWeek = leagueWeekId(1);
+    Promise.all([
+      _db.ref('league/' + thisWeek).once('value'),
+      _db.ref('league/' + lastWeek).once('value')
+    ]).then(function (snaps) {
+      // Esperar a saber si hay sesión (para resaltar tu fila y la rivalidad)
+      if (window.AuthModule) AuthModule.onReady(function (user) { _renderLeague(snaps, user); });
+      else _renderLeague(snaps, null);
+    }).catch(function () {
+      if (_currentMode !== 'league') return;
+      document.getElementById('ranking-content').innerHTML =
+        '<p class="ranking-empty">No se pudo cargar la liga. Inténtalo más tarde.</p>';
+    });
+  }
+
+  function _renderLeague(snaps, currentUser) {
+    if (_currentMode !== 'league') return;
+    var thisWeek = leagueWeekId(0);
+    var rows = _leagueRows(snaps[0].val()).slice(0, 100);
+    var prev = _leagueRows(snaps[1].val()).slice(0, 3);
+    var myUid = currentUser ? currentUser.uid : null;
+
+    // Semana: lunes → domingo, y días que quedan
+    var mon = new Date(thisWeek + 'T00:00:00');
+    var sun = new Date(mon); sun.setDate(sun.getDate() + 6);
+    var nextMon = new Date(mon); nextMon.setDate(nextMon.getDate() + 7);
+    var daysLeft = Math.ceil((nextMon - new Date()) / 86400000);
+    var range = mon.getDate() + ' ' + MESES[mon.getMonth()] + ' – ' + sun.getDate() + ' ' + MESES[sun.getMonth()];
+
+    var html = '<div class="ranking-table-wrap">';
+    html += '<div class="league-head"><span class="league-pill">📅 Liga semanal · ' + range + '</span>' +
+      '<p class="league-sub">Todos empiezan de cero cada lunes. ' +
+      (daysLeft <= 1 ? '<strong>¡Último día!</strong>' : 'Quedan <strong>' + daysLeft + ' días</strong>.') + '<br>' +
+      'Ganar a la primera: 10 puntos · cada intento de más, 1 menos (mínimo 5) · jugar y perder: 1 punto.</p></div>';
+
+    // Rivalidad: a cuántos puntos estás del de delante
+    if (myUid) {
+      var myPos = rows.findIndex(function (r) { return r.uid === myUid; });
+      if (myPos === 0) {
+        html += '<div class="league-rival">👑 <strong>Vas primero</strong> esta semana. ¡Que no te alcancen!</div>';
+      } else if (myPos > 0) {
+        var ahead = rows[myPos - 1];
+        var diff = (+ahead.points || 0) - (+rows[myPos].points || 0) + 1;
+        html += '<div class="league-rival">Vas <strong>#' + (myPos + 1) + '</strong>. Te faltan <strong>' + diff + ' punto' + (diff !== 1 ? 's' : '') +
+          '</strong> para superar a <strong>' + escapeHtml(ahead.name || 'Vecino') + '</strong>.</div>';
+      } else {
+        html += '<div class="league-rival">Aún no tienes puntos esta semana. <strong>Completa cualquier reto diario</strong> para entrar en la liga.</div>';
+      }
+    }
+
+    if (rows.length === 0) {
+      html += '<p class="ranking-empty">Nadie ha puntuado todavía esta semana.<br>¡Juega un reto y estrena la liga!</p>';
+    } else {
+      html += '<table class="ranking-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th>Retos</th></tr></thead><tbody>';
+      rows.forEach(function (row, i) {
+        var rank = i + 1;
+        var medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+        html += '<tr class="' + (row.uid === myUid ? 'rank-row-me' : '') + '">';
+        html += '<td class="rank-pos">' + medal + '</td>';
+        html += '<td class="rank-player"><div class="rank-av">' + _rankPhoto(row) + '</div><span>' + escapeHtml(row.name || 'Vecino') + '</span></td>';
+        html += '<td class="rank-won">' + (+row.points || 0) + '</td>';
+        html += '<td>' + (+row.games || 0) + '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+    }
+
+    if (prev.length) {
+      var medals = ['🥇', '🥈', '🥉'];
+      html += '<div class="league-podium"><div class="league-podium-title">Campeones de la semana pasada</div>' +
+        prev.map(function (r, i) {
+          return '<span>' + medals[i] + ' ' + escapeHtml(r.name || 'Vecino') + ' (' + (+r.points || 0) + ')</span>';
+        }).join(' &nbsp; ') + '</div>';
+    }
+    html += '</div>';
+
+    if (!myUid) {
+      html += '<p class="ranking-login-hint">👤 <a href="#" onclick="AuthModule.showLogin();return false">Inicia sesión</a> para sumar puntos en la liga</p>';
+    }
+    document.getElementById('ranking-content').innerHTML = html;
   }
 
   function _fetchStreakLeaderboard() {
@@ -244,9 +351,7 @@
         var avg   = row.won > 0 ? ((row.totalAttempts || 0) / row.won).toFixed(1) : '—';
         var pct   = row.played > 0 ? Math.round(row.won / row.played * 100) : 0;
         var isSelf = row.uid === myUid;
-        var photo  = row.photo
-          ? '<img src="' + row.photo + '" class="rank-av-img" alt="" onerror="this.style.display=\'none\'">'
-          : '<span class="rank-av-letter">' + (row.name || '?')[0].toUpperCase() + '</span>';
+        var photo  = _rankPhoto(row);
 
         html += '<tr class="' + (isSelf ? 'rank-row-me' : '') + '">';
         html += '<td class="rank-pos">' + medal + '</td>';

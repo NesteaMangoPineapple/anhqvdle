@@ -57,7 +57,10 @@ anhqvdle/
 │   ├── email-consent.js  ← EmailConsent: modal opt-in + alta en Brevo vía worker
 │   ├── pwa.js            ← SW, banner instalar, push, carga email-consent, badge racha, menú hamburguesa
 │   ├── firebase-config.js← Config web de Firebase (es pública por diseño; la seguridad está en las reglas)
+│   ├── logros.js         ← Logros e insignias (lo inyecta pwa.js en todas las páginas)
+│   ├── onboarding.js     ← Recorrido de 3 pasos en la portada para quien entra por primera vez
 │   └── tutorial.js       ← Modal "cómo jugar" la primera vez
+├── firebase-rules.json   ← Copia de las reglas de la Realtime Database (se publican a mano en la consola)
 ├── tools/
 │   ├── lib/layout.js       ← Plantilla común (cabecera/pie copiados de personajes.html, rutas absolutas)
 │   ├── build-personajes.js ← Fichas de personajes.html + personajes/*.html + sitemap
@@ -160,6 +163,13 @@ Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores q
 - `initPastDays()` (utils.js) pinta el aviso azul de práctica y la tira "📅 Días anteriores" encima de la guía.
 - **No hay archivo público de soluciones**, a propósito: el contenido se repite (Conexiones cada 8 días, frases cada año) y destriparía retos futuros.
 
+## Logros, celebración, aviso de racha y onboarding (18/10/2026)
+- **Celebración al ganar:** `celebrateWin()` (utils.js) lanza confeti en un canvas propio y hace brillar el banner. Se llama desde `updateStats` solo si `won`, así que nunca sale al recargar ni al perder. Respeta `prefers-reduced-motion`.
+- **Logros** (`logros.js`, 15 en total): se calculan con lo que ya hay en localStorage (racha y `anhqvdle_stats_<modo>`), así funcionan sin cuenta. Se guardan en `anhqvdle_logros` = `{unlocked: {id: YYYYMMDD}, best}` y, con sesión, se unen con `users/{uid}/logros`. `updateStats` llama a `Logros.onGame()`, que espera 50 ms para que `updateStreak` y `saveDailyState` ya hayan corrido. Al cargar se desbloquean en silencio los que ya se merecían. Se ven desde el botón 🏅 de la portada, el popup de racha y el perfil.
+- **Racha en peligro** (pwa.js, todas las páginas): de 21:00 a medianoche, si jugaste ayer y no hoy, el badge 🔥 late (`.at-risk`) y sale una franja bajo la cabecera con la cuenta atrás. Se puede cerrar (hasta el día siguiente, en `sessionStorage`). `updateStreak` emite el evento `anhqvdle:streak` y la franja se quita sola.
+- **Onboarding** (`onboarding.js`, solo en index.html): 3 pasos con foco iluminado para quien no ha jugado nunca. Se marca en `anhqvdle_onboarded`.
+- **Transiciones:** fundido entre páginas con `@view-transition` (Chrome/Edge/Safari recientes; en el resto no pasa nada) y una barra de carga dorada arriba al pulsar un enlace interno (pwa.js).
+
 ## Ventanas emergentes
 `AnhqPopups` (pwa.js): las ventanas de notificaciones (20 s), email (25 s) e instalar (30 s) solo salen si el visitante **ya ha jugado** alguna partida, nunca con otra ventana abierta y como mucho una por página. El tutorial y el Ko-fi siguen igual.
 
@@ -181,16 +191,20 @@ users/{uid}/emailConsent          ← {accepted, email, name, timestamp}
 users/{uid}/lastPlayed, streak    ← para el worker de emails
 leaderboard/{classic|quote|impostor}/{uid}  ← lectura pública
 streaks/{uid}                     ← {count, lastDate, name, photo} — ranking de racha
+league/{lunes YYYY-MM-DD}/{uid}   ← {name, photo, points, games, updated} — liga semanal (lectura pública)
+users/{uid}/logros                ← {id: YYYYMMDD} — logros desbloqueados
 global_stats/{YYYY-MM-DD}/{modo}  ← plays, wins, dist_1…dist_6p, dist_X (anónimo)
-push_subscriptions/{btoa(endpoint)[0:40]} ← {uid|anon_x, subscription, savedAt}
+push_subscriptions/{final de btoa(endpoint), sin + / =} ← {uid|anon_x, subscription, savedAt}
+                                  (hasta el 18/10/2026 se usaba el principio, igual para todos los de Chrome: solo quedaba 1)
 rooms/{id}                        ← partidas online de Quién es Quién
 ```
 - Auth: Google (popup) + email/contraseña con verificación. Dominio autorizado extra: `127.0.0.1` (Live Server).
-- Las **reglas de seguridad no están en el repo** (se gestionan en la consola). Conviene copiarlas aquí cuando se toquen.
+- Las **reglas de seguridad** están copiadas en `firebase-rules.json`, pero las que valen son las de la consola: si cambias una, cambia la otra. Validan tipos y rangos, `global_stats` solo admite sumar +1, y `league` solo deja sumar entre 1 y 10 puntos y 1 reto por escritura.
 - `firebase-config.js` aparece en `.gitignore` pero está versionado (y tiene que estarlo para que la web funcione). No pasa nada: la config web de Firebase es pública.
 
 ### Ranking (`ranking.html`)
-- Pestañas: Clásico, Frases, Impostor y 🔥 Racha.
+- Pestañas: 📅 Liga semanal (la primera), Clásico, Frases, Impostor y 🔥 Racha.
+- **Liga semanal:** cada reto diario terminado (con sesión, no en práctica) suma puntos en `league/{lunes}/{uid}`: ganar a la primera = 10, cada intento de más resta 1 (mínimo 5), Impostor ganado = 10, perder = 1. La suma la hace `StatsFirebase` solo si la partida contó en las stats de ese día. Cada lunes es una rama nueva, así que se reinicia sola. Muestra "te faltan N puntos para superar a X" y el podio de la semana pasada. `leagueWeekId()` está en auth.js.
 - Modos diarios: mínimo **5 victorias** para aparecer, ordenado por media de intentos (asc). Racha: mínimo 1 día, top 200.
 - La fila del usuario se resalta (`.rank-row-me`).
 
@@ -260,7 +274,7 @@ node tools/build-personajes.js && node tools/build-wiki.js
 ```bash
 git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 1-2 min
 ```
-- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v5`; solo cachea archivos propios con respuesta OK).
+- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v7`; solo cachea archivos propios con respuesta OK).
 - Los workers se despliegan a mano en Cloudflare (copiar y pegar o wrangler). No hay `wrangler.toml` en el repo.
 
 ---
@@ -303,9 +317,7 @@ git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 
 - Revisar las reglas de Firebase (ver arriba).
 - Más puzzles de Conexiones (ahora solo 8) y más personajes.
 - Modo Audio (el más diferenciador).
-- Aviso de "racha en peligro" a partir de las 21 h en la web.
-- Logros/insignias, liga semanal y "estás a X puestos de…" en el ranking.
-- Onboarding (tooltip la primera vez).
+- ~~Aviso de racha en peligro, logros, liga semanal con rivalidad y onboarding~~ (hechos el 18/10/2026).
 
 ## Cosas que NO hay que cambiar sin avisar
 - Las semillas de `daily.js` y de cada modo, el orden de `CHARACTERS`/`QUOTES`/`PUZZLES`/`CONEXIONES_PUZZLES`.

@@ -12,6 +12,13 @@ window.escapeHtml = function (str) {
 window.safePhotoUrl = function (url) {
   return /^https?:\/\//i.test(url || '') ? escapeHtml(url) : '';
 };
+/* Liga semanal: id de la semana = su lunes en hora local (YYYY-MM-DD).
+   weeksAgo = 1 → la semana pasada. */
+window.leagueWeekId = function (weeksAgo) {
+  var d = new Date();
+  d.setDate(d.getDate() - (d.getDay() + 6) % 7 - 7 * (weeksAgo || 0));
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+};
 
 window.AuthModule = (function () {
   var _auth  = null;
@@ -60,14 +67,14 @@ window.AuthModule = (function () {
     document.querySelectorAll('.auth-nav-item').forEach(function (el) {
       if (_user) {
         var nm    = _user.displayName || _user.email.split('@')[0];
-        var ph    = _user.photoURL;
+        var ph    = safePhotoUrl(_user.photoURL);
         var short = nm.length > 10 ? nm.slice(0, 10) + '\u2026' : nm;
         el.innerHTML =
           '<button class="nav-btn auth-user-btn" onclick="AuthModule.showProfile()">' +
           (ph
             ? '<img src="' + ph + '" class="auth-av-img" alt="">'
             : '<span class="auth-av-letter">' + escapeHtml(nm[0].toUpperCase()) + '</span>') +
-          '<span class="auth-uname">' + short + '</span></button>';
+          '<span class="auth-uname">' + escapeHtml(short) + '</span></button>';
       } else {
         el.innerHTML =
           '<button class="nav-btn auth-login-btn" onclick="AuthModule.showLogin()">👤 Login</button>';
@@ -231,6 +238,8 @@ window.AuthModule = (function () {
         em ? '<p class="auth-p auth-p-email">' + em + '</p>' : '',
         verBadge,
         '<div id="profile-stats" class="profile-stats"><p class="auth-p">Cargando\u2026</p></div>',
+        '<div style="margin:6px 0 10px"><button class="logros-open-btn" onclick="document.getElementById(\'profile-modal\').remove();window.Logros&&Logros.show()">🏅 Mis logros' +
+          (window.Logros ? ' · ' + Logros.count() + '/' + Logros.total() : '') + '</button></div>',
         '<a href="ranking.html" class="profile-ranking-link" onclick="document.getElementById(\'profile-modal\').remove()">🏆 Ver ranking global</a>',
         '<div id="profile-email-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.07)">',
           '<span style="color:rgba(255,255,255,0.55);font-size:0.82rem">&#128231; Avisos por email</span>',
@@ -306,7 +315,10 @@ window.AuthModule = (function () {
     // 2) Borrar todos los datos del usuario en la DB
     var deletes = [
       _db.ref('users/' + uid).remove(),
-      _db.ref('streaks/' + uid).remove()
+      _db.ref('streaks/' + uid).remove(),
+      // Liga semanal: esta semana y la pasada (las que se ven en el ranking)
+      _db.ref('league/' + leagueWeekId(0) + '/' + uid).remove(),
+      _db.ref('league/' + leagueWeekId(1) + '/' + uid).remove()
     ].concat(
       modes.map(function (m) { return _db.ref('leaderboard/' + m + '/' + uid).remove(); })
     );
