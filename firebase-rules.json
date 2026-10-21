@@ -46,6 +46,31 @@
         }
       }
     },
+    "junta": {
+      ".read": true,
+      "$day": {
+        ".validate": "$day.matches(/^[0-9]{1,5}$/)",
+        "$opt": {
+          ".write": "newData.exists()",
+          ".validate": "$opt.matches(/^o[0-5]$/) && newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
+        }
+      }
+    },
+    "crono": {
+      ".read": true,
+      "$date": {
+        ".validate": "$date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.hasChildren(['name','score','updated']) && (!data.exists() || newData.child('score').val() > data.child('score').val())",
+          "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "photo": { ".validate": "newData.isString() && (newData.val() === '' || (newData.val().matches(/^https:\\/\\//) && newData.val().length <= 600))" },
+          "score": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 60" },
+          "updated": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
     "global_stats": {
       ".read": true,
       "$date": {

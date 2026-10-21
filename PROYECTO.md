@@ -25,6 +25,8 @@ anhqvdle/
 ├── pixelada.html         ← 🖼️ Foto Pixelada (diario)
 ├── quiz.html             ← 🪞 ¿Qué personaje eres? (test, no diario)
 ├── quien.html            ← 🎭 Quién es Quién (vs máquina / online)
+├── junta.html            ← 🗳️ Junta de vecinos (encuesta diaria, no cuenta para la racha)
+├── contrarreloj.html     ← ⏱️ Contrarreloj (30 s, ilimitado, récords del día)
 ├── ranking.html          ← 🏆 Ranking global (Clásico, Frases, Impostor, Racha) — noindex, sin anuncios
 ├── wiki.html             ← 📖 Portada de la wiki (GENERADA: tools/build-wiki.js): buscador, secciones, temporadas
 ├── personajes.html       ← Wiki: listado de fichas (las fichas se generan con tools/build-personajes.js)
@@ -42,7 +44,8 @@ anhqvdle/
 ├── data/
 │   ├── characters.js     ← 47 personajes (const CHARACTERS); los nuevos llevan `since`
 │   ├── quotes.js         ← 236 frases (const QUOTES)
-│   └── descriptions.js   ← Descripción larga de cada personaje (para personajes.html)
+│   ├── descriptions.js   ← Descripción larga de cada personaje (para personajes.html)
+│   └── junta.js          ← Preguntas de la Junta de vecinos (SOLO añadir al final)
 ├── js/
 │   ├── daily.js          ← Semillas diarias, _seededShuffle (común a todos los modos), nº de día, localStorage, countdown
 │   ├── utils.js          ← escapeHtml está en auth.js · aquí: toSlug, getCharacterEmoji, autocomplete, stats locales, modal stats, daltonismo, Ko-fi, helpers Stories
@@ -51,6 +54,8 @@ anhqvdle/
 │   ├── quiz.js           ← Quiz de personalidad (15 preguntas → 23 resultados)
 │   ├── quien.js          ← Quién es Quién vs máquina
 │   ├── quien-online.js   ← Quién es Quién online (salas en Firebase)
+│   ├── junta.js          ← Junta de vecinos
+│   ├── contrarreloj.js   ← Contrarreloj
 │   ├── auth.js           ← escapeHtml/safePhotoUrl globales + AuthModule: login, perfil, borrar cuenta (borra users, streaks, leaderboards, push y baja en Brevo)
 │   ├── stats-firebase.js ← StatsFirebase: stats por usuario + leaderboard
 │   ├── global-stats.js   ← GlobalStats: "Hoy en la comunidad" (anónimo)
@@ -156,6 +161,17 @@ Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores q
 
 ---
 
+### 🗳️ Junta de vecinos (`junta.js`, `data/junta.js`)
+- Una pregunta de opinión al día: `JUNTA[(getDayNumber() - JUNTA_FIRST_DAY) % JUNTA.length]` (la primera salió el día 212 = 21/10/2026). **Solo añadir preguntas al final**: cambiar el orden cambia la pregunta de cada día y los votos guardados quedarían con otra.
+- Opciones: nombre de personaje (foto), `"A + B"` (pareja, dos fotos) o texto. Máximo 6.
+- Votos anónimos en `junta/{día}/o{opción}` (transacción +1); tu voto en `anhqvdle_junta_<YYYYMMDD>`. Los resultados se ven al votar y se actualizan en directo. Ordenador: resultados a la derecha (sticky); móvil: debajo, con scroll automático. También enseña qué ganó ayer.
+- **No cuenta** para racha, liga, stats ni el X/5 de la portada.
+
+### ⏱️ Contrarreloj (`contrarreloj.js`)
+- 30 s, foto + 4 opciones (distractores del mismo género), acierto +1, fallo −3 s. Teclas 1-4 en ordenador. Precarga todas las fotos antes de dejar empezar.
+- Récord personal en `anhqvdle_crono` = {best, bestDate, played}. Con sesión, la mejor marca del día va a `crono/{YYYY-MM-DD}/{uid}` (solo si mejora) y se muestra el top 10 de hoy.
+- No es diario: no cuenta para racha ni liga.
+
 ## Días anteriores — modo práctica
 - Cada modo diario acepta `?dia=N`, pero solo para los **últimos 5 días** (`PAST_DAYS_PLAYABLE` en `daily.js`). Cualquier otro valor se ignora.
 - `gameDate()` en `daily.js` devuelve la fecha del reto que se juega. Todas las semillas la usan, así que los 5 modos funcionan sin tocar su lógica. `isPracticeMode()` indica si es un día pasado.
@@ -197,6 +213,8 @@ global_stats/{YYYY-MM-DD}/{modo}  ← plays, wins, dist_1…dist_6p, dist_X (an�
 push_subscriptions/{final de btoa(endpoint), sin + / =} ← {uid|anon_x, subscription, savedAt}
                                   (hasta el 18/10/2026 se usaba el principio, igual para todos los de Chrome: solo quedaba 1)
 rooms/{id}                        ← partidas online de Quién es Quién
+junta/{día}/o{0-5}                ← votos de la Junta de vecinos (solo suman +1)
+crono/{YYYY-MM-DD}/{uid}          ← {name, photo, score, updated} — récord del día del Contrarreloj
 ```
 - Auth: Google (popup) + email/contraseña con verificación. Dominio autorizado extra: `127.0.0.1` (Live Server).
 - Las **reglas de seguridad** están copiadas en `firebase-rules.json`, pero las que valen son las de la consola: si cambias una, cambia la otra. Validan tipos y rangos, `global_stats` solo admite sumar +1, y `league` solo deja sumar entre 1 y 10 puntos y 1 reto por escritura.
@@ -252,7 +270,7 @@ Google lee el HTML que manda el servidor. Los juegos se pintan con JS, así que 
 - **Regla para el futuro:** toda página indexable con anuncios necesita texto propio en el HTML (no generado por JS). Las páginas sin contenido van con `noindex` y sin el script de AdSense.
 
 - Canonical, OG/Twitter Card y H1 en las páginas indexables; JSON-LD (WebApplication / Article).
-- `sitemap.xml` con 15 URLs (sin privacidad ni 404).
+- `sitemap.xml` con 17 URLs fijas + las de la wiki (sin privacidad ni 404).
 - GA4 `G-9BGR4GH8P7` · Search Console verificado por TXT.
 - AdSense `ca-pub-1251819701012590` + `ads.txt` + CMP de Google (RGPD). Script de AdSense y GA4 en todas las páginas (conexiones, pixelada y quien no los tenían hasta el 14/10/2026).
 
@@ -317,6 +335,7 @@ git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 
 - Revisar las reglas de Firebase (ver arriba).
 - Más puzzles de Conexiones (ahora solo 8) y más personajes.
 - Modo Audio (el más diferenciador).
+- **Guardados para más adelante (21/10/2026):** 🏢 El Edificio (colocar 6 vecinos en su piso de la fachada, diario) y 🧠 ¿Quién soy? (pistas que se revelan una a una, diario). Si se añade un modo diario hay que tocar el X/5 de la portada, el logro "Pleno en el rellano" y la regla `games <= 35` de la liga.
 - ~~Aviso de racha en peligro, logros, liga semanal con rivalidad y onboarding~~ (hechos el 18/10/2026).
 
 ## Cosas que NO hay que cambiar sin avisar

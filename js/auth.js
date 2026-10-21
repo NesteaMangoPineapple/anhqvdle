@@ -318,7 +318,9 @@ window.AuthModule = (function () {
       _db.ref('streaks/' + uid).remove(),
       // Liga semanal: esta semana y la pasada (las que se ven en el ranking)
       _db.ref('league/' + leagueWeekId(0) + '/' + uid).remove(),
-      _db.ref('league/' + leagueWeekId(1) + '/' + uid).remove()
+      _db.ref('league/' + leagueWeekId(1) + '/' + uid).remove(),
+      // Récord de hoy del Contrarreloj (los de días pasados ya no se muestran)
+      _db.ref('crono/' + new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + '/' + uid).remove()
     ].concat(
       modes.map(function (m) { return _db.ref('leaderboard/' + m + '/' + uid).remove(); })
     );

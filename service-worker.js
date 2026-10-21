@@ -2,7 +2,7 @@
    ANHQVdle — Service Worker
    ================================================ */
 
-var CACHE_NAME = 'anhqvdle-v7';
+var CACHE_NAME = 'anhqvdle-v8';
 var PRECACHE = [
   '/',
   '/index.html',
