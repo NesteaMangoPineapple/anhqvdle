@@ -146,7 +146,72 @@ function saveDailyState(mode, state) {
   try {
     localStorage.setItem(getTodayKey(mode), JSON.stringify(state));
   } catch(e) {}
+  if (state && state.done && !isPracticeMode()) _saveDailyToCloud(mode, state);
 }
+
+/* ══════════════════════════════════════
+   RETO TERMINADO EN OTRO DISPOSITIVO
+   El estado del día vive en localStorage, así que en otro móvil se podía
+   volver a jugar el mismo reto. Con sesión iniciada, al terminar se guarda
+   también en users/{uid}/daily/{modo} = {date, state} (solo el último día,
+   no se acumula). Al abrir un modo, si la cuenta ya lo tiene terminado hoy
+   y este navegador no, se copia aquí y se recarga: el modo lo pinta como hecho.
+══════════════════════════════════════ */
+
+const DAILY_PAGE_MODES = {
+  'clasico.html': 'classic', 'frases.html': 'quote', 'impostor.html': 'impostor',
+  'conexiones.html': 'conexiones', 'pixelada.html': 'pixelada',
+};
+
+function _todayYMD() {
+  const d = new Date();
+  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function _saveDailyToCloud(mode, state) {
+  if (typeof AuthModule === 'undefined' || !DAILY_PAGE_MODES_LIST.includes(mode)) return;
+  AuthModule.onReady(function (user) {
+    const db = AuthModule.getDb();
+    if (!user || !db) return;
+    db.ref('users/' + user.uid + '/daily/' + mode).set({ date: _todayYMD(), state: state }).catch(function () {});
+  });
+}
+const DAILY_PAGE_MODES_LIST = Object.values(DAILY_PAGE_MODES);
+
+/**
+ * Copia a localStorage los retos de HOY que la cuenta tiene terminados y este
+ * navegador no. Devuelve los modos copiados.
+ */
+function _applyCloudDaily(remote) {
+  const today = _todayYMD(), copied = [];
+  Object.keys(remote || {}).forEach(function (mode) {
+    const r = remote[mode];
+    if (!DAILY_PAGE_MODES_LIST.includes(mode) || !r || r.date !== today || !r.state || !r.state.done) return;
+    const key = 'anhqvdle_' + mode + '_' + today;
+    let local = null;
+    try { local = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    if (local && local.done) return; // aquí también está terminado: nada que hacer
+    try { localStorage.setItem(key, JSON.stringify(r.state)); copied.push(mode); } catch (e) {}
+  });
+  return copied;
+}
+
+(function _syncDailyFromCloud() {
+  if (typeof AuthModule === 'undefined' || isPracticeMode()) return;
+  const pageMode = DAILY_PAGE_MODES[location.pathname.split('/').pop()];
+  AuthModule.onReady(function (user) {
+    const db = AuthModule.getDb();
+    if (!user || !db) return;
+    db.ref('users/' + user.uid + '/daily').once('value').then(function (snap) {
+      const copied = _applyCloudDaily(snap.val());
+      if (!pageMode || copied.indexOf(pageMode) === -1) return;
+      // Una sola recarga por modo y día, por si algo fallara (nunca en bucle)
+      const flag = 'anhqvdle_cloud_reload_' + pageMode + '_' + _todayYMD();
+      try { if (sessionStorage.getItem(flag)) return; sessionStorage.setItem(flag, '1'); } catch (e) { return; }
+      location.reload();
+    }).catch(function () {});
+  });
+}());
 
 /**
  * Elimina entradas de juego de más de 7 días para no acumular basura.

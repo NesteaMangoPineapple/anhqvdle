@@ -172,6 +172,11 @@ Grid 3×3: una categoría ("Personajes con hijos"…) y entre 2 y 3 impostores q
 - Récord personal en `anhqvdle_crono` = {best, bestDate, played}. Con sesión, la mejor marca del día va a `crono/{YYYY-MM-DD}/{uid}` (solo si mejora) y se muestra el top 10 de hoy.
 - No es diario: no cuenta para racha ni liga.
 
+## Retos entre dispositivos (21/10/2026)
+- El estado del día vive en localStorage. Con sesión iniciada, al terminar un reto `saveDailyState` lo copia también a `users/{uid}/daily/{modo}` = `{date, state}` (solo el último día por modo, no se acumula).
+- Al abrir un modo diario, `daily.js` lee esa rama: si la cuenta lo tiene terminado hoy y este navegador no, copia el estado y recarga una vez, y el modo lo pinta como hecho (sin volver a contar stats). Antes se podía repetir el reto en otro móvil (queja del 21/10/2026).
+- Sin cuenta no hay forma de saberlo. El ranking y la liga nunca se vieron afectados: Firebase solo cuenta la primera partida del día de cada modo.
+
 ## Días anteriores — modo práctica
 - Cada modo diario acepta `?dia=N`, pero solo para los **últimos 5 días** (`PAST_DAYS_PLAYABLE` en `daily.js`). Cualquier otro valor se ignora.
 - `gameDate()` en `daily.js` devuelve la fecha del reto que se juega. Todas las semillas la usan, así que los 5 modos funcionan sin tocar su lógica. `isPracticeMode()` indica si es un día pasado.
@@ -292,7 +297,7 @@ node tools/build-personajes.js && node tools/build-wiki.js
 ```bash
 git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 1-2 min
 ```
-- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v7`; solo cachea archivos propios con respuesta OK).
+- Si cambias JS/CSS que están precacheados, **sube `CACHE_NAME` en `service-worker.js`** (ahora es `anhqvdle-v9`; solo cachea archivos propios con respuesta OK).
 - Los workers se despliegan a mano en Cloudflare (copiar y pegar o wrangler). No hay `wrangler.toml` en el repo.
 
 ---
