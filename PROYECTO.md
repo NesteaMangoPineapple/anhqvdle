@@ -215,9 +215,9 @@ rooms/{id}                        ← partidas online de Quién es Quién
 ### Push (PWA)
 - `pwa.js` pide permiso a los 5 s de cargar (o tras instalar) y guarda la suscripción en `push_subscriptions/`.
 - Clave VAPID pública en `pwa.js`; la privada está en los secrets del worker.
-- `push-worker.js`: **dos crons** (`5 22 * * *` y `5 23 * * *`); solo envía el que cae a las 00:xx de Madrid, así funciona en horario de verano y de invierno. Envía a todas las suscripciones un push **sin payload** (el SW pone el texto por defecto y abre `/clasico.html`). Borra las suscripciones caducadas (410/404).
+- `push-worker.js`: **un cron** `5-34 22,23 * * *` (cada minuto de 00:05 a 00:34 de Madrid; las ejecuciones que no caen a las 00:xx de Madrid no hacen nada, así vale en verano y en invierno). Cada minuto envía una **tanda de 24** (minuto 05 → tanda 0…): 1 lectura + 24 envíos + hasta 24 borrados = 49 subrequests, por debajo del límite de 50 del plan gratis. Capacidad: 720 suscriptores (si se acerca, ampliar el rango del cron). Push **sin payload** con `Topic: reto-diario`; borra las caducadas (410/404) por su clave real.
 - Secrets: `VAPID_PRIVATE_KEY`, `VAPID_PUBLIC_KEY`, `FIREBASE_DB_URL`, `FIREBASE_SECRET`, `CRON_SECRET`.
-- ⚠️ Hace 1 petición por suscriptor. El plan gratis de Workers permite 50 subrequests por ejecución: con más de ~45 suscriptores push, el resto no recibe nada (mirar los logs del worker; la solución es el plan de pago o repartir en tandas).
+- La clave privada VAPID se importa como **JWK** (d + x/y sacados de la pública). Hasta el 21/10/2026 se importaba en formato `raw`, que WebCrypto no admite para claves privadas: muy probablemente ningún push se llegó a enviar (salía como "Fallidos" en el log, no como error).
 
 ### Email (Brevo, 300 emails/día gratis)
 - `email-consent.js`: modal a los 4 s para usuarios logueados que aún no han respondido. Guarda `emailConsent` y llama al worker con el **idToken de Firebase** (alta o baja en Brevo).
@@ -309,7 +309,7 @@ git add . && git commit -m "..." && git push origin main   # GitHub Pages tarda 
 
 ### ⏳ Pendiente
 - **Reglas de Firebase**: no están en el repo. Revisar que `leaderboard/{modo}/{uid}`, `streaks/{uid}` y `users/{uid}` solo los pueda escribir su dueño, y que `global_stats` solo acepte números.
-- **Límite de subrequests del push-worker** (ver la sección Push).
+- ~~Límite de subrequests del push-worker~~ (tandas desde el 21/10/2026).
 - Solo 8 puzzles de Conexiones (se repiten cada 8 días).
 - 8 fotos sin usar en `img/personajes/` (Ana_Shiffer, Valentin…), quizá para personajes futuros.
 
